@@ -20,3 +20,151 @@
 .App-link {
   color: #09d3ac;
 }
+
+.button {
+  background-color: #29a3ef;
+  width:100px;
+  height: 40px;
+  border-radius: 25px;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 15px
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+}
+
+.logo1 {
+  width: 50px;
+  height: 50px;
+}
+
+
+.outer-box1 {
+  width: 50%;
+  border-radius: 20px;
+  box-shadow: 0 0 5px #E6E5F4;
+  margin-right: 20%;
+  margin-left: 20%;
+  margin-top: 10%;
+}
+
+.form{
+  align-content: center;
+  align-items: center;
+}
+
+.signup{
+  background-color: #b2b2b2;
+  margin-top: 10%;
+  margin-bottom: 10%
+}
+
+.signup1{
+  background-color: #ffffff;
+  text-align:center;
+  margin-right: 20%;
+  margin-left: 25%;
+  margin-top: 10%;
+}
+
+.form-control{
+  width:80%;
+  border:none;
+  border-bottom: 1px solid black;
+}
+
+.label{
+  text-align:left;
+  display: block
+}
+
+.elements{
+  background: #f5f8fa;
+  margin-left: 10%;
+  margin-right: 10%
+}
+
+.elements1{
+  height: 35px;
+  width: 100%;
+  background: #f5f8fa;
+  font-size: 22px
+}
+
+.elements2{
+  background: #ffffff;
+  margin-left: 10%;
+  margin-right: 10%
+}
+
+.elements3{
+  background: #f5f8fa;
+}
+
+.landingpage{
+  width:50%;
+  float:left;
+}
+
+.landingpage1{
+  background-image: url("./components/users/twitter3.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width:50%;
+  height: 100%;
+  float: left;
+  text-align:center;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 18px
+}
+
+.input{
+  height: 30px;
+  width: 200px;
+  padding-left: 10%;
+  font-size: 22px
+}
+
+.login1{
+  border-color: #29a3ef;
+  border-radius: 20px;
+  height: 40px;
+  width: 80px;
+  font-size: 18px;
+  color: #29a3ef
+}
+
+.buttons1{
+  width: 300px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #29a3ef;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff
+}
+
+
+.buttons2{
+  width: 300px;
+  height: 40px;
+  border-radius: 20px;
+  border-color: #29a3ef;
+  font-size: 15px;
+  font-weight: 600;
+  color: #29a3ef
+}
+
+.home-div{
+  padding-left: 25%;
+  margin-top: 10%
+}
+
+.home-div1{
+  padding-left: 10%;
+  margin-top: 1%
+}
