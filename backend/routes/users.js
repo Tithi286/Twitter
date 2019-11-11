@@ -34,7 +34,7 @@ router.get('/', async function (req, res, next) {
 });
 //user registration
 router.post('/', async function (req, res, next) {
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, DOB } = req.body;
   const isActive = true;
 
   //check if required fields are not null
@@ -46,7 +46,7 @@ router.post('/', async function (req, res, next) {
     const user = {
       userID: uuidv4(),
       password: encrypt(password),
-      email, firstName, lastName, isActive
+      email, firstName, lastName, isActive, DOB
     };
     const { results } = await saveUsers(user);
     res.json(results);
@@ -87,14 +87,14 @@ router.post('/login', async function (req, res, next) {
 });
 //Edit user profile
 router.put('/profile', upload.single('profileImage'), async function (req, res, next) {
-  const { email, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive } = req.body;
+  const { email, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive, DOB } = req.body;
   const profileImage = req.file ? `/${req.file.filename}` : '';
 
   try {
     const loggedinUser = jwt.verify(req.cookies.authCookie, jwtsecret);
     user = {
       userID: loggedinUser.userID,
-      email, profileImage, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive
+      email, profileImage, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive, DOB
     }
     await editUser(user);
     res.json({ message: "Details updated" });
