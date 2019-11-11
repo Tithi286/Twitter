@@ -27,9 +27,9 @@ const getUsers = connection => (user = {}) => {
     });
 };
 const saveUsers = connection => (user) => {
-    const { userID, email, password, firstName, lastName, isActive } = user;
-    let query = `insert into ${tableName} (userID, email, password, firstName, lastName, isActive)` +
-        ` VALUES ('${userID}', '${email}', '${password}', '${firstName}', '${lastName}', ${isActive});`;
+    const { userID, email, password, firstName, lastName, isActive, DOB } = user;
+    let query = `insert into ${tableName} (userID, email, password, firstName, lastName, isActive,DOB)` +
+        ` VALUES ('${userID}', '${email}', '${password}', '${firstName}', '${lastName}', ${isActive},'${DOB}');`;
     return new Promise((resolve, reject) => {
         connection.query(query, (error, results, fields) => {
             // release connection 
@@ -43,7 +43,7 @@ const saveUsers = connection => (user) => {
     });
 };
 const editUser = connection => (user) => {
-    const { userID, email, password, firstName, lastName, city, profileImage, state, zipcode, profileDesc, userName, isActive } = user;
+    const { userID, email, password, firstName, lastName, city, profileImage, state, zipcode, profileDesc, userName, isActive, DOB } = user;
     let query = `UPDATE ${tableName}`;
     const clause = [];
 
@@ -80,6 +80,10 @@ const editUser = connection => (user) => {
     if (isActive) { // send boolean value true/false
         clause.push(`isActive='${isActive}'`);
     }
+    if (DOB) {
+        clause.push(`DOB='${DOB}'`);
+    }
+
     query += ` SET ${clause.join(' , ')}`;
     query += ` where userID='${userID}'`;
     return new Promise((resolve, reject) => {

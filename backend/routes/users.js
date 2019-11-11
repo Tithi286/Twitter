@@ -42,11 +42,13 @@ router.post('/', async function (req, res, next) {
     console.error('Mandatory Details Missing');
     return res.status(400).json({ message: "mandatory buyer info missing" });
   }
+  //2015-03-25
   try {
     const user = {
       userID: uuidv4(),
       password: encrypt(password),
-      email, firstName, lastName, isActive, DOB
+      email, firstName, lastName, isActive,
+      DOB
     };
     const { results } = await saveUsers(user);
     res.json(results);
