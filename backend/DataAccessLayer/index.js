@@ -1,7 +1,12 @@
 const mysql = require('mysql');
+const mongoose = require('mongoose');
 
 const { sql_host, sql_port, sql_user, sql_password, sql_database, sql_connectionLimit } = require('../config');
+const { mongo_host, mongo_user, mongo_password, mongo_database, mongo_connectionLimit, mongo_port } = require('../config');
+
 const { getUsers, saveUsers, editUser, deleteUser } = require('./users');
+const { getTweets, saveTweet } = require('./tweets');
+
 
 const options = {
     connectionLimit: sql_connectionLimit,
@@ -23,6 +28,22 @@ const getSQLConnection = () => {
     });
 };
 
+//Set up default mongoose connection
+const getMongoConnection = () => {
+    return new Promise(async (resolve, reject) => {
+        const mongoDB = `'mongodb://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}/${mongo_database}`;
+        try {
+            await mongoose.connect(mongoDB, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            });
+        } catch (e) {
+            console.log(e);
+            return reject(e);
+        }
+        return resolve();
+    });
+};
 const _getUsers = async whereClause => {
     const connection = await getSQLConnection();
     return getUsers(connection)(whereClause);
@@ -43,9 +64,21 @@ const _deleteUser = async whereClause => {
     return deleteUser(connection)(whereClause);
 };
 
+const _getTweets = async whereClause => {
+    await getMongoConnection();
+    return getTweets()(whereClause);
+}
+
+const _saveTweet = async whereClause => {
+    await getMongoConnection();
+    return saveTweet()(whereClause);
+}
+
 module.exports = {
     getUsers: _getUsers,
     saveUsers: _saveUsers,
     editUser: _editUser,
     deleteUser: _deleteUser,
+    getTweets: _getTweets,
+    saveTweet: _saveTweet,
 };

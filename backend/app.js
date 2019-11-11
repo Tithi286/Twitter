@@ -8,6 +8,7 @@ var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var tweetsRouter = require('./routes/tweets');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //All Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/tweets', tweetsRouter);
 
 app.use(passport.initialize());
 
