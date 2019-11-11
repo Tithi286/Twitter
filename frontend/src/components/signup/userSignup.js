@@ -10,7 +10,7 @@ import { Field, reduxForm } from "redux-form";
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 
-class BuyerSignup extends Component {
+class userSignup extends Component {
 
     constructor(props) {
         super(props);
@@ -35,12 +35,12 @@ class BuyerSignup extends Component {
 
     renderField(field) {
         const { meta: { touched, error } } = field;
-        const className = `form-group ${touched && error ? "has-danger" : ""}`;
+        const className = `${touched && error ? "has-danger" : ""}`;
 
         return (
             <div className={className}>
                 <label>{field.label}</label>
-                <input className="form-control elements1" type="text" {...field.input} />
+                <input className="form-control1 elements1" type="text" {...field.input} />
                 <div className="text-help">
                     {touched ? error : ""}
                 </div>
@@ -56,7 +56,7 @@ class BuyerSignup extends Component {
         return (
             <div className={className}>
                 <label style={{ textAlign: 'left' }}>{field.label}</label>
-                <input className="form-control elements1" type="email" {...field.input} />
+                <input className="form-control1 elements1" type="email" {...field.input} />
                 <div className="text-help">
                     {touched ? error : ""}
                 </div>
@@ -71,7 +71,7 @@ class BuyerSignup extends Component {
         return (
             <div className={className}>
                 <label>{field.label}</label>
-                <input className="form-control elements1" type="password" {...field.input} />
+                <input className="form-control1 elements1" type="password" {...field.input} />
                 <div className="text-help">
                     {touched ? error : ""}
                 </div>
@@ -97,56 +97,56 @@ class BuyerSignup extends Component {
         //console.log(this.state.errormsg)
 
         return (
-            <div class="signup">
+            <div class="signup2">
                 {redirectVar}
-                <br /><br />
-                <form class="form outer-box1 signup1">
+                <br />
+                <form class="outer-box1 signup1">
                     {/* <form onSubmit={handleSubmit(this.submitLogin.bind(this))}> */}
                     <br />
                     <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img>
-                    <div className="outer-box">
+                    <div className="">
                         <div className="elements2">
-                            <h2 class="label">Create your account</h2>
+                            <h3 class="label">Create your account</h3>
                             <br />
                         </div>
 
                         <div class="">
                             <div class="elements">
-                                <span class="label">Name:</span>
+                                <span class="label">Name</span>
                                 <Field name="name" component={this.renderField} />
                             </div>
 
                         </div>
-                        <div class="form-group">
+                        <div class="">
                             <br />
                             <div class="elements">
                                 <span class="label">Email</span>
                                 <Field name="email" component={this.renderEmail} />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <br />
+                        <div class="">
+    
                             <div class="elements">
                                 <span class="label">Phone</span>
                                 <Field name="phone" component={this.renderField} />
                             </div>
-                            <div class="form-group">
-                                <br />
+                            <div class="">
+                            <br/>
                                 <div class="elements">
                                     <span class="label">Password</span>
                                     <Field name="password" component={this.renderPassword} />
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <br />
+                            <div class="">
+                
                                 <div class="elements2">
                                     <span class="label">Date of Birth</span>
                                 </div>
                                 
                             </div>
-                            <div class="form-group" className="col-md-12">
+                            <div class="">
                                 <br />
-                                <button class="btn btn-primary col-md-12 button">Sign Up</button>
+                                <button class="button">Sign Up</button>
                                 <br /><br />
                                 {/* <button class="btn btn-primary col-md-12 button" onClick={this.submitSignup}>Create your account</button> */}
                             </div>
@@ -155,7 +155,7 @@ class BuyerSignup extends Component {
                         </div>
                     </div>
                 </form>
-                <br /><br /><br />
+                <br /><br />
             </div>
 
 
@@ -238,6 +238,6 @@ const mapDispatchStateToProps = dispatch => {
 export default reduxForm({
     validate,
     form: "bSignup"
-})(connect(mapStateToProps, mapDispatchStateToProps)(BuyerSignup));
+})(connect(mapStateToProps, mapDispatchStateToProps)(userSignup));
 
 
