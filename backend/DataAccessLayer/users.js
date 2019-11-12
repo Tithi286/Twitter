@@ -126,5 +126,5 @@ module.exports = {
     getUsers,
     saveUsers,
     editUser,
-    deleteUser
+    deleteUser,
 };

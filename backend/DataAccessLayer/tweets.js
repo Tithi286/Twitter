@@ -3,7 +3,7 @@ const tableName = 'tweets';
 
 const getTweets = connection => (tweet = {}) => {
     return new Promise((resolve, reject) => {
-        tweets.find({}, function (err, docs) {
+        tweets.find(tweet, function (err, docs) {
             return err ? reject(err) : resolve(docs);
         });
     });

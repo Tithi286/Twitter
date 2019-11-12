@@ -7,14 +7,32 @@ const path = require('path');
 
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 const { getTweets, saveTweet } = require('../DataAccessLayer');
+const { getFollowedUsers } = require('../DataAccessLayer');
 
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
 
-//Route to get all tweets
+//Get the tweets of the followed persons
 router.get('/', requireAuth, async function (req, res, next) {
+    let followedTweets = {};
+    let followID = [];
     try {
-        const results = await getTweets();
+        const user = req.user;
+        //get the userID s of followed persons from table follower
+        let { results } = await getFollowedUsers(user);
+        let followed = JSON.parse(JSON.stringify(results));
+
+        //For each followed person get all the tweets from Mongo Tweets collection
+
+        //Create a array with followed persons ID
+        for (let i = 0; i < followed.length; i++) {
+            followID.push(followed[i].followedID);
+        }
+        //tweet object to find in MongoDB with in operator
+        const tweet = {
+            tweetOwnerID: { $in: followID }
+        };
+        results = await getTweets(tweet);
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
