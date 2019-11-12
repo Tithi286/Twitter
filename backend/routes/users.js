@@ -10,6 +10,7 @@ const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 
 const { jwtsecret, encrAlgorithm, encrSecret } = require('../config');
 const { getUsers, saveUsers, editUser, deleteUser } = require('../DataAccessLayer');
+const { saveFollower, deleteFollower } = require('../DataAccessLayer');
 
 // crypto (can be updated to use 'bcrypt' instead)
 const encrypt = password => {
@@ -126,6 +127,37 @@ router.delete('/', requireAuth, async function (req, res, next) {
   }
   catch (e) {
     res.status(500).json({ message: e.message });
+  }
+});
+//Follow any person on Twitter (get userID of user to follow from frontend in body)
+router.post('/follow', requireAuth, async function (req, res, next) {
+  const { followedID } = req.body;
+  try {
+    const loggedInUser = req.user;
+    follow = {
+      followerID: loggedInUser.userID,
+      followedID
+    };
+    await saveFollower(follow);
+    res.json("Now Following");
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+//unfollow the followed person on Twitter (get userID of user to unfollow from frontend in body)
+router.delete('/unfollow', requireAuth, async function (req, res, next) {
+  const { followedID } = req.body;
+  try {
+    const loggedInUser = req.user;
+    follow = {
+      followerID: loggedInUser.userID,
+      followedID
+    };
+    await deleteFollower(follow);
+    res.json("Unfollowed !");
+
+  } catch (e) {
+    res.status(500).send(e.message || e);
   }
 });
 module.exports = router;

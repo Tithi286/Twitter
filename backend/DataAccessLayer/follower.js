@@ -20,7 +20,48 @@ const getFollowedUsers = connection => (user = {}) => {
         });
     });
 };
+const saveFollower = connection => (follow) => {
+    const { followerID, followedID } = follow;
+    let query = `insert into ${tableName} (followerID, followedID)` +
+        ` VALUES ('${followerID}', '${followedID}');`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, results, fields) => {
+            // release connection 
+            connection.release();
+            if (error) {
+                reject(error);
+            } else {
+                resolve({ results, fields });
+            }
+        });
+    });
+};
+const deleteFollower = connection => (follow) => {
+    const { followerID, followedID } = follow;
+    let query = `delete from ${tableName}`;
+    let clause = [];
+    if (followerID) {
+        clause.push(`followerID = '${followerID}'`);
+    }
+    if (followedID) {
+        clause.push(`followedID = '${followedID}'`);
+    }
+    query += clause.length > 0 ? ` where ${clause.join(' and ')}` : ''
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, results, fields) => {
+            // release connection 
+            connection.release();
+            if (error) {
+                reject(error);
+            } else {
+                resolve({ results, fields });
+            }
+        });
+    });
+};
 
 module.exports = {
     getFollowedUsers,
+    saveFollower,
+    deleteFollower
 };

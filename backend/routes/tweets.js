@@ -38,7 +38,7 @@ router.get('/', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
-//create a tweet
+//create a new tweet
 router.post('/', upload.single('tweetImage'), requireAuth, async function (req, res, next) {
     const { tweet } = req.body;
     const tweetImage = req.file ? `/${req.file.filename}` : '';
