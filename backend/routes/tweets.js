@@ -6,7 +6,7 @@ const multer = require('multer');
 const path = require('path');
 
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
-const { getTweets, saveTweet } = require('../DataAccessLayer');
+const { getTweets, saveTweet, deleteTweet } = require('../DataAccessLayer');
 const { getFollowedUsers } = require('../DataAccessLayer');
 
 // Set up middleware
@@ -14,7 +14,6 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 
 //Get the tweets of the followed persons
 router.get('/', requireAuth, async function (req, res, next) {
-    let followedTweets = {};
     let followID = [];
     try {
         const user = req.user;
@@ -23,8 +22,7 @@ router.get('/', requireAuth, async function (req, res, next) {
         let followed = JSON.parse(JSON.stringify(results));
 
         //For each followed person get all the tweets from Mongo Tweets collection
-
-        //Create a array with followed persons ID
+        //Create an array with followed persons ID
         for (let i = 0; i < followed.length; i++) {
             followID.push(followed[i].followedID);
         }
@@ -67,5 +65,25 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
         res.status(500).send(e.message || e);
     }
 
+});
+//Delete a owned tweet
+router.delete('/', requireAuth, async function (req, res, next) {
+    const { tweetID } = req.query;
+    try {
+        const loggedInUser = req.user;
+        const tweet = {
+            tweetID
+        };
+        let results = await getTweets(tweet);
+        if (results.length > 0) {
+            if (results[0].tweetOwnerID == loggedInUser.userID) {
+                console.log();
+                await deleteTweet(tweet);
+                res.json("Tweet Deleted");
+            }
+        }
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
 });
 module.exports = router;

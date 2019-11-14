@@ -18,7 +18,16 @@ const saveTweet = connection => (tweet) => {
     });
 };
 
+const deleteTweet = connection => (tweet) => {
+    return new Promise((resolve, reject) => {
+        tweets.deleteOne(tweet, function (err, docs) {
+            return err ? reject(err) : resolve(docs);
+        })
+    });
+};
+
 module.exports = {
     getTweets,
     saveTweet,
+    deleteTweet,
 };

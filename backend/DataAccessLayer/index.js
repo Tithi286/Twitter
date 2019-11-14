@@ -5,7 +5,7 @@ const { sql_host, sql_port, sql_user, sql_password, sql_database, sql_connection
 const { mongo_host, mongo_user, mongo_password, mongo_database, mongo_connectionLimit, mongo_port } = require('../config');
 
 const { getUsers, saveUsers, editUser, deleteUser } = require('./users');
-const { getTweets, saveTweet } = require('./tweets');
+const { getTweets, saveTweet, deleteTweet } = require('./tweets');
 const { getFollowedUsers, saveFollower, deleteFollower } = require('./follower');
 
 
@@ -90,6 +90,11 @@ const _saveTweet = async whereClause => {
     return saveTweet()(whereClause);
 }
 
+const _deleteTweet = async whereClause => {
+    await getMongoConnection();
+    return deleteTweet()(whereClause);
+}
+
 module.exports = {
     getUsers: _getUsers,
     saveUsers: _saveUsers,
@@ -102,4 +107,5 @@ module.exports = {
 
     getTweets: _getTweets,
     saveTweet: _saveTweet,
+    deleteTweet: _deleteTweet,
 };
