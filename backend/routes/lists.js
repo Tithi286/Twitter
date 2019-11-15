@@ -6,8 +6,7 @@ const multer = require('multer');
 const path = require('path');
 
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
-const { getLists, saveLists } = require('../DataAccessLayer');
-
+const { getLists, saveLists, getMemberships,getSubscriptions } = require('../DataAccessLayer');
 
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
@@ -21,7 +20,24 @@ router.get('/', async function (req, res, next) {
       res.status(500).send(e.message || e);
     }
   });
-//Follow any person on Twitter (get userID of user to follow from frontend in body)
+
+//Get the created lists
+router.get('/list', requireAuth, async function (req, res, next) {
+   
+    try {
+        const loggedInUser = req.user;
+      
+        const list = {
+            ownerID:  loggedInUser.userID
+        };
+        results = await getLists(list);
+        res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
+
+//Create a list
 router.post('/create', requireAuth, async function (req, res, next) {
     const { listName,listDesc,isPrivate } = req.body;
     try {
@@ -34,6 +50,34 @@ router.post('/create', requireAuth, async function (req, res, next) {
       };
       await saveLists(list);
       res.json("List Created");
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  });
+
+  router.get('/memberships', requireAuth, async function (req, res, next) {
+   
+    try {
+      const loggedInUser = req.user;
+     const list = {
+        members: loggedInUser.userID,
+      };
+      const results=await getMemberships(list);
+      res.json(results);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  });
+
+  router.get('/subscriptions', requireAuth, async function (req, res, next) {
+   
+    try {
+      const loggedInUser = req.user;
+     const list = {
+        subscribers: loggedInUser.userID,
+      };
+      const results=await getSubscriptions(list);
+      res.json(results);
     } catch (e) {
       res.status(500).send(e.message || e);
     }

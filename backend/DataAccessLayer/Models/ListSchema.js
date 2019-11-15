@@ -8,7 +8,7 @@ const ListSchema = new Schema(
    listID:String,
    listName :String,
    ownerID:String,
-   subscibers:Array,
+   subscribers:Array,
    members:Array,
    isPrivate:String,
    listDesc:String

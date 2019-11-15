@@ -18,8 +18,26 @@ const saveLists = connection => (list) => {
     });
 };
 
+const getMemberships = connection => (list= {}) => {
+    return new Promise((resolve, reject) => {
+        lists.find(list, function (err, docs) {
+            return err ? reject(err) : resolve(docs);
+        });
+    });
+};
+
+const getSubscriptions = connection => (list= {}) => {
+    return new Promise((resolve, reject) => {
+        lists.find(list, function (err, docs) {
+            return err ? reject(err) : resolve(docs);
+        });
+    });
+};
+
 
 module.exports = {
     getLists,
-    saveLists
+    saveLists,
+    getMemberships,
+    getSubscriptions
 };
