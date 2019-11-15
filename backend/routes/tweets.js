@@ -6,8 +6,7 @@ const multer = require('multer');
 const path = require('path');
 
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
-const { getTweets, saveTweet, deleteTweet } = require('../DataAccessLayer');
-const { getFollowedUsers } = require('../DataAccessLayer');
+const { getLists, saveLists } = require('../DataAccessLayer');
 
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
