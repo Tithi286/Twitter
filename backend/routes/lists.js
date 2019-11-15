@@ -36,6 +36,10 @@ router.get("/", requireAuth, async function(req, res, next) {
 //Create a list
 router.post("/create", requireAuth, async function(req, res, next) {
   const { listName, listDesc, isPrivate } = req.body;
+  if (!(listName && listDesc)) {
+    console.error('Required Details Missing');
+    return res.status(400).json({ message: "Required Details Missing" });
+  }
   try {
     const loggedInUser = req.user;
     const list = {
@@ -45,7 +49,7 @@ router.post("/create", requireAuth, async function(req, res, next) {
       isPrivate: isPrivate
     };
     await saveLists(list);
-    res.json("List Created");
+    res.json({ message: "List Created"});
   } catch (e) {
     res.status(500).send(e.message || e);
   }
