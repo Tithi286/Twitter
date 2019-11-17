@@ -41,6 +41,9 @@
   height: 50px;
 }
 
+.datepicker{
+  margin-top: 10px;
+}
 
 .outer-box1 {
   width: 50%;
@@ -221,13 +224,39 @@
   margin-right: 10%
 }
 
+.logo5{
+  height: 30px;
+  width: 30px;
+  margin-right: 10%
+}
+
 .home-font{
   font-weight: bold;
   font-size: 20px;
   margin-top: 1%;
   margin-left: 1%;
   border-bottom: 1px;
-  border-color: #E6ECF0
+  border-color: #E6ECF0;
+  margin-top: 5%;
+  display: flex;
+}
+
+.u-list {
+  box-shadow: 0 0 0 1px rgba(67,41,163,.08), 0 1px 5px 0 rgba(67,41,163,.08);
+  background: #fff;
+  border-radius: 3px;
+  margin-top: 5%;
+  height: 90px;
+}
+
+.u-flex-justify{
+  justify-content: space-between;
+}
+.u-flex-align{
+  align-items: center;
+}
+.u-flex{
+  display: flex;
 }
 
 .searchbar {
@@ -254,6 +283,53 @@
   margin-top: 3%
 }
 
+.msg-block {
+  width: 40%;
+}
+
 .a{
   text-decoration: none !important;
+}
+
+.edit{
+  text-decoration: none;
+  color: #657786;
+  font-size: 12px;
+  transition: color .2s ease;
+  cursor: pointer;
+  margin-right: 30px;
+  margin-bottom: 20px;
+  line-height: 1.45;
+}
+.fullname {
+  word-break: break-all;
+  color: #14171a;
+  font-size: 14px;
+  font-weight: bold;
+}
+.u-mar1{
+  margin: 8px;
+  width: 500px;
+}
+.u-mar2{
+  padding-left: 20px;
+  width: 60px;
+}
+.snippet {
+  color: #657786;
+  font-size: 14px;
+  line-height: 20px;
+  max-height: 40px;
+  overflow: hidden;
+  position: relative;
+  word-wrap: break-word;
+}
+.u-clickable {
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s ease;
+}
+
+.Link {
+  text-decoration: none;
 }

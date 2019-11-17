@@ -37,7 +37,7 @@ router.get('/', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
   const { email, password, firstName, lastName, DOB } = req.body;
   const isActive = true;
-
+  console.log("inside user signup")
   //check if required fields are not null
   if (!(email && password && firstName && lastName)) {
     console.error('Mandatory Details Missing');
