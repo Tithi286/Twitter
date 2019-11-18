@@ -37,7 +37,7 @@ router.get('/', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
   const { email, password, firstName, lastName, DOB } = req.body;
   const isActive = true;
-  console.log("inside user signup")
+
   //check if required fields are not null
   if (!(email && password && firstName && lastName)) {
     console.error('Mandatory Details Missing');
@@ -139,7 +139,7 @@ router.post('/follow', requireAuth, async function (req, res, next) {
       followedID
     };
     await saveFollower(follow);
-    res.json("Now Following");
+    res.json({ message: "Now Following" });
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -154,7 +154,7 @@ router.delete('/unfollow', requireAuth, async function (req, res, next) {
       followedID
     };
     await deleteFollower(follow);
-    res.json("Unfollowed !");
+    res.json({ message: "Unfollowed!" });
 
   } catch (e) {
     res.status(500).send(e.message || e);
