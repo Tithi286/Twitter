@@ -7,6 +7,16 @@ const path = require('path');
 const multer = require('multer');
 var passport = require('passport');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
+const redis = require('redis')
+const app = express()
+ 
+// create and connect redis client to local instance.
+const client = redis.createClient(6379)
+ 
+// echo redis errors to the console
+client.on('error', (err) => {
+    console.log("Error " + err)
+});
 
 const { jwtsecret, encrAlgorithm, encrSecret } = require('../config');
 const { getUsers, saveUsers, editUser, deleteUser } = require('../DataAccessLayer');
@@ -34,30 +44,43 @@ router.get('/', async function (req, res, next) {
   }
 });
 //user registration
-router.post('/', async function (req, res, next) {
+router.post('/', function (req, res, next) {
+  const loginRedisKey = 'user:login';
   const { email, password, firstName, lastName, DOB } = req.body;
   const isActive = true;
   console.log("inside user signup")
-  //check if required fields are not null
-  if (!(email && password && firstName && lastName)) {
-    console.error('Mandatory Details Missing');
-    return res.status(400).json({ message: "mandatory buyer info missing" });
-  }
-  //2015-03-25
-  try {
-    const user = {
-      userID: uuidv4(),
-      password: encrypt(password),
-      email, firstName, lastName, isActive,
-      DOB
-    };
-    const { results } = await saveUsers(user);
-    res.json(results);
-  }
-  catch (e) {
-    res.status(500).send(e.message || e);
-  }
+  client.get(loginRedisKey, (err, login) => {
+ 
+    // If that key exists in Redis store
+    if (login) {
 
+        res.json({ 
+            source: 'cache', 
+            data: JSON.parse(login) })
+
+    }
+    else{
+        //check if required fields are not null
+        if (!(email && password && firstName && lastName)) {
+          console.error('Mandatory Details Missing');
+          return res.status(400).json({ message: "mandatory buyer info missing" });
+        }
+        //2015-03-25
+        try {
+          const user = {
+            userID: uuidv4(),
+            password: encrypt(password),
+            email, firstName, lastName, isActive,
+            DOB
+          };
+          const { results } = saveUsers(user);
+          res.json(results);
+        }
+        catch (e) {
+          res.status(500).send(e.message || e);
+        }
+}
+  })
 });
 //user login
 router.post('/login', async function (req, res, next) {
