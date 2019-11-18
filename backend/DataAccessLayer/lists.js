@@ -50,11 +50,47 @@ const getSubscribers = connection => (list = {}) => {
   });
 };
 
+const setSubscribers = connection => (list = {}) => {
+  return new Promise((resolve, reject) => {
+    lists.insert(list, function(err, docs) {
+      return err ? reject(err) : resolve(docs);
+    });
+  });
+};
+
+const setMembers = connection => (list = {}) => {
+  return new Promise((resolve, reject) => {
+    lists.insert(list, function(err, docs) {
+      return err ? reject(err) : resolve(docs);
+    });
+  });
+};
+
+const unsetSubscribers = connection => (list = {}) => {
+  return new Promise((resolve, reject) => {
+    lists.remove(list, function(err, docs) {
+      return err ? reject(err) : resolve(docs);
+    });
+  });
+};
+
+const unsetMembers = connection => (list = {}) => {
+  return new Promise((resolve, reject) => {
+    lists.remove(list, function(err, docs) {
+      return err ? reject(err) : resolve(docs);
+    });
+  });
+};
+
 module.exports = {
   getLists,
   saveLists,
   getMemberships,
   getSubscriptions,
   getMembers,
-  getSubscribers
+  getSubscribers,
+  setSubscribers,
+  setMembers,
+  unsetSubscribers,
+  unsetMembers
 };

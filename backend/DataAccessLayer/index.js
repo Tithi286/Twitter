@@ -26,7 +26,11 @@ const {
   getMemberships,
   getSubscriptions,
   getMembers,
-  getSubscribers
+  getSubscribers,
+  setSubscribers,
+  setMembers,
+  unsetSubscribers,
+  unsetMembers
 } = require("./lists");
 const {
   getFollowedUsers,
@@ -150,6 +154,25 @@ const _getSubscribers = async whereClause => {
   return getSubscribers()(whereClause);
 };
 
+const _setSubscribers = async whereClause => {
+  await getMongoConnection();
+  return setSubscribers()(whereClause);
+};
+
+const _setMembers = async whereClause => {
+  await getMongoConnection();
+  return setMembers()(whereClause);
+};
+
+const _unsetSubscribers = async whereClause => {
+  await getMongoConnection();
+  return unsetSubscribers()(whereClause);
+};
+
+const _unsetMembers = async whereClause => {
+  await getMongoConnection();
+  return unsetMembers()(whereClause);
+};
 module.exports = {
   getUsers: _getUsers,
   saveUsers: _saveUsers,
@@ -169,5 +192,9 @@ module.exports = {
   getMemberships: _getMemberships,
   getSubscriptions: _getSubscriptions,
   getMembers: _getMembers,
-  getSubscribers: _getSubscribers
+  getSubscribers: _getSubscribers,
+  setSubscribers: _setSubscribers,
+  setMembers: _setMembers,
+  unsetSubscribers: _unsetSubscribers,
+  unsetMembers: _unsetMembers
 };
