@@ -65,7 +65,9 @@ const getMongoConnection = () => {
     try {
       await mongoose.connect(mongoDB, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        autoIndex: true
       });
     } catch (e) {
       console.log(e);
@@ -196,5 +198,6 @@ module.exports = {
   setSubscribers: _setSubscribers,
   setMembers: _setMembers,
   unsetSubscribers: _unsetSubscribers,
-  unsetMembers: _unsetMembers
+  unsetMembers: _unsetMembers,
+  getMongoConnection
 };

@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var tweetsRouter = require('./routes/tweets');
 var listsRouter = require('./routes/lists');
+var userfeedRouter = require('./routes/userfeed');
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/tweets', tweetsRouter);
 app.use('/lists', listsRouter);
+app.use('/userfeed', userfeedRouter);
 
 app.use(passport.initialize());
 
