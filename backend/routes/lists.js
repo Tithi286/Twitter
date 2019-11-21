@@ -125,12 +125,12 @@ router.get("/tweets", requireAuth, async function(req, res, next) {
     };
     //get the members of list from table list
     let { results } = await getMembers(list);
-    let followed = JSON.parse(JSON.stringify(results));
+    let followed = JSON.parse(JSON.stringify(results.members));
 
     //For each member of list get all the tweets from Mongo Tweets collection
 
     for (let i = 0; i < followed.length; i++) {
-      followID.push(followed[i].followedID);
+      followID.push(followed[i]);
     }
     //tweet object to find in MongoDB with in operator
     const tweet = {
