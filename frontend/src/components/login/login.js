@@ -62,9 +62,10 @@ class login extends Component {
     }
     render() {
         return (
-            <div>
-                {this.state.authFlag == true ? <Redirect to="/home" /> : ""}
-                <div className="logintopnav">
+            <div className = "bodylogin" >
+
+                {this.state.authFlag === true ? <Redirect to="/home" /> : ""}
+                <div className="loginnav">
                     <div className="container">
                         <div className="row">
                             <div className="col-sm-4">
@@ -73,12 +74,12 @@ class login extends Component {
                     </div>
                     <div className="container">
                         <div className="row">
-                            <div className="col-sm-6">
-                                <span className="text" >
+                            <div className="col-sm-6" >
+                                <a className="text" aria-hidden="true" href="/launchpage" >
                                     <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img>
                                     Home
-                                </span>
-                                <span className="text">About</span>
+                                </a>
+                                <a className="text" href="https://about.twitter.com" >About</a>
                             </div>
                         </div>
                     </div>
@@ -89,34 +90,43 @@ class login extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="signup">
-                    <form className="form outer-box1 signup1">
-                        <div className="outer-box">
-                            <div className="elements2">
-                                <h2 className="label" >log in to Twitter</h2>
+                <div  >
+                    <form className = "loginform">
+                        <div >
+                            <div >
+                                <h4 className="loginlabel" >Log in to Twitter</h4>
                             </div>
                             <form name="loginForm" onSubmit={this.submitLogin}>
-                                <div className="">
-                                    <div className="elements">
-                                        <span className="label" >Email:</span>
+                                <div >
+                                    <div className="logincontainer">
                                         <input name="email" id="email" type="email" placeholder="Email Address" onChange={this.emailChangeHandler} required />
                                     </div>
                                 </div>
-                                <div className="">
-                                    <div className="elements">
-                                        <span className="label" >Password:</span>
+                                <div >
+                                    <div className="logincontainer" >
                                         <input name="password" id="password" type="password" placeholder="Password" onChange={this.passwordChangeHandler} required />
                                     </div>
                                 </div>
-                                <div className="form-group" className="col-md-12">
-                                    <br />
-                                    <button className="btn btn-primary col-md-4 button" align="left" type="submit">Login</button>
+                                <form className="buttonContainer">
+                                <div >
+                                    <button className="loginbutton" type="submit">Log in </button>
+                                    <label className="buttonlabel">
+                                    </label>
                                     <p>{this.state.msg}</p>
-                                    <br /><br />
+                                    
+                                </div>  
+                                </form> 
+                            </form>
+                            <form className="logininsideContainer">
+                                <div>
+                                    <p className="logindownfont col-sm-6" > New to Twitter? 
+                                    <a className="col-sm-1" href="/signup"> Sign up now >> </a>
+                                    </p>
+                            
                                 </div>
-
                             </form>
                         </div>
+        
                     </form>
                 </div>
             </div>

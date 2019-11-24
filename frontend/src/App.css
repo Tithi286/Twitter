@@ -257,3 +257,122 @@
 .a{
   text-decoration: none !important;
 }
+
+/*login css*/
+/*Background color*/
+.bodylogin {
+  background-color: #E6ECF0;
+  background-size: cover;
+  padding-bottom: 500px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+/*Upper Navbar */
+.loginnav {
+  overflow: hidden;
+  background-color: white;
+}
+
+/* Style the topnav links */
+.loginnav a {
+  font-family: aria-hidden;
+  float: left;
+  display: block;
+  color: grey;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: bold;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: black;
+  color: blue;
+}
+
+.loginform{
+  background-color: #ffffff;
+  text-align:center;
+  margin-right: 40%;
+  margin-left: 20%;
+  margin-top: 1%;
+  margin-bottom: 20%
+}
+
+.loginlabel{
+  padding-top: 30px;
+  padding-left: 100px;
+  text-align:left;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  display: block;
+}
+
+.buttonContainer{
+  background-color: #ffffff;
+  padding-right: 38%;
+  padding-top: 2%;
+}
+
+.loginbutton{
+  background-color: #29a3ef;
+  border-radius: 20px;
+  height: 40px;
+  width: 80px;
+  font-size: 18px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: bold;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  color: white;
+
+}
+
+.buttonlabel{
+  padding-left: 36%; 
+}
+
+.logincontainer {
+  padding: 8px;
+  text-align: left;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  padding-left: 14%;
+}
+
+.loginouterform {
+    width: 400px;
+    height: 200px;  
+    padding: 50px;
+    border: black;
+}
+
+.loginbox {
+  width: 50%;
+  box-shadow: 0 0 5px #E6E5F4;
+  margin-right: 20%;
+  margin-left: 20%;
+  margin-top: 10%;
+}
+
+.columnlogin {
+  width: 200px;
+  height: 50px;
+  border: white;
+}
+
+.logininsideContainer{
+  background-color: #F5F8FA;
+  text-align:center;
+  padding-top: 4%;
+  padding-bottom: 4%;
+}
+
+.logindownfont{
+  color: grey;
+}
