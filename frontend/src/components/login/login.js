@@ -101,7 +101,7 @@ class login extends Component {
                                     <div className="logincontainer">
                                         <input name="email" id="email" type="email" placeholder="Email Address" onChange={this.emailChangeHandler} required />
                                     </div>
-                                </div>
+                                </div> 
                                 <div >
                                     <div className="logincontainer" >
                                         <input name="password" id="password" type="password" placeholder="Password" onChange={this.passwordChangeHandler} required />

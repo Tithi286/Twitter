@@ -5,8 +5,8 @@ var passport = require('passport');
 const multer = require('multer');
 const path = require('path');
 
+const { getFollowedUsers, getTweets, saveTweet, deleteTweet } = require('../DataAccessLayer');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
-const { getLists, saveLists } = require('../DataAccessLayer');
 
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
@@ -78,7 +78,7 @@ router.delete('/', requireAuth, async function (req, res, next) {
             if (results[0].tweetOwnerID == loggedInUser.userID) {
                 console.log();
                 await deleteTweet(tweet);
-                res.json("Tweet Deleted");
+                res.json({ message: "Tweet Deleted" });
             }
         }
     } catch (e) {

@@ -139,7 +139,7 @@ router.post('/follow', requireAuth, async function (req, res, next) {
       followedID
     };
     await saveFollower(follow);
-    res.json("Now Following");
+    res.json({ message: "Now Following" });
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -154,7 +154,7 @@ router.delete('/unfollow', requireAuth, async function (req, res, next) {
       followedID
     };
     await deleteFollower(follow);
-    res.json("Unfollowed !");
+    res.json({ message: "Unfollowed!" });
 
   } catch (e) {
     res.status(500).send(e.message || e);
