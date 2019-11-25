@@ -60,14 +60,15 @@ class userSignup extends Component {
 
     dobChangeHandler = (e) => {
         this.setState({
-            startDate : e
+            startDate : e.target.value
         })
         console.log(this.state.startDate)
     }
 
     submitLogin(values) {
+
         this.props.signup(values);
-        console.log(this);
+        console.log(values);
     }
    
 
@@ -263,7 +264,7 @@ const mapDispatchStateToProps = dispatch => {
                     dispatch({ type: 'SIGNUP', payload: response.data, statusCode: response.status })
                 })
                 .catch((error) => {
-                    dispatch({ type: 'SIGNUP', payload: error.response.data, statusCode: error.response.data.status })
+                    //dispatch({ type: 'SIGNUP', payload: error.response.data, statusCode: error.response.data.status })
                 });
         }
     }

@@ -2,52 +2,26 @@ import React, { Component } from 'react';
 import '../../App.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
-import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
 
-class messages extends Component {
+
+class Newmessages extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+            
         }
 
     }
 
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
-    }
-
-
-
-    render() {
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-
-        return (
+   render() {
+       return (
             <div class="container-flex">
-                {redirectVar}
+                
                 <div class="col-md-3 feed">
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br /><br /></a>
@@ -66,38 +40,27 @@ class messages extends Component {
 
                 <div class="col-md-6 feed">
                     <div class="home-font">
-                        <div class="msg-block">Direct Messages </div>
-                        <span class="home-buttons"><Link to="/newmessages"><button class="buttons3">New Message</button></Link></span>
+                        <div class="msg-block">New Messages</div>
                     </div>
+                    <input type="text" name="newmsg" class="sendmsg" placeholder=" Search People " style={{ paddingLeft: "20px", marginTop: "20px" }} required />
+                    <button class="buttons3" type="submit" style={{ width: "70px", height: "35px" }}>Search</button>
                     <Link class="a" to="/inbox"><div class="u-clickable u-list" role="button">
                                 <div class="u-flex u-flex-align">
                                     <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
                                     <div class="u-flex-justify">
                                     <div class="u-mar1">
-                                    <div class="s-list-item-primary u-mar1 fullname">Email Id </div>
-                                        <div class="s-list-item-secondary u-mar1 snippet">
-                                            <span class="span">hey email</span>
+                                    <div class="s-list-item-primary fullname">User Name</div>
+                                        <div class="s-list-item-secondary snippet">
+                                            <span class="span">User Id</span>
                                         </div>
                                         </div>
                                         </div>
-                                    <div class="edit">15h</div>
                                 </div>
-                                
                             </div>
                     </Link>
                 </div>
 
-                {/* <div class="col-md-3 feed">
-                    <div>
-                        <div>
-                            <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
-                        </div>
-                    </div>
-                </div> */}
-
             </div>
-
-
 
         )
     }
@@ -105,7 +68,7 @@ class messages extends Component {
 }
 
 
-export default messages;
+export default Newmessages;
 
 
 
