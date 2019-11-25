@@ -19,7 +19,7 @@ const {
 } = require("../config");
 
 const { getUsers, saveUsers, editUser, deleteUser } = require("./users");
-const { getTweets, saveTweet, deleteTweet } = require("./tweets");
+const { getTweets, saveTweet, deleteTweet, editTweet } = require("./tweets");
 const {
   getLists,
   saveLists,
@@ -126,6 +126,11 @@ const _deleteTweet = async whereClause => {
   return deleteTweet()(whereClause);
 };
 
+const _editTweet = async whereClause => {
+  await getMongoConnection();
+  return editTweet()(whereClause);
+};
+
 const _getLists = async whereClause => {
   await getMongoConnection();
   return getLists()(whereClause);
@@ -188,6 +193,7 @@ module.exports = {
   getTweets: _getTweets,
   saveTweet: _saveTweet,
   deleteTweet: _deleteTweet,
+  editTweet: _editTweet,
 
   getLists: _getLists,
   saveLists: _saveLists,

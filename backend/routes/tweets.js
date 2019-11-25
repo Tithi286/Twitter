@@ -86,4 +86,19 @@ router.delete('/', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
+//like a tweet
+router.put('/like', requireAuth, async function (req, res, next) {
+    const { tweetID } = req.query;
+    try {
+        const tweet = {
+            tweetID
+        };
+        await simulateRequestOverKafka("editTweet", tweet);
+        res.json({ message: "Tweet Liked" });
+
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+
+});
 module.exports = router;

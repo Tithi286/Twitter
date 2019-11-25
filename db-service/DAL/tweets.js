@@ -26,8 +26,16 @@ const deleteTweet = connection => (tweet) => {
     });
 };
 
+const editTweet = connection => (tweet) => {
+    return new Promise((resolve, reject) => {
+        tweets.update(tweet, { $inc: { likeCount: 1 } }, function (err, docs) {
+            return err ? reject(err) : resolve(docs);
+        })
+    });
+};
 module.exports = {
     getTweets,
     saveTweet,
     deleteTweet,
+    editTweet,
 };
