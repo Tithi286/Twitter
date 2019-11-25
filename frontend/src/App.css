@@ -230,6 +230,11 @@
   margin-right: 10%
 }
 
+.logo6{
+  height: 30px;
+  width: 30px;
+  margin-left: 4%
+}
 .home-font{
   font-weight: bold;
   font-size: 20px;
@@ -311,6 +316,10 @@
   margin: 8px;
   width: 500px;
 }
+
+.u-mar1{
+  margin-top: 10px;
+}
 .u-mar2{
   padding-left: 20px;
   width: 60px;
@@ -332,4 +341,38 @@
 
 .Link {
   text-decoration: none;
+}
+
+.inbox-header {
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #e6ecf0;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: flex;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    min-height: 65px;
+    padding: 10px 15px;
+    color: #657786;
+}
+
+.inbox-title {
+  justify-content: center;
+  margin-left: 47%
+}
+
+.inbox-container {
+  display: flex;
+  -moz-box-orient: vertical;
+  -moz-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -moz-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  height: 80vh;
+  min-height: 450px;
+  overflow: hidden;
+
 }

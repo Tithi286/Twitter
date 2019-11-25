@@ -11,6 +11,9 @@ import Lists from './userFeed/lists'
 import Profile from './userFeed/profile'
 import Analytics from './userFeed/analytics'
 import Settings from './userFeed/settings'
+import Inbox from './chat/inbox';
+import Newmessages from './chat/newmessage';
+
 
 class Main extends Component {
     render() {
@@ -27,6 +30,8 @@ class Main extends Component {
                 <Route path="/profile" component={Profile} />
                 <Route path="/analytics" component={Analytics} />
                 <Route path="/settings" component={Settings} />
+                <Route path="/inbox" component={Inbox} />
+                <Route path="/newmessages" component={Newmessages} />
             </div>
         )
     }
