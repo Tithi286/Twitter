@@ -5,7 +5,7 @@ var passport = require('passport');
 const multer = require('multer');
 const path = require('path');
 
-const { getFollowedUsers, getTweets, saveTweet, deleteTweet } = require('../DataAccessLayer');
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 
 // Set up middleware
@@ -17,7 +17,7 @@ router.get('/', requireAuth, async function (req, res, next) {
     try {
         const user = req.user;
         //get the userID s of followed persons from table follower
-        let { results } = await getFollowedUsers(user);
+        let { results } = await simulateRequestOverKafka("getFollowedUsers", user);
         let followed = JSON.parse(JSON.stringify(results));
 
         //For each followed person get all the tweets from Mongo Tweets collection
@@ -29,7 +29,7 @@ router.get('/', requireAuth, async function (req, res, next) {
         const tweet = {
             tweetOwnerID: { $in: followID }
         };
-        results = await getTweets(tweet);
+        results = await simulateRequestOverKafka("getTweets", tweet);
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
@@ -58,7 +58,7 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
             viewCount: 0,
             tweet, tweetImage,
         };
-        const results = await saveTweet(tweetDoc);
+        const results = await simulateRequestOverKafka("saveTweet", tweetDoc);
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
@@ -73,14 +73,15 @@ router.delete('/', requireAuth, async function (req, res, next) {
         const tweet = {
             tweetID
         };
-        let results = await getTweets(tweet);
+        let results = await simulateRequestOverKafka("getTweets", tweet);
         if (results.length > 0) {
             if (results[0].tweetOwnerID == loggedInUser.userID) {
                 console.log();
-                await deleteTweet(tweet);
+                await simulateRequestOverKafka("deleteTweet", tweet);
                 res.json({ message: "Tweet Deleted" });
             }
         }
+        else return res.status(400).json({ message: "Unauthorised" });
     } catch (e) {
         res.status(500).send(e.message || e);
     }
