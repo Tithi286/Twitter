@@ -63,10 +63,10 @@ class bookmarks extends Component {
                 <div class="img-tweets-div">
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
-                    <div class="col-sm-3 buttons-div"><Icon icon={commentO} style={{color: "blue"}}/></div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={loop}/></div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={heartO}/></div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO}/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button"/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button"/></div>
                 </div>
                 </div>
                 
@@ -93,8 +93,11 @@ class bookmarks extends Component {
                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 </div>
                
-                <div class="col-md-6 feed2">
+                <div class="col-md-6 feed2" >
+                    <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
                     <div class="home-font">Bookmarks</div>
+                    <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">UserName</span></div>
+                    </div>
                     {bookmarkTweet}
                 </div>
                 <div class="col-md-3 feed1">

@@ -56,9 +56,6 @@ class profile extends Component {
         this.setState({ isComponent: "likes" });
     }
 
-
-
-
     submitLogin(values) {
         this.props.signup(values);
         console.log(this);
