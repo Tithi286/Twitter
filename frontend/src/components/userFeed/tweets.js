@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
+import Icon from 'react-icons-kit';
+import {commentO} from 'react-icons-kit/fa/commentO'
+import {heartO} from 'react-icons-kit/fa/heartO'
+import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
+import {loop} from 'react-icons-kit/iconic/loop'
 import '../../App.css';
+import './tweet.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";

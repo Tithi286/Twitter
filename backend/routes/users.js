@@ -9,7 +9,8 @@ var passport = require('passport');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 
 const { jwtsecret, encrAlgorithm, encrSecret } = require('../config');
-const { getUsers, saveUsers, editUser, deleteUser } = require('../DataAccessLayer');
+const { getUsers } = require('../DataAccessLayer');
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 
 // crypto (can be updated to use 'bcrypt' instead)
 const encrypt = password => {
@@ -26,6 +27,7 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 router.get('/', async function (req, res, next) {
   try {
     const { results } = await getUsers();
+    //  const { results } = await simulateRequestOverKafka("getUsers", {});
     res.json(results);
   }
   catch (e) {
@@ -34,7 +36,7 @@ router.get('/', async function (req, res, next) {
 });
 //user registration
 router.post('/', async function (req, res, next) {
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, DOB } = req.body;
   const isActive = true;
 
   //check if required fields are not null
@@ -42,13 +44,15 @@ router.post('/', async function (req, res, next) {
     console.error('Mandatory Details Missing');
     return res.status(400).json({ message: "mandatory buyer info missing" });
   }
+  //2015-03-25
   try {
     const user = {
       userID: uuidv4(),
       password: encrypt(password),
-      email, firstName, lastName, isActive
+      email, firstName, lastName, isActive,
+      DOB
     };
-    const { results } = await saveUsers(user);
+    const { results } = await simulateRequestOverKafka("saveUsers", user);
     res.json(results);
   }
   catch (e) {
@@ -64,7 +68,8 @@ router.post('/login', async function (req, res, next) {
     return res.status(400).json({ message: "invalid credentials" });
   }
   try {
-    const { results } = await getUsers({ email, password: encrypt(password) });
+    // const { results } = await getUsers({ email, password: encrypt(password) });
+    const { results } = await simulateRequestOverKafka("getUsers", { email, password: encrypt(password) });
     if (results.length == 1) {
       const user = results[0];
       //set the authCookie in browser which contains userID,email and userName
@@ -87,16 +92,16 @@ router.post('/login', async function (req, res, next) {
 });
 //Edit user profile
 router.put('/profile', upload.single('profileImage'), async function (req, res, next) {
-  const { email, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive } = req.body;
+  const { email, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive, DOB } = req.body;
   const profileImage = req.file ? `/${req.file.filename}` : '';
 
   try {
     const loggedinUser = jwt.verify(req.cookies.authCookie, jwtsecret);
     user = {
       userID: loggedinUser.userID,
-      email, profileImage, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive
+      email, profileImage, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive, DOB
     }
-    await editUser(user);
+    await simulateRequestOverKafka("editUser", user);
     res.json({ message: "Details updated" });
   }
   catch (e) {
@@ -118,12 +123,43 @@ router.get('/profile', requireAuth, async function (req, res, next) {
 router.delete('/', requireAuth, async function (req, res, next) {
   try {
     const user = req.user;
-    await deleteUser(user);
+    await simulateRequestOverKafka("deleteUser", user);
     res.clearCookie('authCookie');
     res.json({ message: "Account Deleted" });
   }
   catch (e) {
     res.status(500).json({ message: e.message });
+  }
+});
+//Follow any person on Twitter (get userID of user to follow from frontend in body)
+router.post('/follow', requireAuth, async function (req, res, next) {
+  const { followedID } = req.body;
+  try {
+    const loggedInUser = req.user;
+    follow = {
+      followerID: loggedInUser.userID,
+      followedID
+    };
+    await simulateRequestOverKafka("saveFollower", follow);
+    res.json({ message: "Now Following" });
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+//unfollow the followed person on Twitter (get userID of user to unfollow from frontend in body)
+router.delete('/unfollow', requireAuth, async function (req, res, next) {
+  const { followedID } = req.body;
+  try {
+    const loggedInUser = req.user;
+    follow = {
+      followerID: loggedInUser.userID,
+      followedID
+    };
+    await simulateRequestOverKafka("deleteFollower", follow);
+    res.json({ message: "Unfollowed!" });
+
+  } catch (e) {
+    res.status(500).send(e.message || e);
   }
 });
 module.exports = router;
