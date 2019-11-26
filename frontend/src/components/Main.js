@@ -14,7 +14,7 @@ import Settings from './userFeed/settings'
 
 class Main extends Component {
     render() {
-        return (
+        return ( 
             <div>
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
