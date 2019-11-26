@@ -69,7 +69,25 @@ class settings extends Component {
                 </div>
                
                 <div class="col-md-6 feed">
-                    <div class="home-font">Settings</div>
+                    <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
+                    <div class="home-font">Deactivate Account</div>
+                    </div>
+                    <div class="u-flex u-flex-align" style={{marginTop: "20px"}}>
+                            <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                            <div class="u-flex-justify">
+                            <div class="u-mar1">
+                            <div class="s-list-item-primary u-mar1 fullname">UserName</div>
+                            </div>
+                            </div>
+                            </div>
+                            <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
+                            <div class="home-font">This will deactivate your account</div>
+                            </div>
+                            <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">
+                            You’re about to start the process of deactivating your Twitter account. Your display name, @username, 
+                            and public profile will no longer be viewable on Twitter.com, Twitter for iOS, or Twitter for Android.</span></div>
+                            <span class="home-buttons" style={{marginLeft: "8%"}}><button class="buttons3">Deactivate</button></span>
+                    
                 </div>
                 <div class="col-md-3 feed">
                     <div>
