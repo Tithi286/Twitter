@@ -50,9 +50,9 @@ class Inbox extends Component {
                         <div class="inbox_msg">
                         <h2>
                         <div class="inbox-header">
-                        <div class="inbox-title">
-                            <img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo6"></img>
-                            <div class="u-mar1 fullname">User Name </div>
+                        <div class="inbox-title" style={{paddingLeft: "45%"}}>
+                            <img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo1" style={{marginLeft: "3%"}}></img>
+                            <div class="fullname" style={{marginTop: "2%"}}>User Name </div>
                         </div>  
                         </div>
                     </h2>
