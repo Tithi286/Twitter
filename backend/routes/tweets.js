@@ -54,7 +54,6 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
             tweetID: uuidv4(),
             tweetDate: (curr_year + '-' + curr_month + '-' + curr_date + ' ' + hour + ':' + minutes + ':' + seconds),
             tweetOwnerID: user.userID,
-            likeCount: 0,
             viewCount: 0,
             tweet, tweetImage,
         };
@@ -86,19 +85,45 @@ router.delete('/', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
-//like a tweet
-router.put('/like', requireAuth, async function (req, res, next) {
-    const { tweetID } = req.query;
+//get tweets liked by loggedin user
+router.get('/like', requireAuth, async function (req, res, next) {
+    let likedTweetID = [];
     try {
-        const tweet = {
-            tweetID
+        const user = req.user;
+        const like = {
+            userID: user.userID
         };
-        await simulateRequestOverKafka("editTweet", tweet);
-        res.json({ message: "Tweet Liked" });
-
+        let results = await simulateRequestOverKafka("getLike", like);
+        if (results.length > 0) {
+            //Create an array with followed persons ID
+            for (let i = 0; i < results.length; i++) {
+                likedTweetID.push(results[i].tweetID);
+            }
+            //tweet object to find in MongoDB with in operator
+            const tweet = {
+                tweetID: { $in: likedTweetID }
+            };
+            results = await simulateRequestOverKafka("getTweets", tweet);
+            res.json(results);
+        } else {
+            return res.json({ message: "No Tweets liked by you" });
+        }
     } catch (e) {
         res.status(500).send(e.message || e);
     }
 
+});
+//get  my retweets
+router.get('/retweet', requireAuth, async function (req, res, next) {
+    try {
+        const loggedInUser = req.user;
+        const retweet = {
+            retweetOwnerID: loggedInUser.userID,
+        }
+        const results = await simulateRequestOverKafka("getRetweet", retweet);
+        res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
 });
 module.exports = router;

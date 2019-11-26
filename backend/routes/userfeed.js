@@ -19,4 +19,50 @@ router.get('/', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
+//like a tweet
+router.put('/like', requireAuth, async function (req, res, next) {
+    const { tweetID } = req.query;
+    try {
+        const user = req.user;
+        const like = {
+            tweetID,
+            userID: user.userID
+        };
+        await simulateRequestOverKafka("saveLike", like);
+        res.json({ message: "Tweet Liked" });
+
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+
+});
+//retweet a tweet
+router.post('/retweet', requireAuth, async function (req, res, next) {
+    const { retweet, tweetID } = req.body;
+    const retweetImage = req.file ? `/${req.file.filename}` : '';
+
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var seconds = d.getSeconds();
+    var minutes = d.getMinutes();
+    var hour = d.getHours();
+
+    try {
+        const loggedInUser = req.user;
+        const retweetDoc = {
+            retweetID: uuidv4(),
+            retweet, tweetID,
+            retweetDate: (curr_year + '-' + curr_month + '-' + curr_date + ' ' + hour + ':' + minutes + ':' + seconds),
+            retweetOwnerID: loggedInUser.userID,
+            retweetImage
+        }
+        const results = await simulateRequestOverKafka("saveRetweet", retweetDoc);
+        res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
+//reply a tweet
 module.exports = router;

@@ -8,7 +8,7 @@ const TweetSchema = new Schema({
     tweet: { type: String, maxlength: 280 },
     tweetImage: String,
     tweetOwnerID: { type: String, required: true, index: true },
-    likeCount: { type: Number, min: 0 },
+    // likeCount: { type: Number, min: 0 },
     tweetDate: Date,
     viewCount: { type: Number, min: 0 },
     listID: String
