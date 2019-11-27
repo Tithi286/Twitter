@@ -38,6 +38,10 @@ const {
   deleteFollower
 } = require("./follower");
 
+const { getLike, saveLike } = require("./like");
+const { getRetweet, saveRetweet } = require('./retweet');
+const { getReply, saveReply } = require('./reply');
+
 const options = {
   connectionLimit: sql_connectionLimit,
   host: sql_host,
@@ -130,7 +134,30 @@ const _editTweet = async whereClause => {
   await getMongoConnection();
   return editTweet()(whereClause);
 };
-
+const _getRetweet = async whereClause => {
+  await getMongoConnection();
+  return getRetweet()(whereClause);
+};
+const _saveRetweet = async whereClause => {
+  await getMongoConnection();
+  return saveRetweet()(whereClause);
+};
+const _getLike = async whereClause => {
+  await getMongoConnection();
+  return getLike()(whereClause);
+};
+const _saveLike = async whereClause => {
+  await getMongoConnection();
+  return saveLike()(whereClause);
+};
+const _getReply = async whereClause => {
+  await getMongoConnection();
+  return getReply()(whereClause);
+};
+const _saveReply = async whereClause => {
+  await getMongoConnection();
+  return saveReply()(whereClause);
+};
 const _getLists = async whereClause => {
   await getMongoConnection();
   return getLists()(whereClause);
@@ -194,6 +221,15 @@ module.exports = {
   saveTweet: _saveTweet,
   deleteTweet: _deleteTweet,
   editTweet: _editTweet,
+
+  getRetweet: _getRetweet,
+  saveRetweet: _saveRetweet,
+
+  getLike: _getLike,
+  saveLike: _saveLike,
+
+  getReply: _getReply,
+  saveReply: _saveReply,
 
   getLists: _getLists,
   saveLists: _saveLists,
