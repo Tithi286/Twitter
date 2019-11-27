@@ -38,6 +38,12 @@ const {
   deleteFollower
 } = require("./follower");
 
+const {
+  getBookmarks,
+  setBookmarks,
+  deleteBookmarks
+} = require("./bookmarks");
+
 const options = {
   connectionLimit: sql_connectionLimit,
   host: sql_host,
@@ -47,6 +53,7 @@ const options = {
   database: sql_database,
   multipleStatements: true
 };
+
 const pool = mysql.createPool(options);
 
 //Create MySQL connection
@@ -175,6 +182,23 @@ const _unsetMembers = async whereClause => {
   await getMongoConnection();
   return unsetMembers()(whereClause);
 };
+
+const _getBookmarks = async whereClause => {
+  await getMongoConnection();
+  return getBookmarks()(whereClause);
+};
+
+const _setBookmarks = async whereClause => {
+  await getMongoConnection();
+  return setBookmarks()(whereClause);
+};
+
+const _deleteBookmarks= async whereClause => {
+  await getMongoConnection();
+  return deleteBookmarks()(whereClause);
+};
+
+
 module.exports = {
   getUsers: _getUsers,
   saveUsers: _saveUsers,
@@ -199,5 +223,9 @@ module.exports = {
   setMembers: _setMembers,
   unsetSubscribers: _unsetSubscribers,
   unsetMembers: _unsetMembers,
-  getMongoConnection
+  getMongoConnection,
+
+  getBookmarks: _getBookmarks,
+  setBookmarks: _setBookmarks,
+  deleteBookmarks: _deleteBookmarks,
 };
