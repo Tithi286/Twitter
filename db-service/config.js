@@ -13,7 +13,8 @@ module.exports = {
     mongo_database: 'twitter',
     mongo_connectionLimit: 10,
 
-    kafka_connString: "omnibus-01.srvs.cloudkafka.com:9094,omnibus-02.srvs.cloudkafka.com:9094,omnibus-03.srvs.cloudkafka.com:9094",
+    // kafka_connString: "omnibus-01.srvs.cloudkafka.com:9094,omnibus-02.srvs.cloudkafka.com:9094,omnibus-03.srvs.cloudkafka.com:9094",
+    kafka_connString: "127.0.0.1:9092",
     kafka_username: "u65rkcrq",
     kafka_password: "2WF0WsiMtrBcQ5pKshhhJML4F2klfXHW",
     kafka_request_topic: 'u65rkcrq-local-request-topic',
