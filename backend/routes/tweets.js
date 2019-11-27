@@ -11,26 +11,20 @@ const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
 
-//Get the tweets of the followed persons
+//Get the tweets written by user
 router.get('/', requireAuth, async function (req, res, next) {
-    let followID = [];
+    const { userID } = req.query;
     try {
-        const user = req.user;
-        //get the userID s of followed persons from table follower
-        let { results } = await simulateRequestOverKafka("getFollowedUsers", user);
-        let followed = JSON.parse(JSON.stringify(results));
-
-        //For each followed person get all the tweets from Mongo Tweets collection
-        //Create an array with followed persons ID
-        for (let i = 0; i < followed.length; i++) {
-            followID.push(followed[i].followedID);
-        }
-        //tweet object to find in MongoDB with in operator
+        //tweet object
         const tweet = {
-            tweetOwnerID: { $in: followID }
+            tweetOwnerID: userID
         };
         results = await simulateRequestOverKafka("getTweets", tweet);
-        res.json(results);
+        if (results.length > 0) {
+            res.json(results);
+        } else {
+            res.json({ message: "No Tweets by User" });
+        }
     } catch (e) {
         res.status(500).send(e.message || e);
     }
@@ -85,13 +79,13 @@ router.delete('/', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
-//get tweets liked by loggedin user
+//get tweets liked by user
 router.get('/like', requireAuth, async function (req, res, next) {
     let likedTweetID = [];
+    const { userID } = req.query;
     try {
-        const user = req.user;
         const like = {
-            userID: user.userID
+            userID
         };
         let results = await simulateRequestOverKafka("getLike", like);
         if (results.length > 0) {
@@ -106,20 +100,20 @@ router.get('/like', requireAuth, async function (req, res, next) {
             results = await simulateRequestOverKafka("getTweets", tweet);
             res.json(results);
         } else {
-            return res.json({ message: "No Tweets liked by you" });
+            return res.json({ message: "No Tweets liked" });
         }
     } catch (e) {
         res.status(500).send(e.message || e);
     }
 
 });
-//get my retweets update to get tweets as well
+//get retweets by user
 router.get('/retweet', requireAuth, async function (req, res, next) {
     let retweetTweetID = [];
+    const { userID } = req.query;
     try {
-        const loggedInUser = req.user;
         const retweet = {
-            retweetOwnerID: loggedInUser.userID,
+            retweetOwnerID: userID,
         }
         let retweets = await simulateRequestOverKafka("getRetweet", retweet);
         if (retweets.length > 0) {
@@ -138,13 +132,13 @@ router.get('/retweet', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
-//get my replies
+//get replies by user
 router.get('/reply', requireAuth, async function (req, res, next) {
     let repliedTweetID = [];
+    const { userID } = req.query;
     try {
-        const loggedInUser = req.user;
         const reply = {
-            replyOwnerID: loggedInUser.userID,
+            replyOwnerID: userID,
         }
         let replies = await simulateRequestOverKafka("getReply", reply);
         if (replies.length > 0) {

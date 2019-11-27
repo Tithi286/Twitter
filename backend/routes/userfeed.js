@@ -12,13 +12,37 @@ const { getTweets } = require('../DataAccessLayer');
 var requireAuth = passport.authenticate('jwt', { session: false });
 
 //search tweets <should be updated to include person search>
-router.get('/', requireAuth, async function (req, res, next) {
+router.get('/search', requireAuth, async function (req, res, next) {
     const { topic } = req.query;
     try {
         const tweet = {
             $text: { $search: topic },
         }
         const results = await getTweets(tweet);
+        res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
+//Get the tweets of the followed persons by loggedIn user
+router.get('/tweet', requireAuth, async function (req, res, next) {
+    let followID = [];
+    try {
+        const user = req.user;
+        //get the userID s of followed persons from table follower
+        let { results } = await simulateRequestOverKafka("getFollowedUsers", user);
+        let followed = JSON.parse(JSON.stringify(results));
+
+        //For each followed person get all the tweets from Mongo Tweets collection
+        //Create an array with followed persons ID
+        for (let i = 0; i < followed.length; i++) {
+            followID.push(followed[i].followedID);
+        }
+        //tweet object to find in MongoDB with in operator
+        const tweet = {
+            tweetOwnerID: { $in: followID }
+        };
+        results = await simulateRequestOverKafka("getTweets", tweet);
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
@@ -69,7 +93,7 @@ router.post('/retweet', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
-//reply a tweet
+//reply to a tweet
 router.post('/reply', requireAuth, async function (req, res, next) {
     const { reply, tweetID } = req.body;
     const replyImage = req.file ? `/${req.file.filename}` : '';
