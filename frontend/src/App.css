@@ -582,3 +582,8 @@
   background-color: white;
   border: 1px solid lightgray;
 }
+
+.inner-element{
+  width: 33%;
+  margin-right: 3%;
+}

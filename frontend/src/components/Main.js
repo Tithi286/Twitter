@@ -14,6 +14,7 @@ import Settings from './userFeed/settings'
 import tweets from './userFeed/tweets';
 import Inbox from './chat/inbox';
 import Newmessages from './chat/newmessage';
+import editProfile from './userFeed/editprofile';
 
 class Main extends Component {
     render() {
@@ -33,7 +34,7 @@ class Main extends Component {
                 <Route path="/tweets" component={tweets} />
                 <Route path="/inbox" component={Inbox} />
                 <Route path="/newmessages" component={Newmessages} />
-
+                <Route path="/editprofile" component={editProfile} />
             </div>
         )
     }

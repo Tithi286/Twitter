@@ -175,7 +175,7 @@ class userSignup extends Component {
                                 </div>
                             </div>
                             <div class="">
-                
+                            <br/>
                                 <div class="elements2">
                                     <span class="label">Date of Birth</span>
                                     <div class="label datepicker" name="startDate"><DatePicker selected={this.state.startDate} onChange={this.dobChangeHandler} /></div>
