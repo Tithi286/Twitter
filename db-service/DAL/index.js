@@ -40,6 +40,7 @@ const {
 
 const { getLike, saveLike } = require("./like");
 const { getRetweet, saveRetweet } = require('./retweet');
+const { getReply, saveReply } = require('./reply');
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -149,7 +150,14 @@ const _saveLike = async whereClause => {
   await getMongoConnection();
   return saveLike()(whereClause);
 };
-
+const _getReply = async whereClause => {
+  await getMongoConnection();
+  return getReply()(whereClause);
+};
+const _saveReply = async whereClause => {
+  await getMongoConnection();
+  return saveReply()(whereClause);
+};
 const _getLists = async whereClause => {
   await getMongoConnection();
   return getLists()(whereClause);
@@ -219,6 +227,9 @@ module.exports = {
 
   getLike: _getLike,
   saveLike: _saveLike,
+
+  getReply: _getReply,
+  saveReply: _saveReply,
 
   getLists: _getLists,
   saveLists: _saveLists,

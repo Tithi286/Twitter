@@ -95,7 +95,7 @@ router.get('/like', requireAuth, async function (req, res, next) {
         };
         let results = await simulateRequestOverKafka("getLike", like);
         if (results.length > 0) {
-            //Create an array with followed persons ID
+            //Create an array with tweetID 
             for (let i = 0; i < results.length; i++) {
                 likedTweetID.push(results[i].tweetID);
             }
@@ -113,15 +113,52 @@ router.get('/like', requireAuth, async function (req, res, next) {
     }
 
 });
-//get  my retweets
+//get my retweets update to get tweets as well
 router.get('/retweet', requireAuth, async function (req, res, next) {
+    let retweetTweetID = [];
     try {
         const loggedInUser = req.user;
         const retweet = {
             retweetOwnerID: loggedInUser.userID,
         }
-        const results = await simulateRequestOverKafka("getRetweet", retweet);
-        res.json(results);
+        let retweets = await simulateRequestOverKafka("getRetweet", retweet);
+        if (retweets.length > 0) {
+            retweets.forEach(retwt => {
+                retweetTweetID.push(retwt.tweetID);
+            });
+            const tweet = {
+                tweetID: { $in: retweetTweetID }
+            }
+            let tweets = await simulateRequestOverKafka("getTweets", tweet);
+            res.json({ tweets, retweets });
+        } else {
+            return res.json({ message: "No Retweet found" });
+        }
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
+//get my replies
+router.get('/reply', requireAuth, async function (req, res, next) {
+    let repliedTweetID = [];
+    try {
+        const loggedInUser = req.user;
+        const reply = {
+            replyOwnerID: loggedInUser.userID,
+        }
+        let replies = await simulateRequestOverKafka("getReply", reply);
+        if (replies.length > 0) {
+            replies.forEach(reply => {
+                repliedTweetID.push(reply.tweetID);
+            });
+            const tweet = {
+                tweetID: { $in: repliedTweetID }
+            }
+            let tweets = await simulateRequestOverKafka("getTweets", tweet);
+            res.json({ tweets, replies });
+        } else {
+            return res.json({ message: "No Replies found" });
+        }
     } catch (e) {
         res.status(500).send(e.message || e);
     }

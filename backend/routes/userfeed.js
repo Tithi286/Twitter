@@ -1,7 +1,12 @@
 var express = require('express');
 var router = express.Router();
+const uuidv4 = require('uuid/v4');
 var passport = require('passport');
+const multer = require('multer');
+const path = require('path');
 
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
+const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 const { getTweets } = require('../DataAccessLayer');
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
@@ -65,4 +70,31 @@ router.post('/retweet', requireAuth, async function (req, res, next) {
     }
 });
 //reply a tweet
+router.post('/reply', requireAuth, async function (req, res, next) {
+    const { reply, tweetID } = req.body;
+    const replyImage = req.file ? `/${req.file.filename}` : '';
+
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var seconds = d.getSeconds();
+    var minutes = d.getMinutes();
+    var hour = d.getHours();
+
+    try {
+        const loggedInUser = req.user;
+        const replyDoc = {
+            replyID: uuidv4(),
+            reply, tweetID,
+            replyDate: (curr_year + '-' + curr_month + '-' + curr_date + ' ' + hour + ':' + minutes + ':' + seconds),
+            replyOwnerID: loggedInUser.userID,
+            replyImage
+        }
+        const results = await simulateRequestOverKafka("saveReply", replyDoc);
+        res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
 module.exports = router;
