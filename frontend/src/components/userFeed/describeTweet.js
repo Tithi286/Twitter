@@ -1,97 +1,99 @@
 import React, { Component } from 'react';
+import Icon from 'react-icons-kit';
+import { commentO } from 'react-icons-kit/fa/commentO'
+import { heartO } from 'react-icons-kit/fa/heartO'
+import { bookmarkO } from 'react-icons-kit/fa/bookmarkO'
+import { loop } from 'react-icons-kit/iconic/loop'
 import '../../App.css';
+import './tweet.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
-import Tweets from './tweets'
 
-
-class userHome extends Component {
+class describeTweet extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            caption: "yesha",
-            email:"y@gmail.com",
             errormsg: "",
             authFlag: "",
-            profileimage: "",
-            imageURL:""
         }
-        this.ImageChange = this.ImageChange.bind(this);
-        this.captionChangeHandler = this.captionChangeHandler.bind(this);
-        this.submitChanges = this.submitChanges.bind(this);
 
     }
-
-
-
-    captionChangeHandler = (e) => {
-        this.setState({
-            caption: e.target.value
-        })
-    }
-
-    ImageChange(event) {
-        if (event.target.files && event.target.files[0]) {
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                this.setState({ profileimage: e.target.result });
-            };
-            reader.readAsDataURL(event.target.files[0]);
-            this.setState({
-                imageURL: event.target.files[0]
-            })
-        }
-    }
-
-    submitChanges(e) {
-        e.preventDefault();
-
-        const data = {
-            caption: this.state.caption,
-            email: this.state.email,
-            profileimage: this.state.profileimage
-        }
-        console.log(data)
-        axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/tweets/', data)
-            .then((response) => {
-                console.log("in axios call for post tweet")
-                console.log(response)
-            })
-            .catch((error) => {
-                console.log(error)
-            });
-       }
-
 
 
     render() {
+        // let Tweet = this.state.tweets.map(tweet => {
+        //     if (tweet != null)
+        //         return (
 
-        let Contents = (
-            <Tweets/>
+        //             <div className="search">
+        //                 <br/>{tweet.item}
+        //                 <br/>{tweet.price}
+        //             </div>
+        //         )
+        // })
+
+
+        let tweet1;
+
+        tweet1 = (
+
+            <div class="tweets-div1" role="button">
+                <div>
+                    <div class="u-flex u-flex-align">
+                        <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
+                        <div class="u-flex-justify">
+                            <div class="u-mar1">
+                                <div class="s-list-item-primary u-mar1 fullname">UserName</div>
+                                <div class="s-list-item-secondary u-mar1 snippet">
+                                    <span class="span">Tweet</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* UserName<br />
+                    Tweet Message */}
+                </div>
+                <div class="img-tweets-div">
+                    <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
+                    <div style={{ paddingLeft: "12%" }}>
+                        <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button" /></div>
+                        <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button" /></div>
+                        <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button" /></div>
+                        <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" /></div>
+                    </div>
+                </div>
+
+                <br /><br />
+            </div>
+
+        )
+
+        let reply = (
+            <div class="u-flex u-flex-align u-list2">
+                <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                <div class="u-flex-justify">
+                    <div class="u-mar1">
+                        <div class="s-list-item-primary u-mar1 fullname">Email Id </div>
+                        <div class="s-list-item-secondary u-mar1 snippet">
+                            <span class="span">Replying to</span><br/>
+                            <span class="span">Your Caption</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
         )
 
 
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
-
         return (
             <div class="container-flex">
-                {redirectVar}
                 <div class="col-md-3 feed">
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <span class="home-buttons1"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br /><br />
@@ -109,31 +111,13 @@ class userHome extends Component {
                 </div>
 
                 <div class="col-md-6 feed">
-                    <div class="home-font">Home</div>
-                    <div class="u-clickable u-list1" role="button">
-                        <div class="u-flex">
-                            <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo6"></img></div>
-                            <div class="u-flex-justify">
-                                <div class="u-mar1">
-                                    <form onSubmit={this.submitChanges} >
-                                    <div class="s-list-item-primary u-mar1 fullname">
-                                        <input type="text" placeholder="What's happening?" name="caption" onChange={this.captionChangeHandler} style={{ size: "200", width: "600px", border: "none" }}></input>
+                    <div class="home-font">Thread</div><br />
 
-                                    </div><br />
-                                    <span>
-                                        <img id="img" src={this.state.profileimage} alt="Image" style={{ borderRadius: "20px" }}></img>
-                                        <input type="file" onChange={this.ImageChange} style={{ textAlign: "center", margin: "auto" }} name="pic" accept="image/*"></input>
-
-                                        <span class="home-buttons" style={{ width: "100px", marginLeft: "70%" }}><button class="buttons3" style={{ width: "100px" }}>Tweet</button></span>
-                                    </span>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="edit"></div>
-                        </div>
+                    <div>
+                        {tweet1}
                     </div>
                     <div>
-                        {Contents}
+                        {reply}
                     </div>
 
                 </div>
@@ -148,14 +132,13 @@ class userHome extends Component {
             </div>
 
 
-
         )
     }
 
 }
 
 
-export default userHome;
+export default describeTweet;
 
 
 

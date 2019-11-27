@@ -8,20 +8,15 @@ import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
+import { Link } from "react-router-dom";
 
 class tweets extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
             errormsg: "",
             authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
         }
 
     }
@@ -43,7 +38,8 @@ class tweets extends Component {
         let tweet1;
         
         tweet1 =(
-            <div class="tweets-div">
+            <Link class="a" to="/descTweets">
+            <div class="tweets-div" role="button">
                 <div>
                 <div class="u-flex u-flex-align">
                             <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
@@ -62,15 +58,16 @@ class tweets extends Component {
                 <div class="img-tweets-div">
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%"}}>
-                    <div class="col-sm-3 buttons-div">+</div>
-                    <div class="col-sm-3 buttons-div">-</div>
-                    <div class="col-sm-3 buttons-div">*</div>
-                    <div class="col-sm-3 buttons-div">=</div>
-                </div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button"/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button"/></div>                
+                    </div>
                 </div>
                 
                 <br/><br/>
             </div>
+            </Link>
             )
         
 
@@ -79,7 +76,7 @@ class tweets extends Component {
         return (
             <div class="container-flex">
 
-                Tweets
+            <br/>
             {tweet1}
 
             </div>
