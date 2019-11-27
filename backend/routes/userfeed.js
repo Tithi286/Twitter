@@ -24,6 +24,56 @@ router.get('/search', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
+//create a new tweet
+router.post('/', upload.single('tweetImage'), requireAuth, async function (req, res, next) {
+    const { tweet } = req.body;
+    const tweetImage = req.file ? `/${req.file.filename}` : '';
+
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1;
+    var curr_year = d.getFullYear();
+    var seconds = d.getSeconds();
+    var minutes = d.getMinutes();
+    var hour = d.getHours();
+
+    try {
+        const user = req.user;
+        const tweetDoc = {
+            tweetID: uuidv4(),
+            tweetDate: (curr_year + '-' + curr_month + '-' + curr_date + ' ' + hour + ':' + minutes + ':' + seconds),
+            tweetOwnerID: user.userID,
+            viewCount: 0,
+            tweet, tweetImage,
+        };
+        const results = await simulateRequestOverKafka("saveTweet", tweetDoc);
+        res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+
+});
+//Delete a owned tweet
+router.delete('/', requireAuth, async function (req, res, next) {
+    const { tweetID } = req.query;
+    try {
+        const loggedInUser = req.user;
+        const tweet = {
+            tweetID
+        };
+        let results = await simulateRequestOverKafka("getTweets", tweet);
+        if (results.length > 0) {
+            if (results[0].tweetOwnerID == loggedInUser.userID) {
+                console.log();
+                await simulateRequestOverKafka("deleteTweet", tweet);
+                res.json({ message: "Tweet Deleted" });
+            }
+        }
+        else return res.status(400).json({ message: "Unauthorised" });
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
 //Get the tweets of the followed persons by loggedIn user
 router.get('/tweet', requireAuth, async function (req, res, next) {
     let followID = [];

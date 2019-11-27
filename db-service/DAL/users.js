@@ -5,7 +5,11 @@ const getUsers = connection => (user = {}) => {
     let query = `select * from ${tableName}`;
     const clause = [];
     if (userID) {
-        clause.push(`userID='${userID}'`);
+        if (Array.isArray(userID)) {
+            clause.push(`userID IN ('${userID}')`);
+        } else {
+            clause.push(`userID='${userID}'`);
+        }
     }
     if (email) {
         clause.push(`email='${email}'`);
