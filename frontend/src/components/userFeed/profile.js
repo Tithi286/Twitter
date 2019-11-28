@@ -28,7 +28,7 @@ class profile extends Component {
         }
         
     }
-
+    show
 
    
 

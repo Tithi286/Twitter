@@ -454,3 +454,128 @@
 .Link {
   text-decoration: none;
 }
+
+/*lists css in the application*/
+.uppernav {
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.uppernav b{
+  text-align:left;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  display: block;
+  padding-right: 100px;
+}
+
+.uppernav a {
+  float: left;
+  display: block;
+  color: grey;
+  text-align: Left;
+  padding: 14px 16px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 17px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: bold;
+}
+
+.uppernav a:hover {
+  background-color: rgb(181, 220, 238);
+  color:  #1DA1F2;
+  
+}
+
+.uppernav a.active {
+  background-color: #ffffff;
+  color: black;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: grey;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: bold;
+}
+
+.topnav a:hover {
+  background-color: rgb(181, 220, 238);
+  color:  #1DA1F2;
+  
+}
+
+.topnav a.active {
+  background-color: #f1f1f1;
+  color: #1DA1F2;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+/*opacity between screens*/
+opacity {
+  background-color: #b2b2b2;
+  padding: 400px 400px;
+}
+
+
+opacity.first {
+  opacity: 0.3;
+  filter: alpha(opacity=30); /* For IE8 and earlier */
+}
+
+/*Adduser container*/
+.container {
+  position: absolute;
+  right: 0;
+  margin: 20px;
+  max-width: 300px;
+  padding: 16px;
+  background-color: white;
+}
+
+/* createlist buttons */
+.btn {
+  background-color: rgb(20, 82, 153);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
+/*The forms in the lists*/
+.containForm {
+  position: absolute;
+  right: 0;
+  margin: 20px;
+  padding: 50px 50px;
+  padding-left: 270px;
+  background-color: rgb(138, 132, 132);
+}
+.headertwitter {
+  background-color: #ffffff;
+  color: black;
+  margin: 20px;
+  padding: 20px;
+}
