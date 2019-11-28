@@ -230,6 +230,12 @@
   margin-right: 10%
 }
 
+.logo6{
+  height: 30px;
+  width: 30px;
+  margin-right: 10%;
+}
+
 .home-font{
   font-weight: bold;
   font-size: 20px;
@@ -246,6 +252,14 @@
   background: #fff;
   border-radius: 3px;
   margin-top: 5%;
+  height: 90px;
+}
+
+
+.u-list2 {
+  box-shadow: 0 0 0 1px rgba(67,41,163,.08), 0 1px 5px 0 rgba(67,41,163,.08);
+  background: #fff;
+  border-radius: 3px;
   height: 90px;
 }
 
@@ -434,6 +448,7 @@
 }
 .u-mar2{
   padding-left: 20px;
+  padding-top: 20px;
   width: 60px;
 }
 .snippet {
@@ -535,6 +550,11 @@
 .tweets-div{
   border: 1px solid #CCD6DC;
   margin-bottom: 10px;
+}
+
+.tweets-div1{
+  border: 1px solid #CCD6DC;
+  border-bottom: none;
 }
 
 .tweets-div:hover{

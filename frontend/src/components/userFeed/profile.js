@@ -57,6 +57,11 @@ class profile extends Component {
         this.setState({ isComponent: "likes" });
     }
 
+    handleRetweetClick() {
+        this.setState({ isComponent: "retweet" });
+    }
+
+
     submitLogin(values) {
         this.props.signup(values);
         console.log(this);
@@ -146,7 +151,7 @@ class profile extends Component {
                         <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRepliesClick} role="button">Replies</span></div>
                         <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleLikesClick} role="button">Likes</span></div>
                     </div>
-                    <div>
+                 <div>
                         {Contents}
                     </div>
                 </div>
