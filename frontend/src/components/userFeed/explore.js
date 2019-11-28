@@ -11,6 +11,8 @@ import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
+import { Link } from "react-router-dom";
+
 
 class explore extends Component {
 
@@ -42,6 +44,8 @@ class explore extends Component {
 
     render() {
 
+        let Contents;
+
         let redirectVar = null;
         if (this.props.authFlag == true) {
             redirectVar = <Redirect to="blogin" />
@@ -71,6 +75,11 @@ class explore extends Component {
                     <div class="home-font">Explore</div>
                     <div>
                     <input type="text" class="searchbar1" placeholder="Search Twitter" name="search" id="search"></input>
+                    </div>
+                    <div style={{paddingLeft: "78%"}}>
+                    <Link to="/explore1"><button class="buttons3">
+                        Search
+                    </button></Link>
                     </div>
                 </div>
                 <div class="col-md-3 feed">

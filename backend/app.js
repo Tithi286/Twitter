@@ -8,9 +8,12 @@ var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var tweetsRouter = require('./routes/tweets');
+var userprofileRouter = require('./routes/userprofile');
 var listsRouter = require('./routes/lists');
 var userfeedRouter = require('./routes/userfeed');
+var bookmarks = require('./routes/bookmarks');
+var messages = require('./routes/messages');
+var analytics = require('./routes/analytics');
 
 var app = express();
 
@@ -30,9 +33,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 //All Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/tweets', tweetsRouter);
+app.use('/userprofile', userprofileRouter);
 app.use('/lists', listsRouter);
 app.use('/userfeed', userfeedRouter);
+app.use('/bookmarks', bookmarks);
+app.use('/messages', messages);
+app.use('/analytics', analytics);
 
 app.use(passport.initialize());
 

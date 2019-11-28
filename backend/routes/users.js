@@ -9,8 +9,8 @@ var passport = require('passport');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 
 const { jwtsecret, encrAlgorithm, encrSecret } = require('../config');
-const { getUsers, saveUsers, editUser, deleteUser } = require('../DataAccessLayer');
-const { saveFollower, deleteFollower } = require('../DataAccessLayer');
+const { getUsers } = require('../DataAccessLayer');
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 
 // crypto (can be updated to use 'bcrypt' instead)
 const encrypt = password => {
@@ -27,6 +27,7 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 router.get('/', async function (req, res, next) {
   try {
     const { results } = await getUsers();
+    //  const { results } = await simulateRequestOverKafka("getUsers", {});
     res.json(results);
   }
   catch (e) {
@@ -51,7 +52,7 @@ router.post('/', async function (req, res, next) {
       email, firstName, lastName, isActive,
       DOB
     };
-    const { results } = await saveUsers(user);
+    const { results } = await simulateRequestOverKafka("saveUsers", user);
     res.json(results);
   }
   catch (e) {
@@ -67,7 +68,8 @@ router.post('/login', async function (req, res, next) {
     return res.status(400).json({ message: "invalid credentials" });
   }
   try {
-    const { results } = await getUsers({ email, password: encrypt(password) });
+    // const { results } = await getUsers({ email, password: encrypt(password) });
+    const { results } = await simulateRequestOverKafka("getUsers", { email, password: encrypt(password) });
     if (results.length == 1) {
       const user = results[0];
       //set the authCookie in browser which contains userID,email and userName
@@ -77,7 +79,7 @@ router.post('/login', async function (req, res, next) {
         isActive: user.isActive === 1,
         userName: user.userName
       }, jwtsecret, { expiresIn: "7d" });
-      res.cookie('authCookie', authCookie, { maxAge: 900000, httpOnly: false, path: '/' });
+      res.cookie('authCookie', authCookie, { maxAge: 604800000, httpOnly: false, path: '/' });
       return res.json(user);
     } else {
       console.error('login, no user found: bad credentials');
@@ -99,7 +101,7 @@ router.put('/profile', upload.single('profileImage'), async function (req, res, 
       userID: loggedinUser.userID,
       email, profileImage, password, firstName, lastName, city, state, zipcode, profileDesc, userName, isActive, DOB
     }
-    await editUser(user);
+    await simulateRequestOverKafka("editUser", user);
     res.json({ message: "Details updated" });
   }
   catch (e) {
@@ -121,7 +123,7 @@ router.get('/profile', requireAuth, async function (req, res, next) {
 router.delete('/', requireAuth, async function (req, res, next) {
   try {
     const user = req.user;
-    await deleteUser(user);
+    await simulateRequestOverKafka("deleteUser", user);
     res.clearCookie('authCookie');
     res.json({ message: "Account Deleted" });
   }
@@ -138,7 +140,7 @@ router.post('/follow', requireAuth, async function (req, res, next) {
       followerID: loggedInUser.userID,
       followedID
     };
-    await saveFollower(follow);
+    await simulateRequestOverKafka("saveFollower", follow);
     res.json({ message: "Now Following" });
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -153,7 +155,7 @@ router.delete('/unfollow', requireAuth, async function (req, res, next) {
       followerID: loggedInUser.userID,
       followedID
     };
-    await deleteFollower(follow);
+    await simulateRequestOverKafka("deleteFollower", follow);
     res.json({ message: "Unfollowed!" });
 
   } catch (e) {
