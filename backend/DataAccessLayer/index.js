@@ -49,7 +49,9 @@ const {
   getTweetCountHour,
   getTweetCountDay,
   getTweetCountMonth,
-  getProfileViewCount
+  getProfileViewCount,
+  IncTweetViewCount,
+  IncProfileViewCount
 } = require("./analytics");
 
 const options = {
@@ -221,37 +223,45 @@ const _deleteMessages = async whereClause => {
   return deleteMessages()(whereClause);
 };
 
-const _getTweetViewCount= async whereClause => {
+const _getTweetViewCount = async whereClause => {
   await getMongoConnection();
   return getTweetViewCount()(whereClause);
 };
 
-const _getTweetLikeCount= async whereClause => {
+const _getTweetLikeCount = async whereClause => {
   await getMongoConnection();
   return getTweetLikeCount()(whereClause);
 };
 
-const _getRetweetCount= async whereClause => {
+const _getRetweetCount = async whereClause => {
   await getMongoConnection();
   return getRetweetCount()(whereClause);
 };
-const _getTweetCountHour= async whereClause => {
+const _getTweetCountHour = async whereClause => {
   await getMongoConnection();
   return getTweetCountHour()(whereClause);
 };
 
-const _getTweetCountDay= async whereClause => {
+const _getTweetCountDay = async whereClause => {
   await getMongoConnection();
   return getTweetCountDay()(whereClause);
 };
-const _getTweetCountMonth= async whereClause => {
+const _getTweetCountMonth = async whereClause => {
   await getMongoConnection();
   return getTweetCountMonth()(whereClause);
 };
 
-const _getProfileViewCount= async whereClause => {
+const _getProfileViewCount = async whereClause => {
   await getMongoConnection();
   return getProfileViewCount()(whereClause);
+};
+const _IncTweetViewCount = async whereClause => {
+  await getMongoConnection();
+  return IncTweetViewCount()(whereClause);
+};
+const _IncProfileViewCount = async whereClause => {
+  await getMongoConnection();
+  return IncProfileViewCount()(whereClause);
 };
 
 module.exports = {
@@ -288,12 +298,15 @@ module.exports = {
   sendMessages: _sendMessages,
   deleteMessages: _deleteMessages,
 
-  getTweetViewCount:_getTweetViewCount,
-  getTweetLikeCount:_getTweetLikeCount,
-  getRetweetCount:_getRetweetCount,
-  getTweetCountHour:_getTweetCountHour,
-  getTweetCountDay:_getTweetCountDay,
-  getTweetCountMonth:_getTweetCountMonth,
+  getTweetViewCount: _getTweetViewCount,
+  getTweetLikeCount: _getTweetLikeCount,
+  getRetweetCount: _getRetweetCount,
+  getTweetCountHour: _getTweetCountHour,
+  getTweetCountDay: _getTweetCountDay,
+  getTweetCountMonth: _getTweetCountMonth,
 
-  getProfileViewCount:_getProfileViewCount
+  getProfileViewCount: _getProfileViewCount,
+
+  IncTweetViewCount: _IncTweetViewCount,
+  IncProfileViewCount: _IncProfileViewCount
 };
