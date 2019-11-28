@@ -6,7 +6,7 @@ const getUsers = connection => (user = {}) => {
     const clause = [];
     if (userID) {
         if (Array.isArray(userID)) {
-            clause.push(`userID IN ('${userID}')`);
+            clause.push(`userID IN ('${userID.join("', '")}')`);
         } else {
             clause.push(`userID='${userID}'`);
         }
