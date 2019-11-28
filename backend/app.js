@@ -11,6 +11,9 @@ var usersRouter = require('./routes/users');
 var userprofileRouter = require('./routes/userprofile');
 var listsRouter = require('./routes/lists');
 var userfeedRouter = require('./routes/userfeed');
+var bookmarks = require('./routes/bookmarks');
+var messages = require('./routes/messages');
+var analytics = require('./routes/analytics');
 
 var app = express();
 
@@ -33,6 +36,9 @@ app.use('/users', usersRouter);
 app.use('/userprofile', userprofileRouter);
 app.use('/lists', listsRouter);
 app.use('/userfeed', userfeedRouter);
+app.use('/bookmarks', bookmarks);
+app.use('/messages', messages);
+app.use('/analytics', analytics);
 
 app.use(passport.initialize());
 
