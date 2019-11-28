@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 //import jwt_decode from 'jwt-decode';
 //import uuid from 'react-native-uuid';
+import { Link } from "react-router-dom";
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -133,7 +134,7 @@ class profile extends Component {
                         <div class="">
                             <div class="rest-img">
                                 <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
-                                <button class="logob">Edit Profile</button>
+                                <Link to="/editprofile"><button class="logob">Edit Profile</button></Link>
                             </div>
                             <div>
 
