@@ -33,6 +33,19 @@ class Likes extends Component {
 
     }
 
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/pastorders')
+                .then((response) => {
+                this.setState({
+                    tweets : response.data.data
+                });
+                console.log(response.data)
+                console.log(this.state.orders)
+            });
+    }
+
 
     render() {
         // let Tweet = this.state.tweets.map(tweet => {

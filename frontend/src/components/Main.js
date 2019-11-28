@@ -15,6 +15,7 @@ import tweets from './userFeed/tweets';
 import Inbox from './chat/inbox';
 import Newmessages from './chat/newmessage';
 import editProfile from './userFeed/editprofile';
+import followers from './userFeed/followers';
 
 class Main extends Component {
     render() {
@@ -35,6 +36,7 @@ class Main extends Component {
                 <Route path="/inbox" component={Inbox} />
                 <Route path="/newmessages" component={Newmessages} />
                 <Route path="/editprofile" component={editProfile} />
+                <Route path="/followers" component={followers} />
             </div>
         )
     }
