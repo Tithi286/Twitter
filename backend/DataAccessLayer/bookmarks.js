@@ -1,15 +1,15 @@
 const { bookmarks } = require("./Models/BookmarkSchema");
 
-const getBookmarks= connection => (list = {}) => {
+const getBookmarks= connection => (bookmark = {}) => {
   return new Promise((resolve, reject) => {
-    bookmarks.find(list, function(err, docs) {
+    bookmarks.find(bookmark, function(err, docs) {
       return err ? reject(err) : resolve(docs);
     });
   });
 };
 
-const setBookmarks = connection => list => {
-  let bookmarkRec = new lists(list);
+const setBookmarks = connection => bookmark => {
+  let bookmarkRec = new bookmarks(bookmark);
   return new Promise((resolve, reject) => {
     bookmarkRec.save(function(err, docs) {
       return err ? reject(err) : resolve(docs);
@@ -17,9 +17,9 @@ const setBookmarks = connection => list => {
   });
 };
 
-const deleteBookmarks = connection => (list = {}) => {
+const deleteBookmarks = connection => (bookmark = {}) => {
     return new Promise((resolve, reject) => {
-      bookmarks.remove(list, function(err, docs) {
+      bookmarks.remove(bookmark, function(err, docs) {
         return err ? reject(err) : resolve(docs);
       });
     });

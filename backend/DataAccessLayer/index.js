@@ -38,11 +38,9 @@ const {
   deleteFollower
 } = require("./follower");
 
-const {
-  getBookmarks,
-  setBookmarks,
-  deleteBookmarks
-} = require("./bookmarks");
+const { getBookmarks, setBookmarks, deleteBookmarks } = require("./bookmarks");
+
+const { getMessages, sendMessages, deleteMessages } = require("./messages");
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -193,11 +191,25 @@ const _setBookmarks = async whereClause => {
   return setBookmarks()(whereClause);
 };
 
-const _deleteBookmarks= async whereClause => {
+const _deleteBookmarks = async whereClause => {
   await getMongoConnection();
   return deleteBookmarks()(whereClause);
 };
 
+const _getMessages = async whereClause => {
+  await getMongoConnection();
+  return getMessages()(whereClause);
+};
+
+const _sendMessages = async whereClause => {
+  await getMongoConnection();
+  return sendMessages()(whereClause);
+};
+
+const _deleteMessages = async whereClause => {
+  await getMongoConnection();
+  return deleteMessages()(whereClause);
+};
 
 module.exports = {
   getUsers: _getUsers,
@@ -228,4 +240,8 @@ module.exports = {
   getBookmarks: _getBookmarks,
   setBookmarks: _setBookmarks,
   deleteBookmarks: _deleteBookmarks,
+
+  getMessages: _getMessages,
+  sendMessages: _sendMessages,
+  deleteMessages: _deleteMessages
 };
