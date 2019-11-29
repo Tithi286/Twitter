@@ -56,15 +56,18 @@ class userHome extends Component {
 
     submitChanges(e) {
         e.preventDefault();
-
-        const data = {
-            tweet: this.state.caption,
-            email: this.state.email,
-            tweetImage: this.state.profileimage
-        }
-        console.log(data)
+        const image = new FormData();
+        image.append("tweetImage", this.state.imageURL);
+        image.append("tweet",this.state.caption);
+        image.append("email",this.state.email);
+        console.log(image);
+        // const data = {
+        //     tweet: this.state.caption,
+        //     email: this.state.email,
+        // }
+        // console.log(data)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/', data)
+        axios.post('http://localhost:3001/userfeed/', image)
             .then((response) => {
                 console.log("in axios call for post tweet")
                 console.log(response)
@@ -77,10 +80,11 @@ class userHome extends Component {
        componentDidMount(){
         
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userfeed/tweet')
+        axios.get('http://localhost:3001/userfeed/tweets')
                 .then((response) => {
                 this.setState({
-                    tweet : response.data.data
+                    tweet : response.data.data,
+                   // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
                 console.log(response.data)
                 console.log(this.state.tweet)
@@ -168,8 +172,3 @@ class userHome extends Component {
 
 
 export default userHome;
-
-
-
-
-
