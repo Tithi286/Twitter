@@ -1,12 +1,12 @@
 const tableName = 'Users';
 
 const getUsers = connection => (user = {}) => {
-    const { userID, email, password } = user;
+    const { userID, email, password, search } = user;
     let query = `select * from ${tableName}`;
     const clause = [];
     if (userID) {
         if (Array.isArray(userID)) {
-            clause.push(`userID IN ('${userID}')`);
+            clause.push(`userID IN ('${userID.join("', '")}')`);
         } else {
             clause.push(`userID='${userID}'`);
         }
@@ -16,6 +16,9 @@ const getUsers = connection => (user = {}) => {
     }
     if (password) {
         clause.push(`password='${password}'`);
+    }
+    if (search) {
+        clause.push(`firstName like '%${search.firstName}%' or lastName like '%${search.lastName}%' or userName like '%${search.userName}%'`);
     }
     query += clause.length > 0 ? ` where ${clause.join(' and ')}` : '';
     return new Promise((resolve, reject) => {
