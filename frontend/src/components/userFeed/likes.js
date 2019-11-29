@@ -28,11 +28,24 @@ class Likes extends Component {
             year: "",
             month: "",
             day: "",
-            startDate: moment()
+            startDate: moment(),
+            likes: []
         }
 
     }
 
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/userprofile/likes')
+                .then((response) => {
+                this.setState({
+                    likes : response.data.data
+                });
+                console.log(response.data)
+                console.log(this.state.likes)
+            });
+    }
 
     render() {
         // let Tweet = this.state.tweets.map(tweet => {

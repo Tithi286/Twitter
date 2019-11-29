@@ -24,7 +24,8 @@ class userHome extends Component {
             errormsg: "",
             authFlag: "",
             profileimage: "",
-            imageURL:""
+            imageURL:"",
+            tweet: []
         }
         this.ImageChange = this.ImageChange.bind(this);
         this.captionChangeHandler = this.captionChangeHandler.bind(this);
@@ -57,13 +58,13 @@ class userHome extends Component {
         e.preventDefault();
 
         const data = {
-            caption: this.state.caption,
+            tweet: this.state.caption,
             email: this.state.email,
-            profileimage: this.state.profileimage
+            tweetImage: this.state.profileimage
         }
         console.log(data)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/tweets/', data)
+        axios.post('http://localhost:3001/userfeed/', data)
             .then((response) => {
                 console.log("in axios call for post tweet")
                 console.log(response)
@@ -73,7 +74,18 @@ class userHome extends Component {
             });
        }
 
-
+       componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/userfeed/tweet')
+                .then((response) => {
+                this.setState({
+                    tweet : response.data.data
+                });
+                console.log(response.data)
+                console.log(this.state.tweet)
+            });
+    }
 
     render() {
 

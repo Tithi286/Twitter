@@ -23,10 +23,24 @@ class tweets extends Component {
         this.state = {
             errormsg: "",
             authFlag: "",
+            tweet: []
         }
 
     }
 
+
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/userprofile/tweets')
+                .then((response) => {
+                this.setState({
+                    tweet : response.data.data
+                });
+                console.log(response.data)
+                console.log(this.state.tweet)
+            });
+    }
 
     render() {
         // let Tweet = this.state.tweets.map(tweet => {

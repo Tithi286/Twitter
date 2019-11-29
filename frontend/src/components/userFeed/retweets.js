@@ -28,11 +28,24 @@ class Retweets extends Component {
             year: "",
             month: "",
             day: "",
-            startDate: moment()
+            startDate: moment(),
+            retweet: []
         }
 
     }
 
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/userprofile/retweets')
+                .then((response) => {
+                this.setState({
+                    retweet : response.data.data
+                });
+                console.log(response.data)
+                console.log(this.state.retweet)
+            });
+    }
 
     render() {
         // let Tweet = this.state.tweets.map(tweet => {

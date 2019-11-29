@@ -40,9 +40,11 @@ class login extends Component {
         }
         console.log(data);
         axios.defaults.withCredentials = true;
-        axios.post('/users/login', data)
+        console.log("login")
+        axios.post('http://localhost:3001/users/login', data)
             .then((response) => {
                 if (response.status === 200) {
+                    console.log("logged in")
                     this.setState({
                         authFlag: true
                     })
