@@ -40,11 +40,9 @@ class login extends Component {
         }
         console.log(data);
         axios.defaults.withCredentials = true;
-        console.log("login")
-        axios.post('http://localhost:3001/users/login', data)
+        axios.post('/users/login', data)
             .then((response) => {
                 if (response.status === 200) {
-                    console.log("logged in")
                     this.setState({
                         authFlag: true
                     })
@@ -92,7 +90,8 @@ class login extends Component {
                         </div>
                     </div>
                 </div>
-                <div  >
+                <div><br/>
+                <br/><br/><br/>
                     <form className = "loginform">
                         <div >
                             <div >

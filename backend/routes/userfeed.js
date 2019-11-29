@@ -40,7 +40,7 @@ router.get('/search', requireAuth, async function (req, res, next) {
 router.post('/', upload.single('tweetImage'), requireAuth, async function (req, res, next) {
     const { tweet } = req.body;
     const tweetImage = req.file ? `/${req.file.filename}` : '';
-
+    console.log("tweetInage" + tweetImage);
     var d = new Date();
     var curr_date = d.getDate();
     var curr_month = d.getMonth() + 1;
