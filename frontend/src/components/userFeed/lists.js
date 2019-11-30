@@ -10,6 +10,8 @@ import { Field, reduxForm } from "redux-form";
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { faHome, faList } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Favicon from 'react-favicon';
 
 class lists extends Component {
@@ -69,7 +71,18 @@ class lists extends Component {
                 </div>
                
                 <div class="col-md-6 feed">
-                    <div class="home-font">Lists</div>
+                        <div class="uppernav" id="uppernav">
+                            <a class="active" class="col-md-6" >Lists</a>
+                            <a href="/create">
+                              <FontAwesomeIcon icon={ faList } />
+                            </a>
+                        </div>
+                        <div class="topnav" id="myTopnav">
+                            <a class="active">Owned</a>
+                            <a href="/lists/subscriptions">Subscribed</a>
+                            <a href="#contact">Members</a>
+                        </div>
+                    
                 </div>
                 <div class="col-md-3 feed">
                     <div>

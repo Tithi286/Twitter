@@ -57,6 +57,7 @@ class profile extends Component {
         this.setState({ isComponent: "likes" });
     }
 
+
     handleRetweetClick() {
         this.setState({ isComponent: "retweet" });
     }

@@ -11,6 +11,9 @@ var usersRouter = require('./routes/users');
 var userprofileRouter = require('./routes/userprofile');
 var listsRouter = require('./routes/lists');
 var userfeedRouter = require('./routes/userfeed');
+var bookmarks = require('./routes/bookmarks');
+var messages = require('./routes/messages');
+var analytics = require('./routes/analytics');
 
 var app = express();
 
@@ -21,6 +24,8 @@ app.set('view engine', 'ejs');
 //use cors to allow cross origin resource sharing
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,6 +38,9 @@ app.use('/users', usersRouter);
 app.use('/userprofile', userprofileRouter);
 app.use('/lists', listsRouter);
 app.use('/userfeed', userfeedRouter);
+app.use('/bookmarks', bookmarks);
+app.use('/messages', messages);
+app.use('/analytics', analytics);
 
 app.use(passport.initialize());
 

@@ -38,9 +38,9 @@ const {
   deleteFollower
 } = require("./follower");
 
-const { getLike, saveLike } = require("./like");
-const { getRetweet, saveRetweet } = require('./retweet');
-const { getReply, saveReply } = require('./reply');
+const { getLike, saveLike, getLikeCount } = require("./like");
+const { getRetweet, saveRetweet, getRetweetCount } = require('./retweet');
+const { getReply, saveReply, getReplyCount } = require('./reply');
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -142,6 +142,10 @@ const _saveRetweet = async whereClause => {
   await getMongoConnection();
   return saveRetweet()(whereClause);
 };
+const _getRetweetCount = async tweetIds => {
+  await getMongoConnection();
+  return getRetweetCount()(tweetIds);
+};
 const _getLike = async whereClause => {
   await getMongoConnection();
   return getLike()(whereClause);
@@ -150,6 +154,10 @@ const _saveLike = async whereClause => {
   await getMongoConnection();
   return saveLike()(whereClause);
 };
+const _getLikeCount = async tweetIds => {
+  await getMongoConnection();
+  return getLikeCount()(tweetIds)
+};
 const _getReply = async whereClause => {
   await getMongoConnection();
   return getReply()(whereClause);
@@ -157,6 +165,10 @@ const _getReply = async whereClause => {
 const _saveReply = async whereClause => {
   await getMongoConnection();
   return saveReply()(whereClause);
+};
+const _getReplyCount = async tweetIds => {
+  await getMongoConnection();
+  return getReplyCount()(tweetIds)
 };
 const _getLists = async whereClause => {
   await getMongoConnection();
@@ -224,12 +236,15 @@ module.exports = {
 
   getRetweet: _getRetweet,
   saveRetweet: _saveRetweet,
+  getRetweetCount: _getRetweetCount,
 
   getLike: _getLike,
   saveLike: _saveLike,
+  getLikeCount: _getLikeCount,
 
   getReply: _getReply,
   saveReply: _saveReply,
+  getReplyCount: _getReplyCount,
 
   getLists: _getLists,
   saveLists: _saveLists,

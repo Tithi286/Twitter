@@ -11,24 +11,36 @@ const { getTweets } = require('../DataAccessLayer');
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
 
-//search tweets <should be updated to include person search>
+// search hashtags or people
 router.get('/search', requireAuth, async function (req, res, next) {
     const { topic } = req.query;
     try {
-        const tweet = {
-            $text: { $search: topic },
+        if (topic) {
+            //Hashtag search
+            if (topic.startsWith("#")) {
+                const tweet = { $text: { $search: topic } };
+                const results = await getTweets(tweet);
+                return res.json(results);
+            }
+            //person search
+            else {
+                const user = { search: { firstName: topic, lastName: topic, userName: topic } };
+                const { results } = await simulateRequestOverKafka("getUsers", user);
+                return res.json(results);
+            }
+        } else {
+            return res.status(400).json({ message: "Bad Request" });
         }
-        const results = await getTweets(tweet);
-        res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
     }
 });
+
 //create a new tweet
 router.post('/', upload.single('tweetImage'), requireAuth, async function (req, res, next) {
     const { tweet } = req.body;
     const tweetImage = req.file ? `/${req.file.filename}` : '';
-
+    console.log("tweetInage" + tweetImage);
     var d = new Date();
     var curr_date = d.getDate();
     var curr_month = d.getMonth() + 1;
@@ -74,26 +86,86 @@ router.delete('/', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
-//Get the tweets of the followed persons by loggedIn user
-router.get('/tweet', requireAuth, async function (req, res, next) {
-    let followID = [];
-    try {
-        const user = req.user;
-        //get the userID s of followed persons from table follower
-        let { results } = await simulateRequestOverKafka("getFollowedUsers", user);
-        let followed = JSON.parse(JSON.stringify(results));
 
-        //For each followed person get all the tweets from Mongo Tweets collection
-        //Create an array with followed persons ID
-        for (let i = 0; i < followed.length; i++) {
-            followID.push(followed[i].followedID);
+// Get all tweets for all the followed users
+// sample response:
+/*
+    [
+        {
+            "tweet": {
+                "tweetID": "3bcb631e-c872-4b4b-beb0-db706893914a",
+                "tweet": "Minus molestias alias exercitationem excepturi et. #swag #sunset #home #smile #art #instalike ",
+                "tweetImage": "",
+                "tweetOwnerID": "062F71CC-EEDB-C475-0475-0007347D2915",
+                "likeCount": 3,
+                "tweetDate": "2019-11-16T20:05:33.187Z",
+                "viewCount": 0,
+            },
+            "user": {
+                "userID": "062F71CC-EEDB-C475-0475-0007347D2915",
+                "email": "ipsum@loremac.ca",
+                "firstName": "Noah",
+                "lastName": "Whitfield",
+                "city": "Saltillo",
+                "state": "Coa",
+                "zipcode": "6193",
+                "profileDesc": null,
+                "userName": "Branden",
+                "profileImage": null,
+                "isActive": 1,
+                "DOB": "2020-06-20T07:00:00.000Z"
+            },
+            "likeCount": 2,
+            "replyCount": 0,
+            "retweetCount": 2
         }
-        //tweet object to find in MongoDB with in operator
-        const tweet = {
-            tweetOwnerID: { $in: followID }
-        };
-        results = await simulateRequestOverKafka("getTweets", tweet);
-        res.json(results);
+    ]
+*/
+router.get('/tweets', requireAuth, async function (req, res, next) {
+    try {
+        //get the userID s of followed persons from table follower
+        let { results } = await simulateRequestOverKafka("getFollowedUsers", req.user);
+        if (results.length > 0) {
+            const followedUsers = JSON.parse(JSON.stringify(results));
+            const followedUserIds = followedUsers.map(f => f.followedID);
+
+            // get all tweets from all followed users
+            results = await simulateRequestOverKafka("getTweets", { tweetOwnerID: { $in: followedUserIds } });
+            const allTweetIds = results.map(t => t.tweetID);
+
+            // get all users, likeCount, retweetCount and replyCount in parallel
+            const [{ results: allFollowedUsers }, likeCounts, retweetCounts, replyCounts] = await Promise.all([
+                simulateRequestOverKafka("getUsers", { userID: followedUserIds }),
+                simulateRequestOverKafka("getLikeCount", allTweetIds),
+                simulateRequestOverKafka("getRetweetCount", allTweetIds),
+                simulateRequestOverKafka("getReplyCount", allTweetIds)
+            ]);
+
+            // merge all results as so as to produce a response structure something like:
+            /*
+                [
+                    {
+                        tweet: {..tweetObject},
+                        user: {..userObject},
+                        likeCount: 10,
+                        replyCount: 10,
+                        retweetCount: 10
+                    }
+                ]
+            */
+            const followedUsersMap = allFollowedUsers.reduce((acc, f) => {
+                acc[f.userID] = f;
+                return acc;
+            }, {});
+            results = results.map(res => ({
+                tweet: res,
+                user: followedUsersMap[res.tweetOwnerID],
+                likeCount: likeCounts[res.tweetID],
+                replyCount: replyCounts[res.tweetID],
+                retweetCount: retweetCounts[res.tweetID]
+            }));
+        }
+        return res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
     }

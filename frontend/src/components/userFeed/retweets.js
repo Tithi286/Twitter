@@ -21,11 +21,23 @@ class Retweets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           
+            retweet: []
         }
 
     }
 
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/userprofile/retweets')
+                .then((response) => {
+                this.setState({
+                    retweet : response.data.data
+                });
+                console.log(response.data)
+                console.log(this.state.retweet)
+            });
+    }
 
 
     render() {

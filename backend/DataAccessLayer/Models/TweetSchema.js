@@ -11,6 +11,7 @@ const TweetSchema = new Schema({
     likeCount: { type: Number, min: 0 },
     tweetDate: Date,
     viewCount: { type: Number, min: 0 },
+    retweetCount:{ type: Number, min: 0 },
     listID: String
 });
 TweetSchema.index({ tweet: "text" });
