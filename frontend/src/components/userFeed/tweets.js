@@ -21,8 +21,6 @@ class tweets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            errormsg: "",
-            authFlag: "",
             tweet: []
         }
 

@@ -21,16 +21,7 @@ class Retweets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment(),
-            retweet: [],
-            retweets:[]
+            retweet: []
         }
 
     }
@@ -47,6 +38,7 @@ class Retweets extends Component {
                 console.log(this.state.retweet)
             });
     }
+
 
     render() {
         // let Tweet = this.state.tweets.map(tweet => {
