@@ -1,7 +1,7 @@
 const tableName = 'Users';
 
 const getUsers = connection => (user = {}) => {
-    const { userID, email, password } = user;
+    const { userID, email, password ,search} = user;
     let query = `select * from ${tableName}`;
     const clause = [];
     if (userID) {
@@ -13,7 +13,11 @@ const getUsers = connection => (user = {}) => {
     if (password) {
         clause.push(`password='${password}'`);
     }
+    if (search) {
+        clause.push(`firstName like '%${search.firstName}%' or lastName like '%${search.lastName}%' or userName like '%${search.userName}%'`);
+    }
     query += clause.length > 0 ? ` where ${clause.join(' and ')}` : '';
+    console.log(query)
     return new Promise((resolve, reject) => {
         connection.query(query, (error, results, fields) => {
             // release DB connection
@@ -21,6 +25,7 @@ const getUsers = connection => (user = {}) => {
             if (error) {
                 reject(error);
             } else {
+
                 resolve({ results, fields });
             }
         });
