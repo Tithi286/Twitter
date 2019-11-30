@@ -9,7 +9,8 @@ const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
 const {
   getMessages,
   sendMessages,
-  deleteMessages
+  deleteMessages,
+  getUsers
 } = require("../DataAccessLayer");
 
 // Set up middleware
@@ -27,6 +28,21 @@ router.get("/", requireAuth, async function(req, res, next) {
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
+  }
+});
+
+// search people for messaging
+router.get('/search', requireAuth, async function (req, res, next) {
+  const { fname,lname,username } = req.body;
+  try {
+       
+              const user = { search: { firstName: fname,lastName:lname,userName:username } };
+              const { results } = await getUsers(user);
+              
+               res.json(results);
+         
+  } catch (e) {
+      res.status(500).send(e.message || e);
   }
 });
 
