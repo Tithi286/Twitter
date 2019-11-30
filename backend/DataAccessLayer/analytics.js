@@ -1,4 +1,5 @@
 const { tweets } = require("./Models/TweetSchema");
+const {profileview }=require("./Models/ProfileViewSchema");
 
 const getTweetViewCount = connection => (query = {}) => {
   return new Promise((resolve, reject) => {
@@ -54,6 +55,21 @@ const getProfileViewCount = connection => (query = {}) => {
     });
   });
 };
+
+const IncTweetViewCount= connection => (query = {}) => {
+    return new Promise((resolve, reject) => {
+      tweets.find(query, function(err, docs) {
+        return err ? reject(err) : resolve(docs);
+      });
+    });
+  };
+  const IncProfileViewCount = connection => (query = {}) => {
+    return new Promise((resolve, reject) => {
+     profileview.find(query, function(err, docs) {
+        return err ? reject(err) : resolve(docs);
+      });
+    });
+  };
 module.exports = {
   getTweetViewCount,
   getTweetLikeCount,
@@ -61,5 +77,7 @@ module.exports = {
   getTweetCountHour,
   getTweetCountDay,
   getTweetCountMonth,
-  getProfileViewCount
+  getProfileViewCount,
+  IncTweetViewCount,
+  IncProfileViewCount
 };

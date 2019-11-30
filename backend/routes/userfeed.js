@@ -11,24 +11,36 @@ const { getTweets } = require('../DataAccessLayer');
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
 
-//search tweets <should be updated to include person search>
+// search hashtags or people
 router.get('/search', requireAuth, async function (req, res, next) {
     const { topic } = req.query;
     try {
-        const tweet = {
-            $text: { $search: topic },
+        if (topic) {
+            //Hashtag search
+            if (topic.startsWith("#")) {
+                const tweet = { $text: { $search: topic } };
+                const results = await getTweets(tweet);
+                return res.json(results);
+            }
+            //person search
+            else {
+                const user = { search: { firstName: topic, lastName: topic, userName: topic } };
+                const { results } = await simulateRequestOverKafka("getUsers", user);
+                return res.json(results);
+            }
+        } else {
+            return res.status(400).json({ message: "Bad Request" });
         }
-        const results = await getTweets(tweet);
-        res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
     }
 });
+
 //create a new tweet
 router.post('/', upload.single('tweetImage'), requireAuth, async function (req, res, next) {
     const { tweet } = req.body;
     const tweetImage = req.file ? `/${req.file.filename}` : '';
-
+    console.log("tweetInage" + tweetImage);
     var d = new Date();
     var curr_date = d.getDate();
     var curr_month = d.getMonth() + 1;

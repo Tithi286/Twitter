@@ -21,16 +21,22 @@ class Retweets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+            retweet: []
         }
 
+    }
+
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/userprofile/retweets')
+                .then((response) => {
+                this.setState({
+                    retweet : response.data[0].retweets
+                });
+                console.log(response)
+                console.log(this.state.retweet)
+            });
     }
 
 
@@ -49,7 +55,7 @@ class Retweets extends Component {
 
         let reTweet;
         
-        reTweet =(
+        reTweet =this.state.retweet.map(retweet => (
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align">
@@ -58,7 +64,7 @@ class Retweets extends Component {
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">UserName</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">reTweet</span>
+                                    <span class="span">{retweet.retweet}</span>
                             </div>
                             </div>
                             </div>
@@ -77,6 +83,7 @@ class Retweets extends Component {
                 <br/><br/>
             </div>
             )
+        )
         
 
 

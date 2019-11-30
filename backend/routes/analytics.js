@@ -13,14 +13,60 @@ const {
   getTweetCountHour,
   getTweetCountDay,
   getTweetCountMonth,
-  getProfileViewCount
+  getProfileViewCount,
+  IncTweetViewCount,
+  IncProfileViewCount
 } = require("../DataAccessLayer");
 
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
 
+//Update tweet view count
+
+router.post("/inctweetviewcount", requireAuth, async function(req, res, next) {
+    try {
+      const loggedInUser = req.user;
+      const {tweetID}=req.body
+  
+      const query = {
+        /*
+db.tweets.updateOne({tweetID:tweetID}, {$inc: {viewCount:1}});
+  */
+      };
+      results = await IncTweetViewCount(query);
+      res.json(results);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  });
+  
+
+
+//Update profile view count
+
+router.post("/incprofileviewcount", requireAuth, async function(req, res, next) {
+    try {
+      const loggedInUser = req.user;
+  
+      const query = {
+        /*
+ db.profileviewcount.updateOne(
+    { userID:loggedInUser }, 
+    {
+        $set: { viewDate: Date }, 
+        $inc: { viewCount: 1 } 
+    }, true)
+  */
+      };
+      results = await IncProfileViewCount(query);
+      res.json(results);
+    } catch (e) {
+      res.status(500).send(e.message || e);
+    }
+  });
+ 
 //Get the tweets with maximum views
-router.get("/viewcount", requireAuth, async function(req, res, next) {
+router.post("/viewcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
@@ -36,7 +82,7 @@ db.tweets.find().sort({viewCount:-1}).limit(10)
   }
 });
 
-router.get("/likecount", requireAuth, async function(req, res, next) {
+router.post("/likecount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
@@ -52,7 +98,7 @@ router.get("/likecount", requireAuth, async function(req, res, next) {
   }
 });
 
-router.get("/retweetcount", requireAuth, async function(req, res, next) {
+router.post("/retweetcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
@@ -68,7 +114,7 @@ router.get("/retweetcount", requireAuth, async function(req, res, next) {
   }
 });
 
-router.get("/hourcount", requireAuth, async function(req, res, next) {
+router.post("/hourcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
@@ -87,7 +133,7 @@ db.tweets.aggregate([
   }
 });
 
-router.get("/daycount", requireAuth, async function(req, res, next) {
+router.post("/daycount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
@@ -106,7 +152,7 @@ db.tweets.aggregate([
   }
 });
 
-router.get("/monthcount", requireAuth, async function(req, res, next) {
+router.post("/monthcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
@@ -125,7 +171,7 @@ db.tweets.aggregate([
   }
 });
 
-router.get("/profileviewcount", requireAuth, async function(req, res, next) {
+router.post("/profileviewcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 

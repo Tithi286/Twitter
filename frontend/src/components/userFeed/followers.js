@@ -3,115 +3,67 @@ import '../../App.css';
 import axios from 'axios';
 //import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import { Link } from "react-router-dom";
-import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
-import './tweet.css'
-import Tweets from './tweets'
-import Retweets from './retweets'
-import Likes from './likes'
-import Replies from './replies'
 
 
 
-class profile extends Component {
+
+
+class followers extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment(),
-            isComponent: ""
+           followers:[]
         }
-        this.handleTweetClick = this.handleTweetClick.bind(this);
-        this.handleRetweetClick = this.handleRetweetClick.bind(this);
-        this.handleRepliesClick = this.handleRepliesClick.bind(this);
-        this.handleLikesClick = this.handleLikesClick.bind(this);
     }
 
-    handleTweetClick() {
-        this.setState({ isComponent: "tweet" });
-    }
-
-    handleRetweetClick() {
-        this.setState({ isComponent: "retweet" });
-    }
-
-    handleRepliesClick() {
-        this.setState({ isComponent: "replies" });
-    }
-
-    handleLikesClick() {
-        this.setState({ isComponent: "likes" });
-    }
-
-
-    handleRetweetClick() {
-        this.setState({ isComponent: "retweet" });
-    }
-
-
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    componentDidMount() {
+        axios.defaults.withCredentials = true;
+        axios.get("http://localhost:3001/userprofile")
+            .then((response) => {
+                //update the state with the response data
+                this.setState({
+                    followers: response.data
+                  
+                });
+                
+            }) .catch(error => {
+                this.setState({
+                    message: "something went wrong"
+                })
+            });
     }
 
 
 
     render() {
 
-        const isComponent = this.state.isComponent;
-        console.log("Component : ",isComponent)
-
         let Contents;
-        
-        if(isComponent == "tweet"){
-            Contents = (
-                <Tweets/>
-            )
-        }
-
-        else if(isComponent == "retweet"){
-            Contents = (
-                <Retweets/>
-            )
-        }
-
-        else if(isComponent == "replies"){
-            Contents = (
-                <Replies/>
-            )
-        }
-
-        else if(isComponent == "likes"){
-            Contents = (
-                <Likes/>
-            )            
-        }
-
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
+        Contents = (
+            <div class="u-clickable followers-box" role="button">
+                                <div class="u-flex u-flex-align">
+                                    <div class="u-mar2" style={{paddingLeft:"15px"}}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                                    <div class="u-flex-justify">
+                                    <div class="u-mar1" style={{width:"450px"}}>
+                                    <div class="s-list-item-primary u-mar1 fullname">Follower Name </div>
+                                        <div class="s-list-item-secondary u-mar1 snippet">
+                                            <span class="span">User Name</span>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    <div class="edit"><button class="buttons3" style={{marginTop:"10px"}}>Follow</button></div>
+                                </div>
+                                
+                            </div>
+         )
+       
 
         return (
             <div class="container-flex">
-                {redirectVar}
+               
                 <div class="col-md-3 feed1" >
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br /><br /></a>
@@ -129,30 +81,20 @@ class profile extends Component {
                 </div>
 
                 <div class="col-md-6 feed1 u-list1">
+                <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
                     <div class="home-font">User Name</div>
+                    <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">UserName</span></div>
+                    </div>
 
                     <div class="home-font1">
-                        <div class="">
-                            <div class="rest-img">
-                                <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
-                                <Link to="/editprofile"><button class="logob">Edit Profile</button></Link>
-                            </div>
-                            <div>
-
-                            </div><br /><br />
-                            <h5 class="rest-name-div1">Name</h5>
-                            <h5 class="rest-name-div">Address</h5>
-                            <h5 class="rest-name-div">Bio and Date</h5>
-                            <h5 class="rest-name-div">10 <Link to="/followers" style={{color:"black"}}>Followers</Link> 50 <Link to="/following" style={{color:"black"}}>Following </Link></h5>
-                        </div>
                     </div>
                     <div class="home-font2">
-                        <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleTweetClick} role="button">Tweets</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRetweetClick} role="button">Retweets</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRepliesClick} role="button">Replies</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleLikesClick} role="button">Likes</span></div>
+                        <div class="divs" style={{ color: "#29a3ef",width:"50%",paddingLeft: "60px", paddingTop: "5px"}}>
+                        <a href="/followers" class="a"><span onClick={this.handleTweetClick} role="button">Followers</span></a></div>
+                        <div class="divs" style={{width:"50%",paddingLeft: "50px", paddingTop: "5px" }}>
+                        <a href="/following" class="a"><span role="button">Following</span></a></div>
                     </div>
-                 <div>
+                    <div>
                         {Contents}
                     </div>
                 </div>
@@ -174,7 +116,7 @@ class profile extends Component {
 }
 
 
-export default profile;
+export default followers;
 
 
 

@@ -9,5 +9,5 @@ const ProfileViewSchema = new Schema({
   viewCount: { type: Number, min: 0 }
 });
 
-const profileview = mongoose.model("tweets", ProfileViewSchema, "tweets");
+const profileview = mongoose.model("profileview", ProfileViewSchema, "profileviews");
 module.exports = { profileview, ProfileViewSchema };

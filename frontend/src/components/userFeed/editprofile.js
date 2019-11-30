@@ -35,15 +35,17 @@ class editProfile extends Component {
     }
     
     componentDidMount() {
+        console.log("inside edit profile get request")
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/userprofile")
+        axios.get("http://localhost:3001/users/profile")
             .then((response) => {
+                console.log("data: ", response.data)
                 //update the state with the response data
                 this.setState({
-                    fname: response.data.first_name,
-                    lname: response.data.last_name,
+                    fname: response.data.firstName,
+                    lname: response.data.lastName,
                     email: response.data.email,
-                    bio: response.data.bio,
+                    bio: response.data.profileDesc,
                     city: response.data.city,
                     state: response.data.state,
                     zipcode: response.data.zipcode,
@@ -143,18 +145,21 @@ class editProfile extends Component {
             });
     }
 
-    submitChanges() {
+    submitChanges(e) {
+        e.preventDefault()
         const data = {
             firstName: this.state.fname,
             lastName: this.state.lname,
             email: this.state.email,
-            bio: this.state.bio,
-            address: this.state.address,
+            profileDesc: this.state.bio,
+            city: this.state.city,
+            state: this.state.state,
+            zipcode: this.state.zipcode,
             profileimage: this.state.profileimage
         }
         console.log(data)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/users/', data)
+        axios.put('http://localhost:3001/users/profile', data)
             .then((response) => {
                 console.log("in axios call")
                 console.log(response)
@@ -201,28 +206,28 @@ class editProfile extends Component {
                         <br/>
                             <div class="elements">
                                 <span class="label">First Name</span>
-                                <input class="form-control1 elements1" pattern="[A-Z]*||[a-z]*" type="text" name="fname" onChange={this.fnameChangeHandler} required/>
+                                <input class="form-control1 elements1" placeholder={this.state.fname} pattern="[A-Z]*||[a-z]*" type="text" name="fname" onChange={this.fnameChangeHandler} required/>
                             </div>
                         </div>
                         <div class="">
                             <br />
                             <div class="elements">
                                 <span class="label">Last Name</span>
-                                <input class="form-control1 elements1" pattern="[A-Z]*||[a-z]*" type="text" name="lname" onChange={this.lnameChangeHandler}required/>
+                                <input class="form-control1 elements1" placeholder={this.state.lname} pattern="[A-Z]*||[a-z]*" type="text" name="lname" onChange={this.lnameChangeHandler}required/>
                             </div>
                             </div>
                         <div class="">
                             <br />
                             <div class="elements">
                                 <span class="label">Email</span>
-                                <input class="form-control1 elements1"  type="text" name="email" onChange={this.emailChangeHandler}required/>
+                                <input class="form-control1 elements1" placeholder={this.state.email}  type="text" name="email" onChange={this.emailChangeHandler}required/>
                             </div>
                         </div>
                             <div class="">
                             <br/>
                                 <div class="elements">
                                     <span class="label">Bio</span>
-                                    <input class="form-control1 elements1"  type="text" name="bio" onChange={this.bioChangeHandler}/>
+                                    <input class="form-control1 elements1" placeholder={this.state.bio} type="text" name="bio" onChange={this.bioChangeHandler}/>
                                 </div>
                             </div>
                             <div class="">
@@ -230,15 +235,15 @@ class editProfile extends Component {
                                 <div class="elements" style={{display:"flex"}}>
                                     <div class="inner-element">
                                     <span class="label">City</span>
-                                    <input class="form-control1 elements1" pattern="[A-Z]*||[a-z]*" type="text" name="city" onChange={this.addChangeHandler}/>
+                                    <input class="form-control1 elements1" placeholder={this.state.city} pattern="[A-Z]*||[a-z]*" type="text" name="city" onChange={this.cityChangeHandler}/>
                                     </div>
                                     <div class="inner-element">
                                     <span class="label">State</span>
-                                    <input class="form-control1 elements1" pattern="[A-Z]*||[a-z]*" type="text" name="city" onChange={this.addChangeHandler}/>
+                                    <input class="form-control1 elements1" placeholder={this.state.state} pattern="[A-Z]*||[a-z]*" type="text" name="state" onChange={this.stateChangeHandler}/>
                                     </div>
                                     <div class="inner-element">
                                     <span class="label">Zipcode</span>
-                                    <input class="form-control1 elements1" pattern="[0-9]*" type="text" name="city" onChange={this.addChangeHandler}/>
+                                    <input class="form-control1 elements1" placeholder={this.state.zipcode} pattern="[0-9]*" type="text" name="zipcode" onChange={this.zipChangeHandler}/>
                                     </div>
                                 </div>
                             </div>
