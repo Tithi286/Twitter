@@ -21,24 +21,10 @@ class tweets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           tweets: []
+
         }
 
     }
-
-    componentDidMount(){
-        
-        axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/pastorders')
-                .then((response) => {
-                this.setState({
-                    tweets : response.data.data
-                });
-                console.log(response.data)
-                console.log(this.state.orders)
-            });
-    }
-
 
     render() {
         // let Tweet = this.state.tweets.map(tweet => {

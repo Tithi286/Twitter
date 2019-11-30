@@ -587,3 +587,17 @@
   width: 33%;
   margin-right: 3%;
 }
+
+.followers-box{
+  background: #fff;
+  border-bottom: 1px solid lightgrey;
+  border-radius: 3px;
+  border-top: 1px solid lightgrey;
+  margin-bottom: 2%;
+  margin-top: 2%;
+  height: 90px;
+}
+
+.a{
+  text-decoration: none;
+}
