@@ -15,7 +15,9 @@ const {
   getMembers,
   getSubscribers,
   setSubscribers,
-  setMembers
+  setMembers,
+  unsetMembers,
+  unsetSubscribers
 } = require("../DataAccessLayer");
 
 // Set up middleware
@@ -90,13 +92,14 @@ router.get("/subscriptions", requireAuth, async function(req, res, next) {
 
 //Returns members of selected list
 
-router.post("/members", requireAuth, async function(req, res, next) {
+router.get("/members", requireAuth, async function(req, res, next) {
   try {
+    console.log(req.body.listID);
     const list = {
       _id: req.body.listID
     };
     const results = await getMembers(list);
-    res.json(results);
+    res.json(results[0].members);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -104,27 +107,27 @@ router.post("/members", requireAuth, async function(req, res, next) {
 
 //Returns subscribers of selected list
 
-router.post("/subscribers", requireAuth, async function(req, res, next) {
+router.get("/subscribers", requireAuth, async function(req, res, next) {
   try {
     const list = {
       _id: req.body.listID
     };
     const results = await getSubscribers(list);
-    res.json(results);
+    res.json(results[0].subscribers);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
 
 //Get the tweets of the followed persons
-router.post("/tweets", requireAuth, async function(req, res, next) {
+router.get("/tweets", requireAuth, async function(req, res, next) {
   let followID = [];
   try {
     const list = {
-      '_id': req.body.listID
+      _id: req.body.listID
     };
     //get the members of list from table list
-    let  results  = await getMembers(list);
+    let results = await getMembers(list);
     let followed = results[0].members;
 
     //For each member of list get all the tweets from Mongo Tweets collection
@@ -148,12 +151,13 @@ router.post("/tweets", requireAuth, async function(req, res, next) {
 router.post("/subscribe", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
+    const { userID, listID } = req.body;
     const list = {
-      _id: req.body.listID,
-      user: loggedInUser.userID
+      listID: listID,
+      user: userID
     };
     await setSubscribers(list);
-    res.json(results);
+    res.json("Added to Subscribers");
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -163,13 +167,14 @@ router.post("/subscribe", requireAuth, async function(req, res, next) {
 
 router.post("/member", requireAuth, async function(req, res, next) {
   try {
+    const { userID, listID } = req.body;
     const loggedInUser = req.user;
     const list = {
-      _id: req.body.listID,
-      user: loggedInUser.userID
+      listID: listID,
+      user: userID
     };
     await setMembers(list);
-    res.json(results);
+    res.json("Added to Members");
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -179,13 +184,14 @@ router.post("/member", requireAuth, async function(req, res, next) {
 
 router.post("/unsubscribe", requireAuth, async function(req, res, next) {
   try {
+    const { userID, listID } = req.body;
     const loggedInUser = req.user;
     const list = {
-      _id: req.body.listID,
-      user: loggedInUser.userID
+      _id: listID,
+      user: userID
     };
     await unsetSubscribers(list);
-    res.json(results);
+    res.json("Subscriber removed");
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -195,13 +201,14 @@ router.post("/unsubscribe", requireAuth, async function(req, res, next) {
 
 router.post("/demember", requireAuth, async function(req, res, next) {
   try {
+    const { userID } = req.body;
     const loggedInUser = req.user;
     const list = {
       _id: req.body.listID,
-      user: loggedInUser.userID
+      user: userID
     };
     await unsetMembers(list);
-    res.json(results);
+    res.json("Member removed");
   } catch (e) {
     res.status(500).send(e.message || e);
   }
