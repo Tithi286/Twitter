@@ -5,9 +5,8 @@ const Schema = mongoose.Schema;
 
 const BookmarkSchema = new Schema(
   {
-userID:String,  	
-tweetID:String,
-bookmarkDate:String
+    userID: String,
+    tweetID: String
   },
   { timestamps: true }
 );
