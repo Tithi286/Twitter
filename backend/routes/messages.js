@@ -49,7 +49,7 @@ router.post("/send", requireAuth, async function(req, res, next) {
 });
 
 //Shows specific chat
-router.post("/view", requireAuth, async function(req, res, next) {
+router.get("/view", requireAuth, async function(req, res, next) {
   const { receiverID } = req.body;
 
   try {
