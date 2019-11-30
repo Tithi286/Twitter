@@ -52,31 +52,50 @@ const getSubscribers = connection => (list = {}) => {
 
 const setSubscribers = connection => (list = {}) => {
   return new Promise((resolve, reject) => {
-    lists.insert(list, function(err, docs) {
-      return err ? reject(err) : resolve(docs);
-    });
+    lists.updateOne(
+      { _id: list.listID },
+      {
+        $set: { subscribers: list.user }
+      },
+      { upsert: true },
+      function(err, docs) {
+        return err ? reject(err) : resolve(docs);
+      }
+    );
   });
 };
-
 const setMembers = connection => (list = {}) => {
   return new Promise((resolve, reject) => {
-    lists.insert(list, function(err, docs) {
-      return err ? reject(err) : resolve(docs);
-    });
+    console.log(list.user, list.listID);
+    lists.updateOne(
+      { _id: list.listID },
+      {
+        $set: { members: list.user }
+      },
+      { upsert: true },
+      function(err, docs) {
+        return err ? reject(err) : resolve(docs);
+      }
+    );
   });
 };
-
 const unsetSubscribers = connection => (list = {}) => {
   return new Promise((resolve, reject) => {
-    lists.remove(list, function(err, docs) {
-      return err ? reject(err) : resolve(docs);
-    });
+    lists.update(
+      { _id: list._id },
+      { $pull: { subscribers: list.user } },
+      function(err, docs) {
+        return err ? reject(err) : resolve(docs);
+      }
+    );
   });
 };
-
 const unsetMembers = connection => (list = {}) => {
   return new Promise((resolve, reject) => {
-    lists.remove(list, function(err, docs) {
+    lists.update({ _id: list._id }, { $pull: { members: list.user } }, function(
+      err,
+      docs
+    ) {
       return err ? reject(err) : resolve(docs);
     });
   });
