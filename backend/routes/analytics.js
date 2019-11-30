@@ -24,57 +24,46 @@ var requireAuth = passport.authenticate("jwt", { session: false });
 //Update tweet view count
 
 router.post("/inctweetviewcount", requireAuth, async function(req, res, next) {
-    try {
-      const loggedInUser = req.user;
-      const {tweetID}=req.body
-  
-      const query = {
-        /*
-db.tweets.updateOne({tweetID:tweetID}, {$inc: {viewCount:1}});
-  */
-      };
-      results = await IncTweetViewCount(query);
-      res.json(results);
-    } catch (e) {
-      res.status(500).send(e.message || e);
-    }
-  });
-  
+  try {
+    const loggedInUser = req.user;
+    const { tweetID } = req.body;
 
+    const query = {
+      tweetID: tweetID
+    };
+    results = await IncTweetViewCount(query);
+    res.json(results);
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
 
 //Update profile view count
 
-router.post("/incprofileviewcount", requireAuth, async function(req, res, next) {
-    try {
-      const loggedInUser = req.user;
-  
-      const query = {
-        /*
- db.profileviewcount.updateOne(
-    { userID:loggedInUser }, 
-    {
-        $set: { viewDate: Date }, 
-        $inc: { viewCount: 1 } 
-    }, true)
-  */
-      };
-      results = await IncProfileViewCount(query);
-      res.json(results);
-    } catch (e) {
-      res.status(500).send(e.message || e);
-    }
-  });
- 
-//Get the tweets with maximum views
-router.post("/viewcount", requireAuth, async function(req, res, next) {
+router.post("/incprofileviewcount", requireAuth, async function(
+  req,
+  res,
+  next
+) {
   try {
     const loggedInUser = req.user;
 
     const query = {
-      /*
-db.tweets.find().sort({viewCount:-1}).limit(10)
-*/
+      userID: loggedInUser.userID
     };
+    results = await IncProfileViewCount(query);
+    res.json(results);
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+
+//Get the tweets with maximum views
+router.get("/viewcount", requireAuth, async function(req, res, next) {
+  try {
+    const loggedInUser = req.user;
+
+    const query = {};
     results = await getTweetViewCount(query);
     res.json(results);
   } catch (e) {
@@ -82,15 +71,11 @@ db.tweets.find().sort({viewCount:-1}).limit(10)
   }
 });
 
-router.post("/likecount", requireAuth, async function(req, res, next) {
+router.get("/likecount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
-    const query = {
-      /*
-  db.tweets.find().sort({likeCount:-1}).limit(10)
-  */
-    };
+    const query = {};
     results = await getTweetLikeCount(query);
     res.json(results);
   } catch (e) {
@@ -98,15 +83,11 @@ router.post("/likecount", requireAuth, async function(req, res, next) {
   }
 });
 
-router.post("/retweetcount", requireAuth, async function(req, res, next) {
+router.get("/retweetcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
-    const query = {
-      /*
-  db.tweets.find().sort({retweetCount:-1}).limit(10)
-  */
-    };
+    const query = {};
     results = await getRetweetCount(query);
     res.json(results);
   } catch (e) {
@@ -114,36 +95,25 @@ router.post("/retweetcount", requireAuth, async function(req, res, next) {
   }
 });
 
-router.post("/hourcount", requireAuth, async function(req, res, next) {
+router.get("/hourcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
-    const query = {
-      /*
-db.tweets.aggregate([
-    {"$group" : {_id:"$tweetDate", count:{$sum:1}}}
-])
-  */
-    };
+    const query = {};
     results = await getTweetCountHour(query);
     //fetch hourly division of tweets from returned results.
     res.json(results);
+    // console.log(results.length)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
 
-router.post("/daycount", requireAuth, async function(req, res, next) {
+router.get("/daycount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
-    const query = {
-      /*
-db.tweets.aggregate([
-    {"$group" : {_id:"$tweetDate", count:{$sum:1}}}
-])
-  */
-    };
+    const query = {};
     results = await getTweetCountDay(query);
     //fetch daily division of tweets from returned results.
     res.json(results);
@@ -152,17 +122,11 @@ db.tweets.aggregate([
   }
 });
 
-router.post("/monthcount", requireAuth, async function(req, res, next) {
+router.get("/monthcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
-    const query = {
-      /*
-db.tweets.aggregate([
-    {"$group" : {_id:"$tweetDate", count:{$sum:1}}}
-])
-  */
-    };
+    const query = {};
     results = await getTweetCountMonth(query);
     //fetch monthly division of tweets from returned results.
     res.json(results);
@@ -171,17 +135,12 @@ db.tweets.aggregate([
   }
 });
 
-router.post("/profileviewcount", requireAuth, async function(req, res, next) {
+router.get("/profileviewcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
 
     const query = {
-      /*
-db.profileview.aggregate( [
-  { $match: { userID:loggedInUser },
-  { $group: { _id: viewDate, count: { $sum: 1 } } }
-] )
-  */
+      userID: loggedInUser.userID
     };
     results = await getProfileViewCount(query);
     //fetch daily division of count from returned results.
