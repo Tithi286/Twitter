@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 //import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
@@ -13,6 +14,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { faHome, faList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Favicon from 'react-favicon';
+import Icon from 'react-icons-kit';
+import {commentO} from 'react-icons-kit/fa/commentO'
+import {heartO} from 'react-icons-kit/fa/heartO'
+import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
+import {loop} from 'react-icons-kit/iconic/loop'
 
 class lists extends Component {
 
@@ -50,6 +56,31 @@ class lists extends Component {
         }
         const { handleSubmit } = this.props;
         //console.log(this.state.errormsg)
+       
+        let listCreated;
+        
+        listCreated =(
+            <Link class="a" to="/indlist">
+            <div class="tweets-div u-list1">
+                
+                <div class="u-flex u-flex-align">
+                            <div class="u-flex-justify">
+                            <div class="u-mar1">
+                            <div class="s-list-item-primary u-mar1 fullname">Username</div>
+                            <div class="s-list-item-primary u-mar1 listheading">LIST heading</div>
+                            <div class="s-list-item-secondary u-mar1 snippet">
+                                    <span class="span">Tweet</span>
+                            </div>
+                            <div class="s-list-item-secondary u-mar1 snippet">
+                                    <span class="span">members .</span>
+                                    <span class="span">subscribers</span>
+                            </div>
+                            </div>
+                            </div>
+                            </div>            
+            </div>
+            </Link>
+            )
 
         return (
             <div class="container-flex">
@@ -69,20 +100,20 @@ class lists extends Component {
                 </button></span>
                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 </div>
-               
                 <div class="col-md-6 feed">
-                        <div class="uppernav" id="uppernav">
-                            <a class="active" class="col-md-6" >Lists</a>
-                            <a href="/create">
-                              <FontAwesomeIcon icon={ faList } />
-                            </a>
-                        </div>
+                    <div class="home-font">
+                        <div class="msg-block">Lists </div>
+                        <span class="uppernav"><Link to="/create"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
+                    </div>
+                        
                         <div class="topnav" id="myTopnav">
-                            <a class="active">Owned</a>
-                            <a href="/lists/subscriptions">Subscribed</a>
-                            <a href="#contact">Members</a>
+                            <a class="active" class="col-md-4">Owned</a>
+                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
+                            <a href="/members" >Members</a>
                         </div>
-                    
+                    <div >
+                        {listCreated}
+                    </div>
                 </div>
                 <div class="col-md-3 feed">
                     <div>

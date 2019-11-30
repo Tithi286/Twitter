@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import '../../App.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
@@ -34,6 +35,40 @@ class ListsCreate extends Component {
         this.submitLogin = this.submitLogin.bind(this);
         
     }
+
+    componentWillMount() {
+       
+        var token = localStorage.getItem("token");
+        axios.defaults.withCredentials = true;
+        axios.get('http://'+rooturl+':3001/trip-details', {
+            headers: {"Authorization" : `Bearer ${token}`}
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    console.log("Response : ", response.data);
+
+                    var trips = response.data;
+                    var tripsResult = trips.filter(function(property){
+                        var index = trips.indexOf(property);
+                        return index >= 0 && index <= 4;
+                    });
+
+                    this.setState({
+                        tripDetails: response.data,
+                        ownerDashBoardTrips : tripsResult
+                    });
+
+                    
+                }
+            }).catch((err) =>{
+                if(err){
+                    this.setState({
+                        errorRedirect: true
+                    })
+                }
+            });
+
+    } 
 
     fnameChangeHandler = (e) => {
         this.setState({
@@ -142,7 +177,9 @@ class ListsCreate extends Component {
                     <div className="">
                         <div className="elements2">
                             <h3 class="label">Create new List</h3>
-                            <button href="/adduser" class="button">Next </button>
+                            <span class="home-buttons"><Link to="/adduser"><button class="buttons3">Next</button></Link></span>
+                            {/*<button class="button">Next </button>*/}
+                            
                             <br />
                             <p>{this.props.message}</p>
                         </div>

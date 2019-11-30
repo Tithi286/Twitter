@@ -15,11 +15,15 @@ import Settings from './userFeed/settings'
 import listsCreate from './userFeed/listsCreate';
 import listsAdduser from './userFeed/listAddusers';
 import Subscriptions from './userFeed/subscriptions';
+
 import tweets from './userFeed/tweets';
 import Inbox from './chat/inbox';
 import Newmessages from './chat/newmessage';
 import editProfile from './userFeed/editprofile';
 import DescribeTweets from './userFeed/describeTweet';
+import Members from './userFeed/members';
+import IndividualList from './userFeed/individualList';
+import SubscribedList from './userFeed/subscribedList';
 
 
 class Main extends Component {
@@ -35,8 +39,11 @@ class Main extends Component {
                 <Route path="/messages" component={Messages} />
                 <Route path="/bookmarks" component={Bookmarks} />
                 <Route path="/lists" component={Lists} />
+                <Route path="/indlist" component={IndividualList}/>
+                <Route path="/sublist" component={SubscribedList}/>
                 <Route path="/create" component = {listsCreate}/>
-                <Route path="/lists/subscriptions" component= {Subscriptions}/>
+                <Route path="/subscriptions" component= {Subscriptions}/>
+                <Route path="/members" component={Members}/>
                 <Route path="/adduser" component = {listsAdduser}/>
                 <Route path="/profile" component={Profile} />
                 <Route path="/analytics" component={Analytics} />
