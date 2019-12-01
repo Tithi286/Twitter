@@ -11,23 +11,23 @@ const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
 var requireAuth = passport.authenticate("jwt", { session: false });
 
 //Shows all chats
-router.get("/", requireAuth, async function(req, res, next) {
+router.get("/", requireAuth, async function (req, res, next) {
   try {
     const loggedInUser = req.user;
-    receiverID=[]
+    receiverID = []
     const messages = {
       senderID: loggedInUser.userID
     };
-    results = await simulateRequestOverKafka("getMessages",messages);
+    results = await simulateRequestOverKafka("getMessages", messages);
     results.forEach(retwt => {
       receiverID.push(retwt.receiverID);
-  });
-  
-  quoted="'" + receiverID.join("','") + "'";
+    });
+
+    quoted = "'" + receiverID.join("','") + "'";
     const user = { usersID: [quoted] };
-  
-  let chatRes = await simulateRequestOverKafka("getUsers",user);
-  res.json(chatRes.results)
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    res.json(chatRes.results)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -35,25 +35,17 @@ router.get("/", requireAuth, async function(req, res, next) {
 
 // search people for messaging
 router.get('/search', requireAuth, async function (req, res, next) {
-  const {fname} = req.query;
+  const { fname } = req.query;
   try {
-       
-              const user = { search: { firstName: fname } };
-              const { results } = await getUsers(user);
-  const { fname} = req.query;
-  try {
-       
-              const user = { search: { firstName: fname } };
-              const { results } = await simulateRequestOverKafka("getUsers",user);
-              
-               res.json(results);
-         
+    const user = { search: { firstName: fname } };
+    const { results } = await simulateRequestOverKafka("getUsers", user);
+    res.json(results);
   } catch (e) {
-      res.status(500).send(e.message || e);
+    res.status(500).send(e.message || e);
   }
 });
 
-router.post("/send", requireAuth, async function(req, res, next) {
+router.post("/send", requireAuth, async function (req, res, next) {
   const { chat, receiverID } = req.body;
 
   try {
@@ -64,7 +56,7 @@ router.post("/send", requireAuth, async function(req, res, next) {
       receiverID: receiverID,
       chatDate: Date.now()
     };
-    await simulateRequestOverKafka("sendMessages",messages);
+    await simulateRequestOverKafka("sendMessages", messages);
     res.json({ message: "Message Sent" });
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -72,28 +64,28 @@ router.post("/send", requireAuth, async function(req, res, next) {
 });
 
 //Shows specific chat
-router.get("/view", requireAuth, async function(req, res, next) {
+router.get("/view", requireAuth, async function (req, res, next) {
   const { receiverID } = req.query;
-  
+
   try {
     const loggedInUser = req.user;
     const messages = {
       senderID: loggedInUser.userID,
       receiverID: receiverID
     };
-    const results = await simulateRequestOverKafka("getMessages",messages);
-  
-    const user = { userID:results[0].receiverID };
-  
-  let chatRes = await simulateRequestOverKafka("getUsers",user);
-  res.json(results)
+    const results = await simulateRequestOverKafka("getMessages", messages);
+
+    const user = { userID: results[0].receiverID };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    res.json(results)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
-  
 
-router.post("/delete", requireAuth, async function(req, res, next) {
+
+router.post("/delete", requireAuth, async function (req, res, next) {
   const { receiverID } = req.body;
   try {
     const loggedInUser = req.user;
@@ -101,7 +93,7 @@ router.post("/delete", requireAuth, async function(req, res, next) {
       senderID: loggedInUser.userID,
       receiverID: receiverID
     };
-    await simulateRequestOverKafka("deleteMessages",messages);
+    await simulateRequestOverKafka("deleteMessages", messages);
     res.json({ message: "Message Deleted" });
   } catch (e) {
     res.status(500).send(e.message || e);
