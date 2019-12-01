@@ -35,6 +35,40 @@ class ListsCreate extends Component {
         
     }
 
+    // componentWillMount() {
+       
+    //     var token = localStorage.getItem("token");
+    //     axios.defaults.withCredentials = true;
+    //     axios.get('http://'+rooturl+':3001/trip-details', {
+    //         headers: {"Authorization" : `Bearer ${token}`}
+    //     })
+    //         .then(response => {
+    //             if (response.status === 200) {
+    //                 console.log("Response : ", response.data);
+
+    //                 var trips = response.data;
+    //                 var tripsResult = trips.filter(function(property){
+    //                     var index = trips.indexOf(property);
+    //                     return index >= 0 && index <= 4;
+    //                 });
+
+    //                 this.setState({
+    //                     tripDetails: response.data,
+    //                     ownerDashBoardTrips : tripsResult
+    //                 });
+
+                    
+    //             }
+    //         }).catch((err) =>{
+    //             if(err){
+    //                 this.setState({
+    //                     errorRedirect: true
+    //                 })
+    //             }
+    //         });
+
+    // } 
+
     fnameChangeHandler = (e) => {
         this.setState({
             fname: e.target.value
