@@ -4,31 +4,9 @@ const uuidv4 = require("uuid/v4");
 var passport = require("passport");
 const multer = require("multer");
 const path = require("path");
-
-const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
-const {
-  getBookmarks,
-  setBookmarks,
-  deleteBookmarks
-} = require("../DataAccessLayer");
-
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
-
-//Get the created lists
-router.get("/", requireAuth, async function(req, res, next) {
-  try {
-    const loggedInUser = req.user;
-
-    const bookmarks = {
-      ownerID: loggedInUser.userID
-    };
-    results = await getBookmarks(bookmarks);
-    res.json(results);
-  } catch (e) {
-    res.status(500).send(e.message || e);
-  }
-});
 
 //Create a list
 router.post("/create", requireAuth, async function(req, res, next) {
@@ -37,48 +15,51 @@ router.post("/create", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
     const bookmarks = {
-      ownerID: loggedInUser.userID,
-      tweetID: tweetID,
-      bookmarkDate: Date.now()
+      userID: loggedInUser.userID,
+      tweetID: tweetID
     };
-    await setBookmarks(bookmarks);
+    await simulateRequestOverKafka("setBookmarks", bookmarks);
     res.json({ message: "Bookmarks Created" });
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
 
-router.post("/view", requireAuth, async function(req, res, next) {
-
-   
-    try {
-      const loggedInUser = req.user;
-      const bookmarks = {
-        ownerID: loggedInUser.userID
-      };
-      const results =await getBookmarks(bookmarks);
-      res.json(results);
-    } catch (e) {
-      res.status(500).send(e.message || e);
-    }
+router.get("/", requireAuth, async function(req, res, next) {
+  try {
+    const loggedInUser = req.user;
+    const bookmarks = {
+      userID: loggedInUser.userID
+    };
+    TweetID=[]
+    const results = await simulateRequestOverKafka("getBookmarks",bookmarks);
+    //res.json(results);
+    results.forEach(retwt => {
+      TweetID.push(retwt.tweetID);
   });
+  const tweet = {
+      tweetID: { $in: TweetID }
+  }
+  let tweets = await simulateRequestOverKafka("getTweets",tweet);
+  res.json(tweets)
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
 
-  router.post("/delete", requireAuth, async function(req, res, next) {
-    const { tweetID,bookmarksID} = req.body;
-    try {
-      const loggedInUser = req.user;
-      const bookmarks = {
-        ownerID: loggedInUser.userID,
-        tweetID: tweetID,
-        _id:bookmarksID
-      };
-      await deleteBookmarks(bookmarks);
-      res.json({ message: "Bookmarks Deleted" });
-    } catch (e) {
-      res.status(500).send(e.message || e);
-    }
-  });
-  
-  
+router.post("/delete", requireAuth, async function(req, res, next) {
+  const { tweetID, bookmarksID } = req.body;
+  try {
+    const loggedInUser = req.user;
+    const bookmarks = {
+      userID: loggedInUser.userID,
+      tweetID: tweetID
+    };
+    await simulateRequestOverKafka("deleteBookmarks",bookmarks);
+    res.json({ message: "Bookmarks Deleted" });
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
 
 module.exports = router;

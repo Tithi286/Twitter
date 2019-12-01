@@ -1,7 +1,7 @@
 const tableName = 'Users';
 
 const getUsers = connection => (user = {}) => {
-    const { userID, email, password, search } = user;
+    const { userID, email, password, search,usersID } = user;
     let query = `select * from ${tableName}`;
     const clause = [];
     if (userID) {
@@ -10,6 +10,10 @@ const getUsers = connection => (user = {}) => {
         } else {
             clause.push(`userID='${userID}'`);
         }
+    }
+    if (usersID) {
+    
+        clause.push(`userID in (${usersID})`);
     }
     if (email) {
         clause.push(`email='${email}'`);

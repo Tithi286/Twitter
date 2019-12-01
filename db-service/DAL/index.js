@@ -30,7 +30,8 @@ const {
   setSubscribers,
   setMembers,
   unsetSubscribers,
-  unsetMembers
+  unsetMembers,
+  deleteList
 } = require("./lists");
 const {
   getFollowedUsers,
@@ -41,6 +42,22 @@ const {
 const { getLike, saveLike, getLikeCount } = require("./like");
 const { getRetweet, saveRetweet, getRetweetCount } = require('./retweet');
 const { getReply, saveReply, getReplyCount } = require('./reply');
+
+const {setBookmarks,getBookmarks,deleteBookmarks}=require('./bookmarks')
+
+const {
+  getTweetViewCount,
+  getTweetLikeCount,
+  getARetweetCount,
+  getTweetCountHour,
+  getTweetCountDay,
+  getTweetCountMonth,
+  getProfileViewCount,
+  IncTweetViewCount,
+  IncProfileViewCount
+} =require("./analytics")
+
+const { getMessages, sendMessages, deleteMessages } = require("./messages");
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -219,6 +236,83 @@ const _unsetMembers = async whereClause => {
   await getMongoConnection();
   return unsetMembers()(whereClause);
 };
+
+const _deleteList = async whereClause => {
+  await getMongoConnection();
+  return deleteList()(whereClause);
+};
+
+const _getBookmarks = async whereClause => {
+  await getMongoConnection();
+  return getBookmarks()(whereClause);
+};
+
+const _setBookmarks = async whereClause => {
+  await getMongoConnection();
+  return setBookmarks()(whereClause);
+};
+
+const _deleteBookmarks = async whereClause => {
+  await getMongoConnection();
+  return deleteBookmarks()(whereClause);
+};
+
+const _getTweetViewCount = async whereClause => {
+  await getMongoConnection();
+  return getTweetViewCount()(whereClause);
+};
+
+const _getTweetLikeCount = async whereClause => {
+  await getMongoConnection();
+  return getTweetLikeCount()(whereClause);
+};
+
+const _getARetweetCount = async whereClause => {
+  await getMongoConnection();
+  return getARetweetCount()(whereClause);
+};
+const _getTweetCountHour = async whereClause => {
+  await getMongoConnection();
+  return getTweetCountHour()(whereClause);
+};
+
+const _getTweetCountDay = async whereClause => {
+  await getMongoConnection();
+  return getTweetCountDay()(whereClause);
+};
+const _getTweetCountMonth = async whereClause => {
+  await getMongoConnection();
+  return getTweetCountMonth()(whereClause);
+};
+
+const _getProfileViewCount = async whereClause => {
+  await getMongoConnection();
+  return getProfileViewCount()(whereClause);
+};
+const _IncTweetViewCount = async whereClause => {
+  await getMongoConnection();
+  return IncTweetViewCount()(whereClause);
+};
+const _IncProfileViewCount = async whereClause => {
+  await getMongoConnection();
+  return IncProfileViewCount()(whereClause);
+};
+
+const _getMessages = async whereClause => {
+  await getMongoConnection();
+  return getMessages()(whereClause);
+};
+
+const _sendMessages = async whereClause => {
+  await getMongoConnection();
+  return sendMessages()(whereClause);
+};
+
+const _deleteMessages = async whereClause => {
+  await getMongoConnection();
+  return deleteMessages()(whereClause);
+};
+
 module.exports = {
   getUsers: _getUsers,
   saveUsers: _saveUsers,
@@ -256,5 +350,27 @@ module.exports = {
   setMembers: _setMembers,
   unsetSubscribers: _unsetSubscribers,
   unsetMembers: _unsetMembers,
-  getMongoConnection
+  deleteList:_deleteList,
+ 
+  getMongoConnection,
+
+  getBookmarks: _getBookmarks,
+  setBookmarks: _setBookmarks,
+  deleteBookmarks: _deleteBookmarks,
+
+  getTweetViewCount: _getTweetViewCount,
+  getTweetLikeCount: _getTweetLikeCount,
+  getARetweetCount: _getARetweetCount,
+  getTweetCountHour: _getTweetCountHour,
+  getTweetCountDay: _getTweetCountDay,
+  getTweetCountMonth: _getTweetCountMonth,
+
+  getProfileViewCount: _getProfileViewCount,
+
+  IncTweetViewCount: _IncTweetViewCount,
+  IncProfileViewCount: _IncProfileViewCount,
+
+  getMessages: _getMessages,
+  sendMessages: _sendMessages,
+  deleteMessages: _deleteMessages,
 };
