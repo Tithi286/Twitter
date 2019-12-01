@@ -20,12 +20,20 @@ var requireAuth = passport.authenticate("jwt", { session: false });
 router.get("/", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
-
+    receiverID=[]
     const messages = {
       senderID: loggedInUser.userID
     };
     results = await getMessages(messages);
-    res.json(results);
+    results.forEach(retwt => {
+      receiverID.push(retwt.receiverID);
+  });
+  
+  quoted="'" + receiverID.join("','") + "'";
+    const user = { usersID: [quoted] };
+  
+  let chatRes = await getUsers(user);
+  res.json(chatRes.results)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -67,7 +75,7 @@ router.post("/send", requireAuth, async function(req, res, next) {
 //Shows specific chat
 router.get("/view", requireAuth, async function(req, res, next) {
   const { receiverID } = req.body;
-
+  
   try {
     const loggedInUser = req.user;
     const messages = {
@@ -75,12 +83,16 @@ router.get("/view", requireAuth, async function(req, res, next) {
       receiverID: receiverID
     };
     const results = await getMessages(messages);
-    res.json(results);
+  
+    const user = { userID:results[0].receiverID };
+  
+  let chatRes = await getUsers(user);
+  res.json(chatRes.results)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
-
+  
 router.post("/delete", requireAuth, async function(req, res, next) {
   const { receiverID } = req.body;
   try {
