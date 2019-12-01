@@ -45,6 +45,18 @@ const { getReply, saveReply, getReplyCount } = require('./reply');
 
 const {setBookmarks,getBookmarks,deleteBookmarks}=require('./bookmarks')
 
+const {
+  getTweetViewCount,
+  getTweetLikeCount,
+  getARetweetCount,
+  getTweetCountHour,
+  getTweetCountDay,
+  getTweetCountMonth,
+  getProfileViewCount,
+  IncTweetViewCount,
+  IncProfileViewCount
+} =require("./analytics")
+
 const options = {
   connectionLimit: sql_connectionLimit,
   host: sql_host,
@@ -243,6 +255,48 @@ const _deleteBookmarks = async whereClause => {
   return deleteBookmarks()(whereClause);
 };
 
+const _getTweetViewCount = async whereClause => {
+  await getMongoConnection();
+  return getTweetViewCount()(whereClause);
+};
+
+const _getTweetLikeCount = async whereClause => {
+  await getMongoConnection();
+  return getTweetLikeCount()(whereClause);
+};
+
+const _getARetweetCount = async whereClause => {
+  await getMongoConnection();
+  return getARetweetCount()(whereClause);
+};
+const _getTweetCountHour = async whereClause => {
+  await getMongoConnection();
+  return getTweetCountHour()(whereClause);
+};
+
+const _getTweetCountDay = async whereClause => {
+  await getMongoConnection();
+  return getTweetCountDay()(whereClause);
+};
+const _getTweetCountMonth = async whereClause => {
+  await getMongoConnection();
+  return getTweetCountMonth()(whereClause);
+};
+
+const _getProfileViewCount = async whereClause => {
+  await getMongoConnection();
+  return getProfileViewCount()(whereClause);
+};
+const _IncTweetViewCount = async whereClause => {
+  await getMongoConnection();
+  return IncTweetViewCount()(whereClause);
+};
+const _IncProfileViewCount = async whereClause => {
+  await getMongoConnection();
+  return IncProfileViewCount()(whereClause);
+};
+
+
 module.exports = {
   getUsers: _getUsers,
   saveUsers: _saveUsers,
@@ -286,5 +340,17 @@ module.exports = {
 
   getBookmarks: _getBookmarks,
   setBookmarks: _setBookmarks,
-  deleteBookmarks: _deleteBookmarks
+  deleteBookmarks: _deleteBookmarks,
+
+  getTweetViewCount: _getTweetViewCount,
+  getTweetLikeCount: _getTweetLikeCount,
+  getARetweetCount: _getARetweetCount,
+  getTweetCountHour: _getTweetCountHour,
+  getTweetCountDay: _getTweetCountDay,
+  getTweetCountMonth: _getTweetCountMonth,
+
+  getProfileViewCount: _getProfileViewCount,
+
+  IncTweetViewCount: _IncTweetViewCount,
+  IncProfileViewCount: _IncProfileViewCount
 };
