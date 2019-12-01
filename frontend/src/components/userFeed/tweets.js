@@ -55,7 +55,7 @@ class tweets extends Component {
 
         let tweet1;
         
-        tweet1 =this.state.tweet.map(tweet => (
+        tweet1 = this.state.tweet.map(tweet => (
             <Link class="a" to="/descTweets">
             <div class="tweets-div" role="button">
                 <div>

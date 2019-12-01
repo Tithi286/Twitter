@@ -30,6 +30,21 @@ router.get("/", requireAuth, async function(req, res, next) {
   }
 });
 
+// search people for messaging
+router.get('/search', requireAuth, async function (req, res, next) {
+  const {fname} = req.query;
+  try {
+       
+              const user = { search: { firstName: fname } };
+              const { results } = await getUsers(user);
+              
+               res.json(results);
+         
+  } catch (e) {
+      res.status(500).send(e.message || e);
+  }
+});
+
 router.post("/send", requireAuth, async function(req, res, next) {
   const { chat, receiverID } = req.body;
 
