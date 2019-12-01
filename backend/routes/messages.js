@@ -35,6 +35,11 @@ router.get("/", requireAuth, async function(req, res, next) {
 
 // search people for messaging
 router.get('/search', requireAuth, async function (req, res, next) {
+  const {fname} = req.query;
+  try {
+       
+              const user = { search: { firstName: fname } };
+              const { results } = await getUsers(user);
   const { fname} = req.query;
   try {
        
