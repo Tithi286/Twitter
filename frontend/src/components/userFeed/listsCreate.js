@@ -40,7 +40,7 @@ class ListsCreate extends Component {
        
         var token = localStorage.getItem("token");
         axios.defaults.withCredentials = true;
-        axios.get('http://'+rooturl+':3001/trip-details', {
+        axios.get('http://'+':3001/trip-details', {
             headers: {"Authorization" : `Bearer ${token}`}
         })
             .then(response => {
