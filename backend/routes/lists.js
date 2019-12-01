@@ -81,7 +81,7 @@ router.get("/subscriptions", requireAuth, async function(req, res, next) {
 
 
 //Returns members of selected list
-router.post("/members", requireAuth, async function(req, res, next) {
+
 
 router.get("/members", requireAuth, async function(req, res, next) {
   try {
