@@ -30,7 +30,8 @@ const {
   setSubscribers,
   setMembers,
   unsetSubscribers,
-  unsetMembers
+  unsetMembers,
+  deleteList
 } = require("./lists");
 const {
   getFollowedUsers,
@@ -41,6 +42,8 @@ const {
 const { getLike, saveLike, getLikeCount } = require("./like");
 const { getRetweet, saveRetweet, getRetweetCount } = require('./retweet');
 const { getReply, saveReply, getReplyCount } = require('./reply');
+
+const {setBookmarks,getBookmarks,deleteBookmarks}=require('./bookmarks')
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -219,6 +222,27 @@ const _unsetMembers = async whereClause => {
   await getMongoConnection();
   return unsetMembers()(whereClause);
 };
+
+const _deleteList = async whereClause => {
+  await getMongoConnection();
+  return deleteList()(whereClause);
+};
+
+const _getBookmarks = async whereClause => {
+  await getMongoConnection();
+  return getBookmarks()(whereClause);
+};
+
+const _setBookmarks = async whereClause => {
+  await getMongoConnection();
+  return setBookmarks()(whereClause);
+};
+
+const _deleteBookmarks = async whereClause => {
+  await getMongoConnection();
+  return deleteBookmarks()(whereClause);
+};
+
 module.exports = {
   getUsers: _getUsers,
   saveUsers: _saveUsers,
@@ -256,5 +280,11 @@ module.exports = {
   setMembers: _setMembers,
   unsetSubscribers: _unsetSubscribers,
   unsetMembers: _unsetMembers,
-  getMongoConnection
+  deleteList:_deleteList,
+ 
+  getMongoConnection,
+
+  getBookmarks: _getBookmarks,
+  setBookmarks: _setBookmarks,
+  deleteBookmarks: _deleteBookmarks
 };
