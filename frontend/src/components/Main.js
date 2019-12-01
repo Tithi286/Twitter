@@ -26,6 +26,8 @@ import DescribeTweets from './userFeed/describeTweet';
 import Members from './userFeed/members';
 import IndividualList from './userFeed/individualList';
 import SubscribedList from './userFeed/subscribedList';
+import ExploreList from './userFeed/exploreList'
+
 
 class Main extends Component {
     render() {
@@ -56,6 +58,8 @@ class Main extends Component {
                 <Route path="/editprofile" component={editProfile} />
                 <Route path="/followers" component={followers} />
                 <Route path="/following" component={following} />
+                <Route path="/exploreList" component={ExploreList} />
+
             </div>
         )
     }

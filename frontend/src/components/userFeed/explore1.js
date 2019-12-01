@@ -67,23 +67,23 @@ class profile extends Component {
         console.log(this);
     }
 
-    componentDidMount(){
-        const data = {
-            params:{
-            topic: this.props.location.state.search
-            }
-        }
-        console.log("Data from explore: ", data)
-        axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userfeed/search',data)
-                .then((response) => {
-                this.setState({
-                    profile : response.data
-                });
-                console.log(response)
-                console.log(this.state.retweet)
-            });
-    }
+    // componentDidMount(){
+    //     const data = {
+    //         params:{
+    //         topic: this.props.location.state.search
+    //         }
+    //     }
+    //     console.log("Data from explore: ", data)
+    //     axios.defaults.withCredentials = true;
+    //     axios.get('http://localhost:3001/userfeed/search',data)
+    //             .then((response) => {
+    //             this.setState({
+    //                 profile : response.data
+    //             });
+    //             console.log(response)
+    //             console.log(this.state.profile)
+    //         });
+    // }
 
     render() {
 
