@@ -11,7 +11,7 @@ import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 
 class explore extends Component {
@@ -19,26 +19,30 @@ class explore extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+            search: ""
         }
         
     }
 
 
-   
-
-    
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    goTo = () => {
+        //console.log("answer: ",rest)
+      // sessionStorage.getItem('rid')
+       // console.log(this.state.rId)
+        this.props.history.push({
+            pathname: '/explore1',
+            state: {
+                search : this.state.search
+            }
+        })
     }
+
+    searchChangeHandler = (e) => {
+        this.setState({
+            search : e.target.value
+        })
+    }
+
 
 
 
@@ -74,12 +78,12 @@ class explore extends Component {
                 <div class="col-md-6 feed">
                     <div class="home-font">Explore</div>
                     <div>
-                    <input type="text" class="searchbar1" placeholder="Search Twitter" name="search" id="search"></input>
+                    <input type="text" class="searchbar1" placeholder="Search Twitter" name="search" id="search" onChange={this.searchChangeHandler}></input>
                     </div>
                     <div style={{paddingLeft: "78%"}}>
-                    <Link to="/explore1"><button class="buttons3">
+                    <button class="buttons3" onClick={this.goTo}>
                         Search
-                    </button></Link>
+                    </button>
                     </div>
                 </div>
                 <div class="col-md-3 feed">
@@ -87,11 +91,7 @@ class explore extends Component {
                     
                     </div>
                 </div>
-                
             </div>
-
-
-
         )
     }
 
