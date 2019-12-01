@@ -5,13 +5,8 @@ var passport = require("passport");
 const multer = require("multer");
 const path = require("path");
 
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
-const {
-  getMessages,
-  sendMessages,
-  deleteMessages
-} = require("../DataAccessLayer");
-
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
 
@@ -19,14 +14,37 @@ var requireAuth = passport.authenticate("jwt", { session: false });
 router.get("/", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
-
+    receiverID=[]
     const messages = {
       senderID: loggedInUser.userID
     };
-    results = await getMessages(messages);
-    res.json(results);
+    results = await simulateRequestOverKafka("getMessages",messages);
+    results.forEach(retwt => {
+      receiverID.push(retwt.receiverID);
+  });
+  
+  quoted="'" + receiverID.join("','") + "'";
+    const user = { usersID: [quoted] };
+  
+  let chatRes = await simulateRequestOverKafka("getUsers",user);
+  res.json(chatRes.results)
   } catch (e) {
     res.status(500).send(e.message || e);
+  }
+});
+
+// search people for messaging
+router.get('/search', requireAuth, async function (req, res, next) {
+  const { fname} = req.query;
+  try {
+       
+              const user = { search: { firstName: fname } };
+              const { results } = await simulateRequestOverKafka("getUsers",user);
+              
+               res.json(results);
+         
+  } catch (e) {
+      res.status(500).send(e.message || e);
   }
 });
 
@@ -41,7 +59,7 @@ router.post("/send", requireAuth, async function(req, res, next) {
       receiverID: receiverID,
       chatDate: Date.now()
     };
-    await sendMessages(messages);
+    await simulateRequestOverKafka("sendMessages",messages);
     res.json({ message: "Message Sent" });
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -49,21 +67,26 @@ router.post("/send", requireAuth, async function(req, res, next) {
 });
 
 //Shows specific chat
-router.post("/view", requireAuth, async function(req, res, next) {
-  const { receiverID } = req.body;
-
+router.get("/view", requireAuth, async function(req, res, next) {
+  const { receiverID } = req.query;
+  
   try {
     const loggedInUser = req.user;
     const messages = {
       senderID: loggedInUser.userID,
       receiverID: receiverID
     };
-    const results = await getMessages(messages);
-    res.json(results);
+    const results = await simulateRequestOverKafka("getMessages",messages);
+  
+    const user = { userID:results[0].receiverID };
+  
+  let chatRes = await simulateRequestOverKafka("getUsers",user);
+  res.json(results)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
+  
 
 router.post("/delete", requireAuth, async function(req, res, next) {
   const { receiverID } = req.body;
@@ -73,7 +96,7 @@ router.post("/delete", requireAuth, async function(req, res, next) {
       senderID: loggedInUser.userID,
       receiverID: receiverID
     };
-    await deleteMessages(messages);
+    await simulateRequestOverKafka("deleteMessages",messages);
     res.json({ message: "Message Deleted" });
   } catch (e) {
     res.status(500).send(e.message || e);

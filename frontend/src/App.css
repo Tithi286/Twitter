@@ -460,6 +460,12 @@
   padding-top: 20px;
   width: 60px;
 }
+
+.u-mar3{
+  margin: 8px;
+  width: 400px;
+}
+
 .snippet {
   color: #657786;
   font-size: 14px;
@@ -631,6 +637,21 @@ opacity.first {
   z-index: 20;
   height:35px;
   width: 120px;
+  box-shadow: 0 0 1px #E6E5F4;
+  border-radius: 20px;
+  border-color: #29a3ef;
+  font-size: 15px;
+  font-weight: bold;
+  color: #29a3ef
+}
+
+.logoc{
+  position:absolute;
+  left: 90%;
+  margin-left: -100px;
+  z-index: 20;
+  height:35px;
+  width: 80px;
   box-shadow: 0 0 1px #E6E5F4;
   border-radius: 20px;
   border-color: #29a3ef;

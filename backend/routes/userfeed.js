@@ -13,7 +13,8 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 
 // search hashtags or people
 router.get('/search', requireAuth, async function (req, res, next) {
-    const { topic } = req.query;
+    const { topic } = req.query
+    console.log(topic)
     try {
         if (topic) {
             //Hashtag search

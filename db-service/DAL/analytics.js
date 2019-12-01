@@ -27,7 +27,7 @@ const getTweetLikeCount = connection => (query = {}) => {
   });
 };
 
-const getRetweetCount = connection => (query = {}) => {
+const getARetweetCount = connection => (query = {}) => {
   return new Promise((resolve, reject) => {
     retweets
       .aggregate(
@@ -164,7 +164,7 @@ const IncProfileViewCount = connection => (query = {}) => {
 module.exports = {
   getTweetViewCount,
   getTweetLikeCount,
-  getRetweetCount,
+  getARetweetCount,
   getTweetCountHour,
   getTweetCountDay,
   getTweetCountMonth,

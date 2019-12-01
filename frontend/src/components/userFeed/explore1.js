@@ -32,7 +32,8 @@ class profile extends Component {
             month: "",
             day: "",
             startDate: moment(),
-            isComponent: ""
+            isComponent: "",
+            profile: []
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
@@ -66,7 +67,23 @@ class profile extends Component {
         console.log(this);
     }
 
-
+    // componentDidMount(){
+    //     const data = {
+    //         params:{
+    //         topic: this.props.location.state.search
+    //         }
+    //     }
+    //     console.log("Data from explore: ", data)
+    //     axios.defaults.withCredentials = true;
+    //     axios.get('http://localhost:3001/userfeed/search',data)
+    //             .then((response) => {
+    //             this.setState({
+    //                 profile : response.data
+    //             });
+    //             console.log(response)
+    //             console.log(this.state.profile)
+    //         });
+    // }
 
     render() {
 
