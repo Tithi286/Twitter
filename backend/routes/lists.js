@@ -98,7 +98,7 @@ router.get("/members", requireAuth, async function(req, res, next) {
     members = [];
 
     const list = {
-      _id: req.body.listID
+      _id: req.query.listID
     };
     const results = await getMembers(list);
 
@@ -120,7 +120,7 @@ router.get("/subscribers", requireAuth, async function(req, res, next) {
   try {
     subscribers = [];
     const list = {
-      _id: req.body.listID
+      _id: req.query.listID
     };
     const results = await getSubscribers(list);
     results[0].subscribers.forEach(subs => subscribers.push(subs));
@@ -140,7 +140,7 @@ router.get("/tweets", requireAuth, async function(req, res, next) {
   let followID = [];
   try {
     const list = {
-      _id: req.body.listID
+      _id: req.query.listID
     };
     //get the members of list from table list
     let results = await getMembers(list);
@@ -181,7 +181,7 @@ router.post("/subscribe", requireAuth, async function(req, res, next) {
 
 // search people for adding as member
 router.get("/search", requireAuth, async function(req, res, next) {
-  const { fname } = req.body;
+  const { fname } = req.query;
   try {
     const user = {
       search: { firstName: fname }
@@ -244,5 +244,7 @@ router.post("/demember", requireAuth, async function(req, res, next) {
     res.status(500).send(e.message || e);
   }
 });
+
+//Delete list
 
 module.exports = router;

@@ -4,7 +4,7 @@ const uuidv4 = require("uuid/v4");
 var passport = require("passport");
 const multer = require("multer");
 const path = require("path");
-
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
 const {
   getBookmarks,
@@ -26,7 +26,7 @@ router.post("/create", requireAuth, async function(req, res, next) {
       userID: loggedInUser.userID,
       tweetID: tweetID
     };
-    await setBookmarks(bookmarks);
+    await simulateRequestOverKafka("setBookmarks", bookmarks);
     res.json({ message: "Bookmarks Created" });
   } catch (e) {
     res.status(500).send(e.message || e);

@@ -41,7 +41,7 @@ router.get("/", requireAuth, async function(req, res, next) {
 
 // search people for messaging
 router.get('/search', requireAuth, async function (req, res, next) {
-  const { fname} = req.body;
+  const { fname} = req.query;
   try {
        
               const user = { search: { firstName: fname } };
@@ -74,7 +74,7 @@ router.post("/send", requireAuth, async function(req, res, next) {
 
 //Shows specific chat
 router.get("/view", requireAuth, async function(req, res, next) {
-  const { receiverID } = req.body;
+  const { receiverID } = req.query;
   
   try {
     const loggedInUser = req.user;
