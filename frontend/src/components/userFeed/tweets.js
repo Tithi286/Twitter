@@ -28,14 +28,20 @@ class tweets extends Component {
 
 
     componentDidMount(){
-        
+        console.log("in componentdidmount")
+        const data = {
+            params:{
+            userID : "0010E0DC-7CAF-5F55-14B5-46466130211B"
+        }}
+       // console.log(data.userID)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userfeed/tweets')
+        axios.get('http://localhost:3001/userprofile/tweets', data)
                 .then((response) => {
+                    console.log("in axios", response)
                 this.setState({
                     tweet : response.data
                 });
-                console.log(response.data)
+                console.log(response)
                 console.log(this.state.tweet)
             });
     }

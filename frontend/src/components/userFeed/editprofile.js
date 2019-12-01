@@ -30,7 +30,7 @@ class editProfile extends Component {
         this.zipChangeHandler = this.zipChangeHandler.bind(this);
         this.submitChanges = this.submitChanges.bind(this);
         this.ImageChange = this.ImageChange.bind(this);
-        this.updateprofileimage = this.updateprofileimage.bind(this);
+        // this.updateprofileimage = this.updateprofileimage.bind(this);
         
     }
     
@@ -50,9 +50,9 @@ class editProfile extends Component {
                     state: response.data.state,
                     zipcode: response.data.zipcode,
                 });
-                if(response.data.profileimage){
+                if(response.data.profileImage){
                     this.setState({
-                        profileimage : response.data.profileimage
+                        profileimage : response.data.profileImage
                     })
                 }
             }) .catch(error => {
@@ -122,44 +122,43 @@ class editProfile extends Component {
         }
     }
 
-    updateprofileimage = (e) => {
-        const image = new FormData();
-        image.append("image", this.state.imageURL);
+    // updateprofileimage = (e) => {
+    //     const image = new FormData();
+    //     image.append("image", this.state.imageURL);
 
-        axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.post('http://localhost:3001/updatepic', image)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                console.log("Status Code : ", response);
-                if (response.status === 200) {
-                    this.setState({
-                        message: response.data.message
-                    })
-                }
-            })
-            .catch(error => {
-                this.setState({
-                    //message: error.response.data.error
-                })
-            });
-    }
+    //     axios.defaults.withCredentials = true;
+    //     //make a post request with the user data
+    //     axios.post('http://localhost:3001/updatepic', image)
+    //         .then(response => {
+    //             console.log("Status Code : ", response.status);
+    //             console.log("Status Code : ", response);
+    //             if (response.status === 200) {
+    //                 this.setState({
+    //                     message: response.data.message
+    //                 })
+    //             }
+    //         })
+    //         .catch(error => {
+    //             this.setState({
+    //                 //message: error.response.data.error
+    //             })
+    //         });
+    // }
 
     submitChanges(e) {
         e.preventDefault()
-        const data = {
-            firstName: this.state.fname,
-            lastName: this.state.lname,
-            email: this.state.email,
-            profileDesc: this.state.bio,
-            city: this.state.city,
-            state: this.state.state,
-            zipcode: this.state.zipcode,
-            profileimage: this.state.profileimage
-        }
-        console.log(data)
+        const image = new FormData();
+        image.append("profileImage", this.state.imageURL);
+        image.append("firstName", this.state.fname);
+        image.append("lastName", this.state.lname);
+        image.append("email", this.state.email);
+        image.append("profileDesc", this.state.bio);
+        image.append("city", this.state.city);
+        image.append("state", this.state.state);
+        image.append("zipcode", this.state.zipcode);
+        console.log(image)
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/users/profile', data)
+        axios.put('http://localhost:3001/users/profile', image)
             .then((response) => {
                 console.log("in axios call")
                 console.log(response)

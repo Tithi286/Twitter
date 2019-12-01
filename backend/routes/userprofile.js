@@ -10,12 +10,14 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 //Get the tweets written by user
 router.get('/tweets', requireAuth, async function (req, res, next) {
     const { userID } = req.query;
+    console.log("userid", userID)
     try {
         //tweet object
         const tweet = {
             tweetOwnerID: userID
         };
         results = await simulateRequestOverKafka("getTweets", tweet);
+        console.log(results)
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);

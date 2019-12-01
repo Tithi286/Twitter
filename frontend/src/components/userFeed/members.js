@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import axios from 'axios';
+//import axios from 'axios';
 import { Link } from "react-router-dom";
 //import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,7 +11,7 @@ import { faHome, faList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Favicon from 'react-favicon';
 
-class Subscriptions extends Component {
+class Members extends Component {
 
     constructor(props) {
         super(props);
@@ -55,8 +51,8 @@ class Subscriptions extends Component {
         let listCreated;
         
         listCreated =(
-            <Link class="a" to="/sublist">
-            <div class="tweets-div u-list1">    
+            <div class="tweets-div u-list1">
+                
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">
                             <div class="u-mar1">
@@ -73,7 +69,6 @@ class Subscriptions extends Component {
                             </div>
                             </div>            
             </div>
-            </Link>
             )
 
         return (
@@ -102,8 +97,8 @@ class Subscriptions extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
-                            <a class="active" class="col-md-5">Subscribed</a>
-                            <a href="#contact" >Members</a>
+                            <a class="/subscriptions" class="col-md-5">Subscribed</a>
+                            <a class="active" >Members</a>
                         </div>
                     <div>
                         {listCreated}
@@ -128,4 +123,4 @@ class Subscriptions extends Component {
 }
 
 
-export default Subscriptions;
+export default Members;

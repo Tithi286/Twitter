@@ -12,15 +12,9 @@ import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
 //import { Link } from "react-router-dom";
-import ExploreList from './exploreList'
-import { Link } from "react-router-dom";
-import Icon from 'react-icons-kit';
-import {commentO} from 'react-icons-kit/fa/commentO'
-import {heartO} from 'react-icons-kit/fa/heartO'
-import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
-import {loop} from 'react-icons-kit/iconic/loop'
 
-class explore extends Component {
+
+class exploreList extends Component {
 
     constructor(props) {
         super(props);
@@ -31,11 +25,10 @@ class explore extends Component {
 
     }
 
-
-    goTo = () => {
+    componentDidMount() {
         const data = {
             params: {
-                topic: this.state.search
+                topic: this.props.location.state.search
             }
         }
         console.log("Data from explore: ", data)
@@ -50,93 +43,22 @@ class explore extends Component {
             });
     }
 
-    searchChangeHandler = (e) => {
-        this.setState({
-            search: e.target.value
-        })
-    }
-
-
 
 
 
     render() {
 
-        let profile1;
-    
-        var a = this.state.search.startsWith("#")
-        console.log("var a: ",a)
-        if(a == true){
-            profile1 = this.state.profile.map(profile => (
-                <Link class="a" to="/descTweets">
-                <div class="tweets-div" role="button">
-                    <div>
-                    <div class="u-flex u-flex-align">
-                                <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
-                                <div class="u-flex-justify">
-                                <div class="u-mar1">
-                                <div class="s-list-item-primary u-mar1 fullname">firstName</div>
-                                <div class="s-list-item-secondary u-mar1 snippet">
-                                        <span class="span">tweet</span>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                        {/* UserName<br />
-                        Tweet Message */}
-                    </div>
-                    <div class="img-tweets-div">
-                        <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
-                        <div style={{paddingLeft: "12%"}}>
-                        <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/></div>
-                        <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> </div>
-                        <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button"/> </div>
-                        <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button"/></div>                
-                        </div>
-                    </div>
-                    
-                    <br/><br/>
-                </div>
-                </Link>
-            ))
-        }
-        
-        else{
-        profile1 = this.state.profile.map(profile => (
-            
-                <div class="u-clickable u-list" role="button">
-                <div class="u-flex u-flex-align container-flex">
-                    <div class="u-mar2 col-sm-1"  style={{float:"left"}}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
-                    <div class="col-md-8" style={{float:"left"}}>
-                    {/* <Link class="a" to="/explore1"> */}
-                        <div class="u-mar3">
-                        <div class="s-list-item-primary u-mar3 fullname">User Name </div>
-                            <div class="s-list-item-secondary u-mar3 snippet">
-                            <span class="span">Description</span>
-                            </div>
-                        </div>
-                    {/* </Link> */}
-                    </div>
-                    <div class="col-sm-3" style={{float:"left"}}> 
-                    <button class="logoc" style={{float:"left"}}>Follow</button>
-                    </div>
-                </div>
-                </div>
-         
-        ))
-        }
-
+        let Contents;
 
         let redirectVar = null;
         if (this.props.authFlag == true) {
             redirectVar = <Redirect to="blogin" />
         }
         const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
 
         return (
             <div class="container-flex">
-                {redirectVar}
+
                 <div class="col-md-3 feed">
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span></a><br /><br />
@@ -152,33 +74,27 @@ class explore extends Component {
                     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </div>
 
+
                 <div class="col-md-6 feed">
                     <div class="home-font">Explore</div>
-                    <div>
-                        <input type="text" class="searchbar1" placeholder="Search Twitter" name="search" id="search" onChange={this.searchChangeHandler}></input>
-                    </div>
-                    <div style={{ paddingLeft: "78%" }}>
-                        <button class="buttons3" onClick={this.goTo}>
-                            Search
-                    </button>
-                    </div><br />
-                    {profile1}
-
-                    {/* <div class="container-flex">
-                    <div class="col-md-6 divs" style={{float:"left", fontWeight:"bold", alignItems:"center"}}>
+                    <div class="container-flex">
+                    <div class="col-md-6 divs" style={{float:"left"}}>
                     People
                     </div>
-                    <div class="col-md-6 divs" style={{float:"left", fontWeight:"bold", alignItems:"center"}}>
+                    <div class="col-md-6 divs" style={{float:"left"}}>
                     Posts
                     </div>
-                    </div> */}
-
+                    </div>
                 </div>
+
                 <div class="col-md-3 feed">
-
-
-
+                    <div>
+                    
+                    </div>
                 </div>
+
+
+                
             </div>
         )
     }
@@ -186,7 +102,7 @@ class explore extends Component {
 }
 
 
-export default explore;
+export default exploreList;
 
 
 

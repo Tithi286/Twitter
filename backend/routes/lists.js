@@ -6,17 +6,7 @@ const multer = require("multer");
 const path = require("path");
 
 const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
-const {
-  getTweets,
-  getLists,
-  saveLists,
-  getMemberships,
-  getSubscriptions,
-  getMembers,
-  getSubscribers,
-  setSubscribers,
-  setMembers
-} = require("../DataAccessLayer");
+const { simulateRequestOverKafka } = require("../KafkaRequestSimulator");
 
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
@@ -29,7 +19,7 @@ router.get("/", requireAuth, async function(req, res, next) {
     const list = {
       ownerID: loggedInUser.userID
     };
-    results = await getLists(list);
+    results = await simulateRequestOverKafka("getLists", list);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -51,7 +41,7 @@ router.post("/create", requireAuth, async function(req, res, next) {
       listDesc: listDesc,
       isPrivate: isPrivate
     };
-    await saveLists(list);
+    await simulateRequestOverKafka("saveLists", list);
     res.json({ message: "List Created" });
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -66,7 +56,7 @@ router.get("/memberships", requireAuth, async function(req, res, next) {
     const list = {
       members: loggedInUser.userID
     };
-    const results = await getMemberships(list);
+    const results = await simulateRequestOverKafka("getMemberships", list);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -81,22 +71,35 @@ router.get("/subscriptions", requireAuth, async function(req, res, next) {
     const list = {
       subscribers: loggedInUser.userID
     };
-    const results = await getSubscriptions(list);
+    const results = await simulateRequestOverKafka("getSubscriptions", list);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
 
-//Returns members of selected list
 
+<<<<<<< HEAD
+//Returns members of selected list
 router.post("/members", requireAuth, async function(req, res, next) {
+=======
+router.get("/members", requireAuth, async function(req, res, next) {
+>>>>>>> e521fb305abbcaeec56608ba878cc5b7c2fb9222
   try {
+    members = [];
+
     const list = {
-      _id: req.body.listID
+      _id: req.query.listID
     };
-    const results = await getMembers(list);
-    res.json(results);
+    const results = await simulateRequestOverKafka("getMembers", list);
+
+    results[0].members.forEach(mem => members.push(mem));
+
+    quoted = "'" + members.join("','") + "'";
+    const user = { usersID: [quoted] };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    res.json(chatRes.results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -104,27 +107,34 @@ router.post("/members", requireAuth, async function(req, res, next) {
 
 //Returns subscribers of selected list
 
-router.post("/subscribers", requireAuth, async function(req, res, next) {
+router.get("/subscribers", requireAuth, async function(req, res, next) {
   try {
+    subscribers = [];
     const list = {
-      _id: req.body.listID
+      _id: req.query.listID
     };
-    const results = await getSubscribers(list);
-    res.json(results);
+    const results = await simulateRequestOverKafka("getSubscribers", list);
+    results[0].subscribers.forEach(subs => subscribers.push(subs));
+
+    quoted = "'" + subscribers.join("','") + "'";
+    const user = { usersID: [quoted] };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    res.json(chatRes.results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
 
 //Get the tweets of the followed persons
-router.post("/tweets", requireAuth, async function(req, res, next) {
+router.get("/tweets", requireAuth, async function(req, res, next) {
   let followID = [];
   try {
     const list = {
-      '_id': req.body.listID
+      _id: req.query.listID
     };
     //get the members of list from table list
-    let  results  = await getMembers(list);
+    let results = await simulateRequestOverKafka("getMembers", list);
     let followed = results[0].members;
 
     //For each member of list get all the tweets from Mongo Tweets collection
@@ -136,7 +146,7 @@ router.post("/tweets", requireAuth, async function(req, res, next) {
     const tweet = {
       tweetOwnerID: { $in: followID }
     };
-    results = await getTweets(tweet);
+    results = await simulateRequestOverKafka("getTweets", tweet);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -148,44 +158,61 @@ router.post("/tweets", requireAuth, async function(req, res, next) {
 router.post("/subscribe", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
+    const { listID } = req.body;
     const list = {
-      _id: req.body.listID,
+      listID: listID,
       user: loggedInUser.userID
     };
-    await setSubscribers(list);
+    await simulateRequestOverKafka("setSubscribers", list);
+    res.json("Added to Subscribers");
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+
+// search people for adding as member
+router.get("/search", requireAuth, async function(req, res, next) {
+  const { fname } = req.query;
+  try {
+    const user = {
+      search: { firstName: fname }
+    };
+    const { results } = await simulateRequestOverKafka("getUsers", user);
+
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
 
-//Add member to a list
 
+//Add member to a list
 router.post("/member", requireAuth, async function(req, res, next) {
   try {
+    const { userID, listID } = req.body;
     const loggedInUser = req.user;
     const list = {
-      _id: req.body.listID,
-      user: loggedInUser.userID
+      listID: listID,
+      user: userID
     };
-    await setMembers(list);
-    res.json(results);
+    await simulateRequestOverKafka("setMembers", list);
+    res.json("Added to Members");
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
 
 //Unsubscribe from a list
-
 router.post("/unsubscribe", requireAuth, async function(req, res, next) {
   try {
+    const { listID } = req.body;
     const loggedInUser = req.user;
     const list = {
-      _id: req.body.listID,
+      _id: listID,
       user: loggedInUser.userID
     };
-    await unsetSubscribers(list);
-    res.json(results);
+    await simulateRequestOverKafka("unsetSubscribers", list);
+    res.json("Subscriber removed");
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -195,13 +222,30 @@ router.post("/unsubscribe", requireAuth, async function(req, res, next) {
 
 router.post("/demember", requireAuth, async function(req, res, next) {
   try {
+    const { userID } = req.body;
     const loggedInUser = req.user;
     const list = {
       _id: req.body.listID,
-      user: loggedInUser.userID
+      user: userID
     };
-    await unsetMembers(list);
-    res.json(results);
+    await simulateRequestOverKafka("unsetMembers", list);
+    res.json("Member removed");
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+
+//Delete list
+
+router.post("/delete", requireAuth, async function(req, res, next) {
+  try {
+    const loggedInUser = req.user;
+    const list = {
+      _id: req.body.listID,
+      ownerID: loggedInUser.userID
+    };
+    await simulateRequestOverKafka("deleteList", list);
+    res.json("List Deleted");
   } catch (e) {
     res.status(500).send(e.message || e);
   }

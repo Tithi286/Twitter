@@ -1,11 +1,15 @@
 const tableName = 'Users';
 
 const getUsers = connection => (user = {}) => {
-    const { userID, email, password } = user;
-    let query = `select * from ${tableName}`;
+    const { userID, usersID,email, password ,search} = user;
+  
     const clause = [];
     if (userID) {
         clause.push(`userID='${userID}'`);
+    }
+    if (usersID) {
+    
+        clause.push(`userID in (${usersID})`);
     }
     if (email) {
         clause.push(`email='${email}'`);
@@ -13,7 +17,12 @@ const getUsers = connection => (user = {}) => {
     if (password) {
         clause.push(`password='${password}'`);
     }
+    if (search) {
+        clause.push(`firstName like '%${search.firstName}%' `);
+    }
+    let query = `select * from ${tableName}`;
     query += clause.length > 0 ? ` where ${clause.join(' and ')}` : '';
+    console.log(query)
     return new Promise((resolve, reject) => {
         connection.query(query, (error, results, fields) => {
             // release DB connection
@@ -21,6 +30,7 @@ const getUsers = connection => (user = {}) => {
             if (error) {
                 reject(error);
             } else {
+
                 resolve({ results, fields });
             }
         });

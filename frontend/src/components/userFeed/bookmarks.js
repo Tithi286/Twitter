@@ -46,7 +46,7 @@ class bookmarks extends Component {
                             <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">UserName</div>
+                            <div class="s-list-item-primary u-mar1 fullname">Username</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{bookmark.tweet}</span>
                             </div>
