@@ -4,19 +4,8 @@ const uuidv4 = require("uuid/v4");
 var passport = require("passport");
 const multer = require("multer");
 const path = require("path");
-
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
-const {
-  getTweetViewCount,
-  getTweetLikeCount,
-  getRetweetCount,
-  getTweetCountHour,
-  getTweetCountDay,
-  getTweetCountMonth,
-  getProfileViewCount,
-  IncTweetViewCount,
-  IncProfileViewCount
-} = require("../DataAccessLayer");
 
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
@@ -31,7 +20,7 @@ router.post("/inctweetviewcount", requireAuth, async function(req, res, next) {
     const query = {
       tweetID: tweetID
     };
-    results = await IncTweetViewCount(query);
+    results = await simulateRequestOverKafka("IncTweetViewCount",query);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -51,7 +40,7 @@ router.post("/incprofileviewcount", requireAuth, async function(
     const query = {
       userID: loggedInUser.userID
     };
-    results = await IncProfileViewCount(query);
+    results = await simulateRequestOverKafka("IncProfileViewCount",query);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -64,7 +53,7 @@ router.get("/viewcount", requireAuth, async function(req, res, next) {
     const loggedInUser = req.user;
 
     const query = {};
-    results = await getTweetViewCount(query);
+    results = await simulateRequestOverKafka("getTweetViewCount",query);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -76,7 +65,7 @@ router.get("/likecount", requireAuth, async function(req, res, next) {
     const loggedInUser = req.user;
 
     const query = {};
-    results = await getTweetLikeCount(query);
+    results = await simulateRequestOverKafka("getTweetLikeCount",query);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -88,7 +77,7 @@ router.get("/retweetcount", requireAuth, async function(req, res, next) {
     const loggedInUser = req.user;
 
     const query = {};
-    results = await getRetweetCount(query);
+    results = await simulateRequestOverKafka("getARetweetCount",query);
     res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -100,7 +89,7 @@ router.get("/hourcount", requireAuth, async function(req, res, next) {
     const loggedInUser = req.user;
 
     const query = {};
-    results = await getTweetCountHour(query);
+    results = await simulateRequestOverKafka("getTweetCountHour",query);
     //fetch hourly division of tweets from returned results.
     res.json(results);
     // console.log(results.length)
@@ -114,7 +103,7 @@ router.get("/daycount", requireAuth, async function(req, res, next) {
     const loggedInUser = req.user;
 
     const query = {};
-    results = await getTweetCountDay(query);
+    results = await simulateRequestOverKafka("getTweetCountDay",query);
     //fetch daily division of tweets from returned results.
     res.json(results);
   } catch (e) {
@@ -127,7 +116,7 @@ router.get("/monthcount", requireAuth, async function(req, res, next) {
     const loggedInUser = req.user;
 
     const query = {};
-    results = await getTweetCountMonth(query);
+    results = await simulateRequestOverKafka("getTweetCountMonth",query);
     //fetch monthly division of tweets from returned results.
     res.json(results);
   } catch (e) {
@@ -142,7 +131,7 @@ router.get("/profileviewcount", requireAuth, async function(req, res, next) {
     const query = {
       userID: loggedInUser.userID
     };
-    results = await getProfileViewCount(query);
+    results = await simulateRequestOverKafka("getProfileViewCount",query);
     //fetch daily division of count from returned results.
     res.json(results);
   } catch (e) {
