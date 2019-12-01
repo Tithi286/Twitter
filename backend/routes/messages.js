@@ -81,7 +81,7 @@ router.get("/view", requireAuth, async function(req, res, next) {
     const user = { userID:results[0].receiverID };
   
   let chatRes = await simulateRequestOverKafka("getUsers",user);
-  res.json(chatRes.results)
+  res.json(results)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
