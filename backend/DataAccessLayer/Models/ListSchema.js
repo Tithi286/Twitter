@@ -5,13 +5,13 @@ const Schema = mongoose.Schema;
 
 const ListSchema = new Schema(
   {
-   listID:String,
-   listName :String,
-   ownerID:String,
-   subscribers:Array,
-   members:Array,
-   isPrivate:String,
-   listDesc:String
+    listID: String,
+    listName: String,
+    ownerID: String,
+    subscribers: Array,
+    members: Array,
+    isPrivate: Number,
+    listDesc: String
   },
   { timestamps: true } // Will also give the List Created datetime
 );
