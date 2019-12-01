@@ -36,11 +36,11 @@ class lists extends Component {
         axios.get('http://localhost:3001/lists/')
                 .then((response) => {
                 this.setState({
-                    tweet : response.data.data,
+                    listCreated : response.data.data,
                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
                 console.log(response.data)
-                console.log(this.state.tweet)
+                console.log(this.state.listCreated)
             });
     }
 

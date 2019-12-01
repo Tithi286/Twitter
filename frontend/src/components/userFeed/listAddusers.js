@@ -15,11 +15,32 @@ class ListsAdduser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            search: "",
+
         }
 
        
         
+    }
+
+    goTo = () => {
+        const data = {
+            params: {
+                topic: this.state.search
+            }
+        }
+        console.log("Data from search lists: ", data)
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/lists/search', data)
+            .then((response) => {
+                console.log(response);
+            });
+    }
+
+    searchChangeHandler = (e) => {
+        this.setState({
+            search: e.target.value
+        })
     }
 
     submitChanges(e) {
@@ -29,7 +50,7 @@ class ListsAdduser extends Component {
         }
         console.log(data)
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/users/profile', data)
+        axios.put('http://localhost:3001/users/member', data)
             .then((response) => {
                 console.log("in axios call")
                 console.log(response)
@@ -40,15 +61,6 @@ class ListsAdduser extends Component {
        }
 
     render() {
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        
-        
-
         return (
             <div className="opacity">
                 <div className="first">
@@ -61,7 +73,12 @@ class ListsAdduser extends Component {
                             <h3>Add Members</h3>
                             <span><button href="/adduser" class="button">Done </button> </span>    
                             <div>
-                                <input type="text" class="searchbar" placeholder="Add Members" name="search" id="search"></input>
+                                <input type="text" class="searchbar1" placeholder="Add member" name="search" id="search" onChange={this.searchChangeHandler}></input>
+                            </div>
+                            <div style={{ paddingLeft: "78%" }}>
+                            <button class="buttons3" onClick={this.goTo}>
+                                add member
+                            </button>
                             </div>
                         </div>
                     </div>

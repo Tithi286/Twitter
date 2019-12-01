@@ -27,6 +27,7 @@ import Members from './userFeed/members';
 import IndividualList from './userFeed/individualList';
 import SubscribedList from './userFeed/subscribedList';
 import ExploreList from './userFeed/exploreList'
+import editlist from './userFeed/editlist';
 
 
 class Main extends Component {
@@ -43,6 +44,7 @@ class Main extends Component {
                 <Route path="/bookmarks" component={Bookmarks} />
                 <Route path="/lists" component={Lists} />
                 <Route path="/indlist" component={IndividualList}/>
+                <Route path="editlist" component={editlist}/>
                 <Route path="/sublist" component={SubscribedList}/>
                 <Route path="/create" component = {listsCreate}/>
                 <Route path="/subscriptions" component= {Subscriptions}/>
