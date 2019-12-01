@@ -5,14 +5,8 @@ var passport = require("passport");
 const multer = require("multer");
 const path = require("path");
 
+const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
-const {
-  getMessages,
-  sendMessages,
-  deleteMessages,
-  getUsers
-} = require("../DataAccessLayer");
-
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
 
@@ -24,7 +18,7 @@ router.get("/", requireAuth, async function(req, res, next) {
     const messages = {
       senderID: loggedInUser.userID
     };
-    results = await getMessages(messages);
+    results = await simulateRequestOverKafka("getMessages",messages);
     results.forEach(retwt => {
       receiverID.push(retwt.receiverID);
   });
@@ -32,7 +26,7 @@ router.get("/", requireAuth, async function(req, res, next) {
   quoted="'" + receiverID.join("','") + "'";
     const user = { usersID: [quoted] };
   
-  let chatRes = await getUsers(user);
+  let chatRes = await simulateRequestOverKafka("getUsers",user);
   res.json(chatRes.results)
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -45,7 +39,7 @@ router.get('/search', requireAuth, async function (req, res, next) {
   try {
        
               const user = { search: { firstName: fname } };
-              const { results } = await getUsers(user);
+              const { results } = await simulateRequestOverKafka("getUsers",user);
               
                res.json(results);
          
@@ -65,7 +59,7 @@ router.post("/send", requireAuth, async function(req, res, next) {
       receiverID: receiverID,
       chatDate: Date.now()
     };
-    await sendMessages(messages);
+    await simulateRequestOverKafka("sendMessages",messages);
     res.json({ message: "Message Sent" });
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -82,17 +76,18 @@ router.get("/view", requireAuth, async function(req, res, next) {
       senderID: loggedInUser.userID,
       receiverID: receiverID
     };
-    const results = await getMessages(messages);
+    const results = await simulateRequestOverKafka("getMessages",messages);
   
     const user = { userID:results[0].receiverID };
   
-  let chatRes = await getUsers(user);
+  let chatRes = await simulateRequestOverKafka("getUsers",user);
   res.json(chatRes.results)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
   
+
 router.post("/delete", requireAuth, async function(req, res, next) {
   const { receiverID } = req.body;
   try {
@@ -101,7 +96,7 @@ router.post("/delete", requireAuth, async function(req, res, next) {
       senderID: loggedInUser.userID,
       receiverID: receiverID
     };
-    await deleteMessages(messages);
+    await simulateRequestOverKafka("deleteMessages",messages);
     res.json({ message: "Message Deleted" });
   } catch (e) {
     res.status(500).send(e.message || e);
