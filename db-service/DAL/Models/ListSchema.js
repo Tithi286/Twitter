@@ -10,7 +10,7 @@ const ListSchema = new Schema(
    ownerID:String,
    subscribers:Array,
    members:Array,
-   isPrivate:String,
+   isPrivate:Number,
    listDesc:String
   },
   { timestamps: true } // Will also give the List Created datetime
