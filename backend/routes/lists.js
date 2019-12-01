@@ -88,8 +88,8 @@ router.get("/subscriptions", requireAuth, async function(req, res, next) {
   }
 });
 
-//Returns members of selected list
 
+//Returns members of selected list
 router.post("/members", requireAuth, async function(req, res, next) {
   try {
     const list = {
@@ -159,8 +159,8 @@ router.post("/subscribe", requireAuth, async function(req, res, next) {
   }
 });
 
-//Add member to a list
 
+//Add member to a list
 router.post("/member", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
@@ -176,7 +176,6 @@ router.post("/member", requireAuth, async function(req, res, next) {
 });
 
 //Unsubscribe from a list
-
 router.post("/unsubscribe", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
