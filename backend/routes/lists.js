@@ -181,10 +181,10 @@ router.post("/subscribe", requireAuth, async function(req, res, next) {
 
 // search people for adding as member
 router.get("/search", requireAuth, async function(req, res, next) {
-  const { fname, lname, username } = req.body;
+  const { fname } = req.body;
   try {
     const user = {
-      search: { firstName: fname, lastName: lname, userName: username }
+      search: { firstName: fname }
     };
     const { results } = await getUsers(user);
 

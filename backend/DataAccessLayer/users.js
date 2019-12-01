@@ -18,7 +18,7 @@ const getUsers = connection => (user = {}) => {
         clause.push(`password='${password}'`);
     }
     if (search) {
-        clause.push(`firstName like '%${search.firstName}%' or lastName like '%${search.lastName}%' or userName like '%${search.userName}%'`);
+        clause.push(`firstName like '%${search.firstName}%' `);
     }
     let query = `select * from ${tableName}`;
     query += clause.length > 0 ? ` where ${clause.join(' and ')}` : '';
