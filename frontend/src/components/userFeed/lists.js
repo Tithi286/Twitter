@@ -25,27 +25,24 @@ class lists extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+            listCreated: []
         }
         
     }
 
-
-   
-
-   
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/lists/')
+                .then((response) => {
+                this.setState({
+                    tweet : response.data.data,
+                   // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
+                });
+                console.log(response.data)
+                console.log(this.state.tweet)
+            });
     }
-
 
 
     render() {

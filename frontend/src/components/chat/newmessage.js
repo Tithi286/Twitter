@@ -13,13 +13,101 @@ class Newmessages extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            searchname:"",
+            userID:"",
+            people:[],
+            authFlag: ""
         }
+        this.searchClick =this.searchClick.bind(this)
+        this.searchChange = this.searchChange.bind(this)
 
     }
 
+   
+    goto = (userid) => {
+            try {
+                this.props.history.push({
+                    pathname: "/inbox",
+                    state: {
+                        userID: userid,
+                    }
+                })
+                console.log(this.state.userID)
+            } catch (e) { }
+        }
+    
+    searchChange = (e) => {
+        this.setState({
+            searchname : e.target.value
+        })
+        console.log("search name",this.state.searchname)
+    }
+
+    searchClick = () => {
+       const data = {
+           params: {
+            fname : this.state.searchname
+           }
+        }  
+        console.log(data.params.fname)
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/messages/search', data)
+                .then((response) => {
+                    console.log(response)
+                    if(response.data.length == 0){
+                        this.setState({
+                           
+                            authFlag: "false"
+                        })
+                    }
+                    else {
+                    this.setState({
+                        people : response.data,
+                        authFlag: "true"
+                    })}
+                
+                console.log(response)
+                console.log(this.state.people)
+            })
+            .catch((error) => {
+                this.setState({
+                    authFlag: "false"
+                })
+            })
+    }
+
    render() {
-       return (
+
+    let content;
+    console.log(this.state.authFlag)
+    if(this.state.authFlag == "true"){
+        content =this.state.people.map(people => (
+            // <Link class="a" to="/inbox">
+            <div class="u-clickable u-list" role="button" onClick ={() => {this.goto(people.userID)}}>
+                                <div class="u-flex u-flex-align">
+                                    <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                                    <div class="u-flex-justify">
+                                    <div class="u-mar1">
+                                    <div class="s-list-item-primary fullname">{people.firstName} {people.lastName}</div>
+                                        <div class="s-list-item-secondary snippet">
+                                            <span class="span">{people.userName}</span>
+                                            
+                                        </div>
+                                        </div>
+                                        </div>
+                                </div>
+                            </div>
+                    //  </Link>
+            )
+        )}
+
+        else if(this.state.authFlag == "false"){
+            content = (
+                <div class="s-list-item-primary fullname"> No results found!!</div>
+            )
+        }
+
+        return (
             <div class="container-flex">
                 
                 <div class="col-md-3 feed">
@@ -42,9 +130,12 @@ class Newmessages extends Component {
                     <div class="home-font">
                         <div class="msg-block">New Messages</div>
                     </div>
-                    <input type="text" name="newmsg" class="sendmsg" placeholder=" Search People " style={{ paddingLeft: "20px", marginTop: "20px" }} required />
-                    <button class="buttons3" type="submit" style={{ width: "70px", height: "35px" }}>Search</button>
-                    <Link class="a" to="/inbox"><div class="u-clickable u-list" role="button">
+                    <input type="text" name="newmsg" class="sendmsg" placeholder=" Search People " onChange={this.searchChange} style={{ paddingLeft: "20px", marginTop: "20px" }} required />
+                    <button class="buttons3" name="searchname" type="submit" style={{ width: "70px", height: "35px" }} onClick={this.searchClick}>Search</button>
+
+                    {content}
+                   
+                    {/* <Link class="a" to="/inbox"><div class="u-clickable u-list" role="button">
                                 <div class="u-flex u-flex-align">
                                     <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
                                     <div class="u-flex-justify">
@@ -57,7 +148,7 @@ class Newmessages extends Component {
                                         </div>
                                 </div>
                             </div>
-                    </Link>
+                    </Link> */}
                 </div>
 
             </div>
