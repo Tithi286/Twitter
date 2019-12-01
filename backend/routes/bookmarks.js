@@ -5,14 +5,6 @@ var passport = require("passport");
 const multer = require("multer");
 const path = require("path");
 const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
-const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
-const {
-  getBookmarks,
-  setBookmarks,
-  deleteBookmarks,
-  getTweets
-} = require("../DataAccessLayer");
-
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
 
@@ -40,7 +32,7 @@ router.get("/", requireAuth, async function(req, res, next) {
       userID: loggedInUser.userID
     };
     TweetID=[]
-    const results = await getBookmarks(bookmarks);
+    const results = await simulateRequestOverKafka("getBookmarks",bookmarks);
     //res.json(results);
     results.forEach(retwt => {
       TweetID.push(retwt.tweetID);
@@ -48,7 +40,7 @@ router.get("/", requireAuth, async function(req, res, next) {
   const tweet = {
       tweetID: { $in: TweetID }
   }
-  let tweets = await getTweets(tweet);
+  let tweets = await simulateRequestOverKafka("getTweets",tweet);
   res.json(tweets)
   } catch (e) {
     res.status(500).send(e.message || e);
@@ -63,7 +55,7 @@ router.post("/delete", requireAuth, async function(req, res, next) {
       userID: loggedInUser.userID,
       tweetID: tweetID
     };
-    await deleteBookmarks(bookmarks);
+    await simulateRequestOverKafka("deleteBookmarks",bookmarks);
     res.json({ message: "Bookmarks Deleted" });
   } catch (e) {
     res.status(500).send(e.message || e);
