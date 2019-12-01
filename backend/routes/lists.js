@@ -17,7 +17,8 @@ const {
   setSubscribers,
   setMembers,
   unsetMembers,
-  unsetSubscribers
+  unsetSubscribers,
+  getUsers
 } = require("../DataAccessLayer");
 
 // Set up middleware
@@ -94,12 +95,20 @@ router.get("/subscriptions", requireAuth, async function(req, res, next) {
 
 router.get("/members", requireAuth, async function(req, res, next) {
   try {
-    console.log(req.body.listID);
+    members = [];
+
     const list = {
       _id: req.body.listID
     };
     const results = await getMembers(list);
-    res.json(results[0].members);
+
+    results[0].members.forEach(mem => members.push(mem));
+
+    quoted = "'" + members.join("','") + "'";
+    const user = { usersID: [quoted] };
+
+    let chatRes = await getUsers(user);
+    res.json(chatRes.results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -109,11 +118,18 @@ router.get("/members", requireAuth, async function(req, res, next) {
 
 router.get("/subscribers", requireAuth, async function(req, res, next) {
   try {
+    subscribers = [];
     const list = {
       _id: req.body.listID
     };
     const results = await getSubscribers(list);
-    res.json(results[0].subscribers);
+    results[0].subscribers.forEach(subs => subscribers.push(subs));
+
+    quoted = "'" + subscribers.join("','") + "'";
+    const user = { usersID: [quoted] };
+
+    let chatRes = await getUsers(user);
+    res.json(chatRes.results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -151,13 +167,28 @@ router.get("/tweets", requireAuth, async function(req, res, next) {
 router.post("/subscribe", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
-    const { userID, listID } = req.body;
+    const { listID } = req.body;
     const list = {
       listID: listID,
-      user: userID
+      user: loggedInUser.userID
     };
     await setSubscribers(list);
     res.json("Added to Subscribers");
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+
+// search people for adding as member
+router.get("/search", requireAuth, async function(req, res, next) {
+  const { fname } = req.body;
+  try {
+    const user = {
+      search: { firstName: fname }
+    };
+    const { results } = await getUsers(user);
+
+    res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -184,11 +215,11 @@ router.post("/member", requireAuth, async function(req, res, next) {
 
 router.post("/unsubscribe", requireAuth, async function(req, res, next) {
   try {
-    const { userID, listID } = req.body;
+    const { listID } = req.body;
     const loggedInUser = req.user;
     const list = {
       _id: listID,
-      user: userID
+      user: loggedInUser.userID
     };
     await unsetSubscribers(list);
     res.json("Subscriber removed");
