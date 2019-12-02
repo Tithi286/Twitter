@@ -33,11 +33,11 @@ class otherlists extends Component {
     componentDidMount(){
         const data={
             params:{
-                userID:"36b9ec95-f2cf-4c6c-ab65-c81373913d75"
+                userID:this.props.location.state
             }
         }
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/others')
+        axios.get('http://localhost:3001/lists/others',data)
                 .then((response) => {
                 this.setState({
                     listCreated : response.data,
