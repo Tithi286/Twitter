@@ -90,7 +90,7 @@ class userHome extends Component {
                     tweet: response.data
                     // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
-                console.log(response.data)
+                console.log(response)
                 console.log(this.state.tweet)
             });
     }
@@ -111,16 +111,16 @@ class userHome extends Component {
                 profileimg = tweet.user.profileimage;
             }
             return(
-                <Link class="a" to="/descTweets">
+                <Link class="a" to={{pathname:"/descTweets", state:tweet.tweet.tweetID}} >
                 <div class="tweets-div" role="button">
                     <div>
                     <div class="u-flex u-flex-align">
                                 <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                                 <div class="u-flex-justify">
                                 <div class="u-mar1">
-                                <div class="s-list-item-primary u-mar1 fullname">F N</div>
+                                <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName} {tweet.user.lastName}</div>
                                 <div class="s-list-item-secondary u-mar1 snippet">
-                                        <span class="span">Tweet</span>
+                                        <span class="span">{tweet.tweet.tweet}</span>
                                 </div>
                                 </div>
                                 </div>
@@ -142,14 +142,14 @@ class userHome extends Component {
             )}
             else if(tweet.tweet.tweetImage != ""){
             return(
-                <Link class="a" to="/descTweets">
+                <Link class="a" to={{pathname:"/descTweets", state:tweet.tweet.tweetID}}>
             <div class="tweets-div" role="button">
                 <div>
                 <div class="u-flex u-flex-align">
                             <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName}</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName} {tweet.user.lastName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{tweet.tweet.tweet}</span>
                             </div>

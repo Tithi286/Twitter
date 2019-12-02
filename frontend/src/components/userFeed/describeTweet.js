@@ -33,7 +33,7 @@ class describeTweet extends Component {
     componentDidMount() {
         const data = {
             //rId: this.props.location.state.rId,
-            tweet: this.props.location.state.tweet
+            tweetID: this.props.location.state
         }
         console.log(data)
         

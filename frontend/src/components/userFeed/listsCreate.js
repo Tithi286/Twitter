@@ -126,8 +126,8 @@ class ListsCreate extends Component {
         )
     }
 
-}
 
+}
 
 export default ListsCreate;
 
