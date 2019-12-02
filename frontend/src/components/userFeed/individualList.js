@@ -24,7 +24,7 @@ import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
 import {loop} from 'react-icons-kit/iconic/loop'
 
 
-
+var listsID
 class IndividualList extends Component {
 
     constructor(props) {
@@ -83,12 +83,32 @@ class IndividualList extends Component {
         console.log(this);
     }
 
+    subscribe(){
+        console.log("listid"+listsID);
+        const data={
+           
+                listID:listsID
+            
+        }
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/lists/subscribe',data)
+                .then((response) => {
+               
+       
+             
+                
+            });
+    }
     
 
 
     render() {
-console.log("list detailss")
-        console.log(this.props.location.state[0])
+    console.log("list detailss")
+        console.log(this.props.location.state[4])
+        
+            listsID=this.props.location.state[4]
+           // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
+        
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
 
@@ -201,6 +221,7 @@ console.log("list detailss")
                             </div>
                             <div>
                             <Link to="/editlist"><button class="logob">Edit List</button></Link>
+                            <button class="logod" onClick={this.subscribe}>Subscribe</button>
                             </div>
                         </div>
                     </div>
