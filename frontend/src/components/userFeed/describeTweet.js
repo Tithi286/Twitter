@@ -28,6 +28,18 @@ class describeTweet extends Component {
     }
 
 
+
+
+    componentDidMount() {
+        const data = {
+            //rId: this.props.location.state.rId,
+            tweet: this.props.location.state.tweet
+        }
+        console.log(data)
+        
+    }
+
+
     render() {
         // let Tweet = this.state.tweets.map(tweet => {
         //     if (tweet != null)
@@ -62,9 +74,9 @@ class describeTweet extends Component {
                                 <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                                 <div class="u-flex-justify">
                                 <div class="u-mar1">
-                                <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName}</div>
+                                <div class="s-list-item-primary u-mar1 fullname">F N</div>
                                 <div class="s-list-item-secondary u-mar1 snippet">
-                                        <span class="span">{tweet.tweet.tweet}</span>
+                                        <span class="span">Tweet</span>
                                 </div>
                                 </div>
                                 </div>
