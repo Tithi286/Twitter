@@ -20,8 +20,34 @@ router.get('/search', requireAuth, async function (req, res, next) {
             //Hashtag search
             if (topic.startsWith("#")) {
                 const tweet = { $text: { $search: topic } };
-                const results = await getTweets(tweet);
-                return res.json(results);
+                const tweets = await getTweets(tweet);
+                const allTweetIds = tweets.map(t => t.tweetID);
+    const allTweetOwner = tweets.map(t => t.tweetOwnerID);
+
+    // get all users, likeCount, retweetCount and replyCount in parallel
+    const [
+      { results: allFollowedUsers },
+      likeCounts,
+      retweetCounts,
+      replyCounts
+    ] = await Promise.all([
+      simulateRequestOverKafka("getUsers", { userID: allTweetOwner }),
+      simulateRequestOverKafka("getLikeCount", allTweetIds),
+      simulateRequestOverKafka("getRetweetCount", allTweetIds),
+      simulateRequestOverKafka("getReplyCount", allTweetIds)
+    ]);
+    const followedUsersMap = allFollowedUsers.reduce((acc, f) => {
+        acc[f.userID] = f;
+        return acc;
+      }, {});
+      resultsf = tweets.map(res => ({
+        tweet: res,
+        user: followedUsersMap[res.tweetOwnerID],
+        likeCount: likeCounts[res.tweetID],
+        replyCount: replyCounts[res.tweetID],
+        retweetCount: retweetCounts[res.tweetID]
+      }));
+      return res.json(resultsf);
             }
             //person search
             else {

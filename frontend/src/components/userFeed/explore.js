@@ -69,7 +69,7 @@ class explore extends Component {
         console.log("var a: ", a)
         if (a == true) {
             profile1 = this.state.profile.map(profile => {
-                if (profile.tweetImage == "") {
+                if (profile.tweet.tweetImage == "") {
                     // console.log("no tweet image")
                     // var profileimg = profile.user.profileimage;
                     // if (profileimg == null) {
@@ -88,7 +88,7 @@ class explore extends Component {
                                             </div>
                                         <div class="u-flex-justify">
                                             <div class="u-mar1">
-                                                <div class="s-list-item-primary u-mar1 fullname">F N</div>
+                                                <div class="s-list-item-primary u-mar1 fullname">{profile.user.firstName}</div>
                                                 <div class="s-list-item-secondary u-mar1 snippet">
                                                     <span class="span">Tweet</span>
                                                 </div>
@@ -112,7 +112,7 @@ class explore extends Component {
                     )
                 }
 
-                else if(profile.tweetImage != ""){
+                else if(profile.tweet.tweetImage != ""){
                     console.log("with tweet image")
                     // console.log("no tweet image")
                     // var profileimg = profile.user.profileimage;
@@ -130,7 +130,7 @@ class explore extends Component {
                                     <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
                                     <div class="u-flex-justify">
                                         <div class="u-mar1">
-                                            <div class="s-list-item-primary u-mar1 fullname">firstName</div>
+                                            <div class="s-list-item-primary u-mar1 fullname">{profile.user.firstName}</div>
                                             <div class="s-list-item-secondary u-mar1 snippet">
                                                 <span class="span">tweet</span>
                                             </div>

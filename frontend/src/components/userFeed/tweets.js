@@ -21,7 +21,8 @@ class tweets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tweet: []
+            tweet: [],
+            fName: ""
         }
 
     }
@@ -39,10 +40,12 @@ class tweets extends Component {
                 .then((response) => {
                     console.log("in axios", response)
                 this.setState({
-                    tweet : response.data
+                    tweet : response.data,
+                    fname : sessionStorage.getItem("fName")
                 });
                 console.log(response)
                 console.log(this.state.tweet)
+                console.log(sessionStorage.getItem("fName"))
             });
     }
 
@@ -62,16 +65,17 @@ class tweets extends Component {
         let tweet1;
         
         tweet1 = this.state.tweet.map(tweet => {
-            if(tweet.tweet.tweetImage == "")
+            if(tweet.tweetImage == "")
             {
-            
-            var profileimg = tweet.user.profileimage;
-            if(profileimg == null){
-                profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
-            }
-            else{
-                profileimg = tweet.user.profileimage;
-            }
+            var profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+
+            // var profileimg = tweet.user.profileimage;
+            // if(profileimg == null){
+            //     profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+            // }
+            // else{
+            //     profileimg = tweet.user.profileimage;
+            // }
             return(
                 <Link class="a" to="/descTweets">
                 <div class="tweets-div" role="button">
@@ -80,9 +84,9 @@ class tweets extends Component {
                                 <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                                 <div class="u-flex-justify">
                                 <div class="u-mar1">
-                                <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName}</div>
+                                <div class="s-list-item-primary u-mar1 fullname">{sessionStorage.getItem("fName")}</div>
                                 <div class="s-list-item-secondary u-mar1 snippet">
-                                        <span class="span">{tweet.tweet.tweet}</span>
+                                        <span class="span">{tweet.tweet}</span>
                                 </div>
                                 </div>
                                 </div>
@@ -102,7 +106,7 @@ class tweets extends Component {
                 </div>
                 </Link>
             )}
-            else if(tweet.tweet.tweetImage != ""){
+            else if(tweet.tweetImage != ""){
             return(
                 <Link class="a" to="/descTweets">
             <div class="tweets-div" role="button">
