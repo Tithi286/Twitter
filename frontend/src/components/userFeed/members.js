@@ -24,13 +24,17 @@ class Members extends Component {
     componentDidMount(){
         
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/')
+        axios.get('http://localhost:3001/lists/memberships')
                 .then((response) => {
                 this.setState({
-                    listsubscriber : response.data
+                    listmembers : response.data
                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
                 console.log(response.data)
+                this.state.listmembers.map(member1 =>{
+                    console.log("members");
+                    console.log(member1);
+                });
             });
     }
    
@@ -38,26 +42,26 @@ class Members extends Component {
        
         let listmembers;
         
-        listmembers =(
+        listmembers =this.state.listmembers.map(member1 =>(
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">Username</div>
-                            <div class="s-list-item-primary u-mar1 listheading">LIST heading</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{member1.user.results[0].userName}</div>
+                            <div class="s-list-item-primary u-mar1 listheading">{member1.tweet.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">Tweet</span>
+                                    <span class="span">{member1.tweet.listName}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">members .</span>
-                                    <span class="span">subscribers</span>
+                                    <span class="span"> {member1.tweet.members.length} members .</span>
+                                    <span class="span">{member1.tweet.subscribers.length} subscribers</span>
                             </div>
                             </div>
                             </div>
                             </div>            
             </div>
-            )
+        ))
 
         return (
             <div class="container-flex">
@@ -84,7 +88,7 @@ class Members extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
-                            <a class="/subscriptions" class="col-md-5">Subscribed</a>
+                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
                             <a class="active" >Members</a>
                         </div>
                     <div>

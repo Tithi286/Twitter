@@ -30,11 +30,16 @@ class Subscriptions extends Component {
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/lists/subscriptions')
                 .then((response) => {
+                    console.log(response)
                 this.setState({
                     listsubscriber : response.data
                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
                 console.log(response.data)
+                this.state.listsubscriber.map(subscribe1 =>{
+                    console.log("subsribesss")
+                    console.log(subscribe1.user.results[0].userName);
+                });
             });
     }
 
@@ -51,27 +56,27 @@ class Subscriptions extends Component {
        
         let listsubscriber;
         
-        listsubscriber =(
+        listsubscriber =this.state.listsubscriber.map(subscribe1 =>(
             <Link class="a" to="/sublist">
             <div class="tweets-div u-list1">    
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">Username</div>
-                            <div class="s-list-item-primary u-mar1 listheading">LIST heading</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{subscribe1.user.results[0].userName}</div>
+                            <div class="s-list-item-primary u-mar1 listheading">{subscribe1.tweet.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">Tweet</span>
+                                    <span class="span">{subscribe1.tweet.listDesc}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">members .</span>
-                                    <span class="span">subscribers</span>
+                                    <span class="span">{subscribe1.tweet.members.length} members .</span>
+                                    <span class="span">{subscribe1.tweet.subscribers.length}subscribers</span>
                             </div>
                             </div>
                             </div>
                             </div>            
             </div>
             </Link>
-            )
+            ))
 
         return (
             <div class="container-flex">
