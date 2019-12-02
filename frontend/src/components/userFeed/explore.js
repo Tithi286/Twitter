@@ -172,8 +172,7 @@ class explore extends Component {
                     <div class="u-flex u-flex-align container-flex">
                         <div class="u-mar2 col-sm-1" style={{ float: "left" }}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
                         <div class="col-md-8" style={{ float: "left" }}>
-                            <Link class="a" to={{pathname:"/explore1"}}>
-                                <div class="u-mar3">
+                        <Link class="a" to={{pathname:"/explore1",state:profile.userID}} >                                <div class="u-mar3">
                                     <div class="s-list-item-primary u-mar3 fullname">{profile.firstName} {profile.lastName}</div>
                                     <div class="s-list-item-secondary u-mar3 snippet">
                                         <span class="span">{profile.profileDesc}</span>
