@@ -85,6 +85,7 @@ class profile extends Component {
                     state: response.data.state,
                     zipcode: response.data.zipcode,
                 });
+                sessionStorage.setItem("fName",this.state.fname)
                 if(response.data.profileImage){
                     this.setState({
                         profileimage : response.data.profileImage

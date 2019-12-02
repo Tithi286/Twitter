@@ -60,7 +60,7 @@ class ListsCreate extends Component {
 
     } 
 
-    fnameChangeHandler = (e) => {
+    
     listNameChangeHandler = (e) => {
         this.setState({
             listName: e.target.value
@@ -143,8 +143,8 @@ class ListsCreate extends Component {
         )
     }
 
-}
 
+}
 
 export default ListsCreate;
 
