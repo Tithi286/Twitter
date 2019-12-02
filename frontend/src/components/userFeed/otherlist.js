@@ -43,7 +43,7 @@ class otherlists extends Component {
                     listCreated : response.data,
                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
-                console.log(response.data)
+                
                 console.log(this.state.listCreated)
                 
             });
@@ -65,7 +65,7 @@ class otherlists extends Component {
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align container-flex">
-                        <Link class="a" to={{pathname:"/indlist", state:[list1.listName,list1.listDesc,list1.members.length,list1.subscribers.length] }}>
+                        <Link class="a" to={{pathname:"/indlist", state:[list1.listName,list1.listDesc,list1.members.length,list1.subscribers.length,list1._id] }}>
                             <div class="u-flex-justify col-md-9" style={{float:"left"}}>
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">{localStorage.getItem("username")}</div>
