@@ -20,7 +20,7 @@ import {heartO} from 'react-icons-kit/fa/heartO'
 import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
 import {loop} from 'react-icons-kit/iconic/loop'
 
-class lists extends Component {
+class otherlists extends Component {
 
     constructor(props) {
         super(props);
@@ -31,9 +31,13 @@ class lists extends Component {
     }
 
     componentDidMount(){
-        
+        const data={
+            params:{
+                userID:"36b9ec95-f2cf-4c6c-ab65-c81373913d75"
+            }
+        }
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/')
+        axios.get('http://localhost:3001/lists/others')
                 .then((response) => {
                 this.setState({
                     listCreated : response.data,
@@ -77,7 +81,6 @@ class lists extends Component {
                             </div>
                         </Link>
                             <div class="col-md-3" style={{float:"left"}}>
-                            <Link to={{pathname:"/adduser", state:list1._id }}><button>Add Members</button></Link>
                             </div>
                             </div>            
             </div>
@@ -134,7 +137,7 @@ class lists extends Component {
 }
 
 
-export default lists;
+export default otherlists;
 
 
 

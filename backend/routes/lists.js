@@ -26,6 +26,21 @@ router.get("/", requireAuth, async function(req, res, next) {
   }
 });
 
+//Get the other users lists
+router.get("/others", requireAuth, async function(req, res, next) {
+  try {
+    const user = req.query.userID;
+
+    const list = {
+      ownerID: user
+    };
+    results = await simulateRequestOverKafka("getLists", list);
+    res.json(results);
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+
 //Create a list
 router.post("/create", requireAuth, async function(req, res, next) {
   const { listName, listDesc, isPrivate } = req.body;
