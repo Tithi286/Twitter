@@ -91,6 +91,24 @@ class SubscribedList extends Component {
         console.log(this);
     }
 
+    deleteClick = (userid) => {
+        const data = {
+            receiverID  : userid
+        }  
+         console.log(data.receiverID)
+         axios.defaults.withCredentials = true;
+         axios.post('http://localhost:3001/lists/unsubsribe', data)
+                 .then((response) => {
+                    console.log(response)
+             })
+             .catch((error) => {
+                 this.setState({
+                     authFlag: "false"
+                 })
+             })
+     }
+ 
+
 
 
     render() {
@@ -206,7 +224,7 @@ class SubscribedList extends Component {
                                     <span class="span">subscribers</span>
                             </div>
                             <div>
-                            <Link to="/editprofile"><button class="logob">Unsubcribe</button></Link>
+                            <Link><button class="logob" onClick={() => this.deleteClick()}>Unsubcribe</button></Link>
                             </div>
                         </div>
                     </div>
