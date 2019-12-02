@@ -35,6 +35,7 @@ const {
 } = require("./lists");
 const {
   getFollowedUsers,
+  getFollowers,
   saveFollower,
   deleteFollower
 } = require("./follower");
@@ -43,7 +44,7 @@ const { getLike, saveLike, getLikeCount } = require("./like");
 const { getRetweet, saveRetweet, getRetweetCount } = require('./retweet');
 const { getReply, saveReply, getReplyCount } = require('./reply');
 
-const {setBookmarks,getBookmarks,deleteBookmarks}=require('./bookmarks')
+const { setBookmarks, getBookmarks, deleteBookmarks } = require('./bookmarks')
 
 const {
   getTweetViewCount,
@@ -55,7 +56,7 @@ const {
   getProfileViewCount,
   IncTweetViewCount,
   IncProfileViewCount
-} =require("./analytics")
+} = require("./analytics")
 
 const { getMessages, sendMessages, deleteMessages } = require("./messages");
 
@@ -120,6 +121,11 @@ const _deleteUser = async whereClause => {
 const _getFollowedUsers = async whereClause => {
   const connection = await getSQLConnection();
   return getFollowedUsers(connection)(whereClause);
+};
+
+const _getFollowers = async whereClause => {
+  const connection = await getSQLConnection();
+  return getFollowers(connection)(whereClause);
 };
 
 const _saveFollower = async whereClause => {
@@ -321,6 +327,7 @@ module.exports = {
 
   getFollowedUsers: _getFollowedUsers,
   saveFollower: _saveFollower,
+  getFollowers: _getFollowers,
   deleteFollower: _deleteFollower,
 
   getTweets: _getTweets,
@@ -350,8 +357,8 @@ module.exports = {
   setMembers: _setMembers,
   unsetSubscribers: _unsetSubscribers,
   unsetMembers: _unsetMembers,
-  deleteList:_deleteList,
- 
+  deleteList: _deleteList,
+
   getMongoConnection,
 
   getBookmarks: _getBookmarks,
