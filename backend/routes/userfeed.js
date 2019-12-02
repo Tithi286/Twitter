@@ -200,7 +200,7 @@ router.get('/tweets', requireAuth, async function (req, res, next) {
 });
 //like a tweet
 router.put('/like', requireAuth, async function (req, res, next) {
-    const { tweetID } = req.query;
+    const { tweetID } = req.body;
     try {
         const user = req.user;
         const like = {
