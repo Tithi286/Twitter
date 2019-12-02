@@ -76,7 +76,7 @@ class userHome extends Component {
         axios.post('http://localhost:3001/userfeed/', image)
             .then((response) => {
                 console.log("in axios call for post tweet")
-                console.log(response)
+                console.log("response",response)
             })
             .catch((error) => {
                 console.log(error)
@@ -200,13 +200,13 @@ class userHome extends Component {
                             <div class="u-flex u-flex-align">
                                 <div class="u-mar2"><img src={profileimg} class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
                                 <div class="u-flex-justify">
-                                    <div class="u-mar1">
-                                        <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName} {tweet.user.lastName} <span class="span s-list-item-secondary u-mar1 snippet" style={{ marginLeft: "40%" }}>{tweet.tweet.tweetDate.split("T")[0]}</span></div>
-                                        <span class="span s-list-item-secondary u-mar1 snippet">{tweet.tweet.tweetDate.split("T")[1].split(".")[0]} </span>
-                                        <div class="s-list-item-secondary u-mar1 snippet">
-                                            <span class="span">{tweet.tweet.tweet}</span>
-                                        </div>
-                                    </div>
+                                <div class="u-mar1">
+                                <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName} {tweet.user.lastName}</div>
+                                <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweet.tweetDate.split("T")[0]}  {tweet.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
+                                <div class="s-list-item-secondary u-mar1 snippet">
+                                        <span class="span">{tweet.tweet.tweet}</span>
+                                </div>
+                                </div>
                                 </div>
                             </div>
                         </Link>

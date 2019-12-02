@@ -86,6 +86,7 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
             tweet, tweetImage,
         };
         const results = await simulateRequestOverKafka("saveTweet", tweetDoc);
+        console.log("results",results)
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);

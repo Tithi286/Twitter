@@ -62,6 +62,7 @@ class Likes extends Component {
                             <div class="u-flex-justify">
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">{likes.user.firstName} {likes.user.lastName}</div>
+                            <span class="span s-list-item-secondary u-mar1 snippet" >{likes.tweet.tweetDate.split("T")[0]}  {likes.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{likes.tweet.tweet}</span>
                             </div>

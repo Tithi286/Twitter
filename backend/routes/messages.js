@@ -47,7 +47,6 @@ router.get('/search', requireAuth, async function (req, res, next) {
 
 router.post("/send", requireAuth, async function (req, res, next) {
   const { chat, receiverID } = req.body;
-
   try {
     const loggedInUser = req.user;
     const messages = {

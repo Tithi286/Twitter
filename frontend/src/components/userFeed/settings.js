@@ -17,25 +17,30 @@ class settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+           authFlag: ""
         }
-        
+        this.deleteClick = this.deleteClick.bind(this)
     }
 
 
-   
-
-
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    deleteClick = () => {
+        console.log("in delete click")
+        axios.defaults.withCredentials = true;
+        axios.delete('http://localhost:3001/users/')
+                .then((response) => {
+                    console.log("in axios", response)
+                    if(response.status == 200){
+                    this.setState({
+                        authFlag : "true"
+                    })
+                    }
+                    else{
+                        this.setState({
+                            authFlag : "false"
+                        }) 
+                    }
+                    console.log("account deleted")
+            });
     }
 
 
@@ -43,15 +48,13 @@ class settings extends Component {
     render() {
 
         let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
+        if(this.state.authFlag == "true"){
+            redirectVar = <Redirect to="/login" />
         }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
 
         return (
             <div class="container-flex">
-                {redirectVar}
+               {redirectVar}
                 <div class="col-md-3 feed">
                 <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br/><br/>
                 <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br/><br/></a>
@@ -86,7 +89,7 @@ class settings extends Component {
                             <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">
                             You’re about to start the process of deactivating your Twitter account. Your display name, @username, 
                             and public profile will no longer be viewable on Twitter.com, Twitter for iOS, or Twitter for Android.</span></div>
-                            <span class="home-buttons" style={{marginLeft: "8%"}}><button class="buttons3">Deactivate</button></span>
+                            <span class="home-buttons" style={{marginLeft: "8%"}}><button class="buttons3" name="delete" onClick={this.deleteClick}>Deactivate</button></span>
                     
                 </div>
                 <div class="col-md-3 feed">
