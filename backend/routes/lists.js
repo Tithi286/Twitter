@@ -72,7 +72,15 @@ router.get("/subscriptions", requireAuth, async function(req, res, next) {
       subscribers: loggedInUser.userID
     };
     const results = await simulateRequestOverKafka("getSubscriptions", list);
-    res.json(results);
+    const user = { userID: results[0].ownerID };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    resultsf = results.map(res => ({
+      tweet: res,
+      user: chatRes
+      
+    }));
+    res.json(resultsf);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -126,6 +134,7 @@ router.get("/subscribers", requireAuth, async function(req, res, next) {
 });
 
 //Get the tweets of the followed persons
+//Get the tweets of the followed persons
 router.get("/tweets", requireAuth, async function(req, res, next) {
   let followID = [];
   try {
@@ -133,8 +142,8 @@ router.get("/tweets", requireAuth, async function(req, res, next) {
       _id: req.query.listID
     };
     //get the members of list from table list
-    let results = await simulateRequestOverKafka("getMembers", list);
-    let followed = results[0].members;
+    let results1= await simulateRequestOverKafka("getMembers", list);
+    let followed = results1[0].members;
 
     //For each member of list get all the tweets from Mongo Tweets collection
 
@@ -145,8 +154,48 @@ router.get("/tweets", requireAuth, async function(req, res, next) {
     const tweet = {
       tweetOwnerID: { $in: followID }
     };
-    results = await simulateRequestOverKafka("getTweets", tweet);
-    res.json(results);
+    tweets = await simulateRequestOverKafka("getTweets", tweet);
+    const allTweetIds = tweets.map(t => t.tweetID);
+    const allTweetOwner = tweets.map(t => t.tweetOwnerID);
+
+    // get all users, likeCount, retweetCount and replyCount in parallel
+    const [
+      { results: allFollowedUsers },
+      likeCounts,
+      retweetCounts,
+      replyCounts
+    ] = await Promise.all([
+      simulateRequestOverKafka("getUsers", { userID: allTweetOwner }),
+      simulateRequestOverKafka("getLikeCount", allTweetIds),
+      simulateRequestOverKafka("getRetweetCount", allTweetIds),
+      simulateRequestOverKafka("getReplyCount", allTweetIds)
+    ]);
+    console.log(allTweetIds);
+    // merge all results as so as to produce a response structure something like:
+    /*
+                [
+                    {
+                        tweet: {..tweetObject},
+                        user: {..userObject},
+                        likeCount: 10,
+                        replyCount: 10,
+                        retweetCount: 10
+                    }
+                ]
+            */
+    const followedUsersMap = allFollowedUsers.reduce((acc, f) => {
+      acc[f.userID] = f;
+      return acc;
+    }, {});
+    resultsf = tweets.map(res => ({
+      tweet: res,
+      user: followedUsersMap[res.tweetOwnerID],
+      likeCount: likeCounts[res.tweetID],
+      replyCount: replyCounts[res.tweetID],
+      retweetCount: retweetCounts[res.tweetID]
+    }));
+console.log(resultsf)
+    return res.json(resultsf);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
