@@ -203,5 +203,26 @@ router.get('/followed', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
+//get given users followers person
+router.get('/followers', requireAuth, async function (req, res, next) {
+    const { userID } = req.query;
+    try {
+        let { results } = await simulateRequestOverKafka("getFollowers", { userID });
+        if (results.length > 0) {
+            const followers = JSON.parse(JSON.stringify(results));
+            const followerIds = followers.map(f => f.followerID);
+            // get all user details from all followed users
+            const { results: allFollowerUsers } = await simulateRequestOverKafka("getUsers", { userID: followerIds });
+            const followerUsersMap = allFollowerUsers.reduce((acc, f) => {
+                acc[f.userID] = f;
+                return acc;
+            }, {});
+            results = results.map(res => followerUsersMap[res.followerID]);
+        }
+        return res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
 
 module.exports = router;
