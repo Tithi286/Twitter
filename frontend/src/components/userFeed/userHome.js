@@ -118,7 +118,8 @@ class userHome extends Component {
                                 <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                                 <div class="u-flex-justify">
                                 <div class="u-mar1">
-                                <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName} {tweet.user.lastName}</div>
+                                <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName} {tweet.user.lastName} <span class="span s-list-item-secondary u-mar1 snippet" style={{marginLeft:"40%"}}>{tweet.tweet.tweetDate.split("T")[0]}</span></div>
+                                <span class="span s-list-item-secondary u-mar1 snippet">{tweet.tweet.tweetDate.split("T")[1].split(".")[0]} </span>
                                 <div class="s-list-item-secondary u-mar1 snippet">
                                         <span class="span">{tweet.tweet.tweet}</span>
                                 </div>

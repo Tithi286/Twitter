@@ -23,6 +23,7 @@ class describeTweet extends Component {
         this.state = {
             errormsg: "",
             authFlag: "",
+            tweetID: ""
         }
 
     }
@@ -35,7 +36,7 @@ class describeTweet extends Component {
             //rId: this.props.location.state.rId,
             tweetID: this.props.location.state
         }
-        console.log(data)
+        console.log("Data from home",data)
         
     }
 
