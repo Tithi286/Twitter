@@ -36,11 +36,12 @@ class lists extends Component {
         axios.get('http://localhost:3001/lists/')
                 .then((response) => {
                 this.setState({
-                    listCreated : response.data.data,
+                    listCreated : response.data,
                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
                 console.log(response.data)
                 console.log(this.state.listCreated)
+                
             });
     }
 
@@ -56,28 +57,31 @@ class lists extends Component {
        
         let listCreated;
         
-        listCreated =(
-            <Link class="a" to="/indlist">
+        listCreated =this.state.listCreated.map(list1 =>(
             <div class="tweets-div u-list1">
                 
-                <div class="u-flex u-flex-align">
-                            <div class="u-flex-justify">
+                <div class="u-flex u-flex-align container-flex">
+                        <Link class="a" to="/indlist">
+                            <div class="u-flex-justify col-md-9" style={{float:"left"}}>
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">Username</div>
-                            <div class="s-list-item-primary u-mar1 listheading">LIST heading</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{localStorage.getItem("username")}</div>
+                            <div class="s-list-item-primary u-mar1 listheading">{list1.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">Tweet</span>
+                                    <span class="span">{list1.listDesc}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">members .</span>
-                                    <span class="span">subscribers</span>
+                                    <span class="span">{list1.members.length} members .</span>
+                                    <span class="span">{list1.subscribers.length} subscribers</span>
                             </div>
                             </div>
+                            </div>
+                        </Link>
+                            <div class="col-md-3" style={{float:"left"}}>
+                            <Link to={{pathname:"/adduser", state:list1._id }}><button>Add Members</button></Link>
                             </div>
                             </div>            
             </div>
-            </Link>
-            )
+            ))
 
         return (
             <div class="container-flex">
