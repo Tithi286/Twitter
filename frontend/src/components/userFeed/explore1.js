@@ -16,7 +16,7 @@ import Tweets from './tweets'
 import Retweets from './retweets'
 import Likes from './likes'
 import Replies from './replies'
-
+import { Link } from "react-router-dom";
 
 
 class profile extends Component {
@@ -66,6 +66,8 @@ class profile extends Component {
         this.props.signup(values);
         console.log(this);
     }
+
+   
 
     // componentDidMount(){
     //     const data = {
@@ -180,16 +182,19 @@ class profile extends Component {
                         <div class="">
                             <div class="rest-img">
                                 <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
-                                <button class="logob">Follow</button><br/>
+                                <button  class="logob">Follow</button>
+                                <Link to={{pathname:"/otherlist"}}><button class="logod">View Lists</button></Link>
                             </div>
+                            
                             <div>
-
+                            
                             </div><br /><br />
                             <h5 class="rest-name-div1">Name</h5>
                             <h5 class="rest-name-div">Address</h5>
                             <h5 class="rest-name-div">Bio and Date</h5>
                             <h5 class="rest-name-div">10 Followers 50 Following </h5>
                         </div>
+                        
                     </div>
                     <div class="home-font2">
                         <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleTweetClick} role="button">Tweets</span></div>
@@ -197,11 +202,13 @@ class profile extends Component {
                         <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRepliesClick} role="button">Replies</span></div>
                         <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleLikesClick} role="button">Likes</span></div>
                     </div>
+                    
                  <div>
                         {Contents}
                     </div>
                 </div>
                 <div class="col-md-3 feed1">
+                    
                     <div>
                         <div>
                             <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
