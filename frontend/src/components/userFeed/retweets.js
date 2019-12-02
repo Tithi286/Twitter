@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
 
@@ -32,7 +31,8 @@ class Retweets extends Component {
         axios.get('http://localhost:3001/userprofile/retweets')
                 .then((response) => {
                 this.setState({
-                    retweet : response.data[0].retweets
+                    retweet : response.data,
+                    //retweet : response.data.retweets
                 });
                 console.log(response)
                 console.log(this.state.retweet)
@@ -56,21 +56,25 @@ class Retweets extends Component {
         let reTweet;
         
         reTweet =this.state.retweet.map(retweet => (
+
             <div class="tweets-div u-list1">
-                
+                <span class="span" style={{paddingLeft:"70px"}}>You retweeted   <Icon icon={loop}/></span><br/>
                 <div class="u-flex u-flex-align">
+                            
                             <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">UserName</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{retweet.user.firstName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{retweet.retweet}</span>
+                            
+                                    <span class="span">{retweet.tweet.tweet}</span>
                             </div>
                             </div>
                             </div>
                             </div>
-                
+                   
                 <div class="img-tweets-div">
+                    
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/></div>
