@@ -103,7 +103,6 @@ router.delete('/', requireAuth, async function (req, res, next) {
         let results = await simulateRequestOverKafka("getTweets", tweet);
         if (results.length > 0) {
             if (results[0].tweetOwnerID == loggedInUser.userID) {
-                console.log();
                 await simulateRequestOverKafka("deleteTweet", tweet);
                 res.json({ message: "Tweet Deleted" });
             }
