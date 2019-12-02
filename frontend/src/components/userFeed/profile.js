@@ -26,6 +26,7 @@ class profile extends Component {
         super(props);
         this.state = {
             isComponent: "",
+            userID:"",
             fname: "",
             lname: "",
             city:"",
@@ -84,8 +85,10 @@ class profile extends Component {
                     city: response.data.city,
                     state: response.data.state,
                     zipcode: response.data.zipcode,
+                    userID: response.data.userID
                 });
                 sessionStorage.setItem("fName",this.state.fname)
+                sessionStorage.setItem("userID",this.state.userID)
                 if(response.data.profileImage){
                     this.setState({
                         profileimage : response.data.profileImage
