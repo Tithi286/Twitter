@@ -30,15 +30,7 @@ class IndividualList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment(),
-            isComponent: ""
+            
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
@@ -73,6 +65,7 @@ class IndividualList extends Component {
         console.log(this);
     }
 
+    
 
 
     render() {
@@ -185,7 +178,7 @@ class IndividualList extends Component {
                                     <span class="span">subscribers</span>
                             </div>
                             <div>
-                            <Link to="/editprofile"><button class="logob">Edit List</button></Link>
+                            <Link to="/editlist"><button class="logob">Edit List</button></Link>
                             </div>
                         </div>
                     </div>

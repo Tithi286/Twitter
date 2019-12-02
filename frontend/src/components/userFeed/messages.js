@@ -18,36 +18,81 @@ class messages extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+          messages: []
         }
 
     }
 
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/messages/')
+                .then((response) => {
+                this.setState({
+                    messages : response.data
+                });
+                console.log(response.data)
+                console.log(this.state.messages)
+            });
     }
 
+    goto = (userid) => {
+        try {
+            this.props.history.push({
+                pathname: "/inbox",
+                state: {
+                    userID: userid,
+                }
+            })
+            console.log(this.state.userID)
+        } catch (e) { }
+    }
 
+    deleteClick = (userid) => {
+        const data = {
+            receiverID  : userid
+        }  
+         console.log(data.receiverID)
+         axios.defaults.withCredentials = true;
+         axios.post('http://localhost:3001/messages/delete', data)
+                 .then((response) => {
+                    console.log(response)
+             })
+             .catch((error) => {
+                 this.setState({
+                     authFlag: "false"
+                 })
+             })
+     }
+ 
 
     render() {
 
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
+       let content;
+        content =this.state.messages.map(message => (
+            
+            // <Link class="a" to="/inbox">
+             <div class="u-clickable u-list"  >
+                                <div class="u-flex u-flex-align">
+                                <div class="u-mar2">{message.profileImage}</div>
+                                    <div class="u-flex-justify" >
+                                    <div class="u-mar1">
+                                    <div class="s-list-item-primary u-mar1 fullname"role="button" onClick ={() => {this.goto(message.userID)}}>{message.firstName} {message.lastName}</div>
+                                        <div class="s-list-item-secondary u-mar1 snippet">
+                                            <span class="span">{message.userName}</span>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="edit"><button class="buttons3" name="delete"  style={{marginTop:"30px", width: "70px", height: "35px" }} onClick={() => this.deleteClick(message.userID)}>Delete</button></div> 
+                                       </div>
+                                    </div>
+                            // </Link>
+            )
+        )
+        
 
         return (
             <div class="container-flex">
-                {redirectVar}
                 <div class="col-md-3 feed">
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br /><br /></a>
@@ -69,7 +114,9 @@ class messages extends Component {
                         <div class="msg-block">Direct Messages </div>
                         <span class="home-buttons"><Link to="/newmessages"><button class="buttons3">New Message</button></Link></span>
                     </div>
-                    <Link class="a" to="/inbox"><div class="u-clickable u-list" role="button">
+
+                    {content}
+                    {/* <Link class="a" to="/inbox"><div class="u-clickable u-list" role="button">
                                 <div class="u-flex u-flex-align">
                                     <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
                                     <div class="u-flex-justify">
@@ -84,16 +131,10 @@ class messages extends Component {
                                 </div>
                                 
                             </div>
-                    </Link>
+                    </Link> */}
                 </div>
 
-                {/* <div class="col-md-3 feed">
-                    <div>
-                        <div>
-                            <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
-                        </div>
-                    </div>
-                </div> */}
+                
 
             </div>
 

@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
 import Icon from 'react-icons-kit';
 import {commentO} from 'react-icons-kit/fa/commentO'
 import {heartO} from 'react-icons-kit/fa/heartO'
@@ -22,31 +14,32 @@ class bookmarks extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        
+            bookmarks : []
         }
         
     }
 
-
-    
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/bookmarks/')
+                .then((response) => {
+                this.setState({
+                    bookmarks : response.data
+                });
+                console.log(response.data)
+                console.log(this.state.bookmarks)
+            });
     }
-
-
-
+    
+   
     render() {
 
         let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
        
         let bookmarkTweet;
         
-        bookmarkTweet =(
+        bookmarkTweet =this.state.bookmarks.map(bookmark => (
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align">
@@ -55,7 +48,7 @@ class bookmarks extends Component {
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">Username</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">Tweet</span>
+                                    <span class="span">{bookmark.tweet}</span>
                             </div>
                             </div>
                             </div>
@@ -66,18 +59,18 @@ class bookmarks extends Component {
                     <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/></div>
                     <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/></div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button"/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button"/> {bookmark.likeCount}</div>
                     <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button"/></div>
                 </div>
                 </div>
                 
                 <br/><br/>
             </div>
-            )
+            ))
 
         return (
             <div class="container-flex">
-                {redirectVar}
+               
                 <div class="col-md-3 feed2">
                 <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br/><br/>
                 <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br/><br/></a>

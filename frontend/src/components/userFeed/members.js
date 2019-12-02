@@ -3,11 +3,6 @@ import '../../App.css';
 import axios from 'axios';
 import { Link } from "react-router-dom";
 //import cookie from 'react-cookies';
-import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,41 +15,30 @@ class Members extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+            listmembers: []
         }
         
     }
 
 
-   
-
-   
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/lists/')
+                .then((response) => {
+                this.setState({
+                    listsubscriber : response.data
+                   // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
+                });
+                console.log(response.data)
+            });
     }
-
-
-
+   
     render() {
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
        
-        let listCreated;
+        let listmembers;
         
-        listCreated =(
+        listmembers =(
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align">
@@ -77,7 +61,6 @@ class Members extends Component {
 
         return (
             <div class="container-flex">
-                {redirectVar}
                 <div class="col-md-3 feed">
                 <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br/><br/>
                 <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br/><br/></a>
@@ -105,7 +88,7 @@ class Members extends Component {
                             <a class="active" >Members</a>
                         </div>
                     <div>
-                        {listCreated}
+                        {listmembers}
                     </div>
                 </div>
                 <div class="col-md-3 feed">

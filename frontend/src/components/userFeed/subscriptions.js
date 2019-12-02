@@ -20,25 +20,22 @@ class Subscriptions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+            listsubscriber: []
         }
         
     }
-
-
-   
-
-   
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+ 
+    componentDidMount(){
+        
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/lists/subscriptions')
+                .then((response) => {
+                this.setState({
+                    listsubscriber : response.data
+                   // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
+                });
+                console.log(response.data)
+            });
     }
 
 
@@ -52,9 +49,9 @@ class Subscriptions extends Component {
         const { handleSubmit } = this.props;
         //console.log(this.state.errormsg)
        
-        let listCreated;
+        let listsubscriber;
         
-        listCreated =(
+        listsubscriber =(
             <Link class="a" to="/sublist">
             <div class="tweets-div u-list1">    
                 <div class="u-flex u-flex-align">
@@ -106,7 +103,7 @@ class Subscriptions extends Component {
                             <a href="#contact" >Members</a>
                         </div>
                     <div>
-                        {listCreated}
+                        {listsubscriber}
                     </div>
                 </div>
                 <div class="col-md-3 feed">

@@ -131,6 +131,8 @@ router.delete('/', requireAuth, async function (req, res, next) {
     res.status(500).json({ message: e.message });
   }
 });
+
+
 //Follow any person on Twitter (get userID of user to follow from frontend in body)
 router.post('/follow', requireAuth, async function (req, res, next) {
   const { followedID } = req.body;
@@ -146,6 +148,8 @@ router.post('/follow', requireAuth, async function (req, res, next) {
     res.status(500).send(e.message || e);
   }
 });
+
+
 //unfollow the followed person on Twitter (get userID of user to unfollow from frontend in body)
 router.delete('/unfollow', requireAuth, async function (req, res, next) {
   const { followedID } = req.body;
