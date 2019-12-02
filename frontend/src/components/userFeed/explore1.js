@@ -85,6 +85,36 @@ class profile extends Component {
     //         });
     // }
 
+    componentDidMount() {
+        console.log("inside edit profile get request")
+        axios.defaults.withCredentials = true;
+        axios.get("http://localhost:3001/users/profile")
+            .then((response) => {
+                console.log("data: ", response.data)
+                //update the state with the response data
+                this.setState({
+                    fname: response.data.firstName,
+                    lname: response.data.lastName,
+                    email: response.data.email,
+                    bio: response.data.profileDesc,
+                    city: response.data.city,
+                    state: response.data.state,
+                    zipcode: response.data.zipcode,
+                });
+                sessionStorage.setItem("fName",this.state.fname)
+                if(response.data.profileImage){
+                    this.setState({
+                        profileimage : response.data.profileImage
+                    })
+                }
+            }) .catch(error => {
+                this.setState({
+                    //message: error.response.data.error
+                })
+            });
+    }
+
+
     render() {
 
         const isComponent = this.state.isComponent;
@@ -124,6 +154,7 @@ class profile extends Component {
         const { handleSubmit } = this.props;
         //console.log(this.state.errormsg)
 
+        
         return (
             <div class="container-flex">
                 {redirectVar}
@@ -149,7 +180,7 @@ class profile extends Component {
                         <div class="">
                             <div class="rest-img">
                                 <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
-                                <button class="logob">Follow</button>
+                                <button class="logob">Follow</button><br/>
                             </div>
                             <div>
 
