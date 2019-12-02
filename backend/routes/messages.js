@@ -65,7 +65,6 @@ router.post("/send", requireAuth, async function (req, res, next) {
 //Shows specific chat
 router.get("/view", requireAuth, async function (req, res, next) {
   const { receiverID } = req.query;
-
   try {
     const loggedInUser = req.user;
     const messages = {
@@ -73,11 +72,7 @@ router.get("/view", requireAuth, async function (req, res, next) {
       receiverID: receiverID
     };
     const results = await simulateRequestOverKafka("getMessages", messages);
-
-    const user = { userID: results[0].receiverID };
-
-    let chatRes = await simulateRequestOverKafka("getUsers", user);
-    res.json(results)
+    res.json(results);
   } catch (e) {
     res.status(500).send(e.message || e);
   }

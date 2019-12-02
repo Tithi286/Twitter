@@ -24,7 +24,7 @@ import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
 import {loop} from 'react-icons-kit/iconic/loop'
 
 
-
+var listsID
 class IndividualList extends Component {
 
     constructor(props) {
@@ -83,11 +83,32 @@ class IndividualList extends Component {
         console.log(this);
     }
 
+    subscribe(){
+        console.log("listid"+listsID);
+        const data={
+           
+                listID:listsID
+            
+        }
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/lists/subscribe',data)
+                .then((response) => {
+               
+       
+             
+                
+            });
+    }
     
 
 
     render() {
-
+    console.log("list detailss")
+        console.log(this.props.location.state[4])
+        
+            listsID=this.props.location.state[4]
+           // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
+        
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
 
@@ -189,17 +210,18 @@ class IndividualList extends Component {
                         <div class="">
                             <div class="rest-img">
                             </div>
-                            <div class="s-list-item-primary u-mar1 fullname">Username</div>
-                            <div class="s-list-item-primary u-mar1 listheading">LIST heading</div>
+                            <div class="s-list-item-primary u-mar1 fullname"></div>
+                            <div class="s-list-item-primary u-mar1 listheading">{this.props.location.state[0]}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">Tweet</span>
+                                    <span class="span">{this.props.location.state[1]}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">members .</span>
-                                    <span class="span">subscribers</span>
+                                    <span class="span">{this.props.location.state[2]} members .</span>
+                                    <span class="span">{this.props.location.state[3]} subscribers</span>
                             </div>
                             <div>
                             <Link to="/editlist"><button class="logob">Edit List</button></Link>
+                            <button class="logod" onClick={this.subscribe}>Subscribe</button>
                             </div>
                         </div>
                     </div>
