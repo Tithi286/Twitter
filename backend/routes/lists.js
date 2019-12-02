@@ -79,12 +79,7 @@ router.get("/subscriptions", requireAuth, async function(req, res, next) {
 });
 
 
-<<<<<<< HEAD
-//Returns members of selected list
-router.post("/members", requireAuth, async function(req, res, next) {
-=======
 router.get("/members", requireAuth, async function(req, res, next) {
->>>>>>> e521fb305abbcaeec56608ba878cc5b7c2fb9222
   try {
     members = [];
 

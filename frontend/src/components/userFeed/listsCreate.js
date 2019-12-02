@@ -60,7 +60,7 @@ class ListsCreate extends Component {
 
     } 
 
-    fnameChangeHandler = (e) => {
+    // fnameChangeHandler = (e) => {
     listNameChangeHandler = (e) => {
         this.setState({
             listName: e.target.value
