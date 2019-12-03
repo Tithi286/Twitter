@@ -66,7 +66,7 @@ class bookmarks extends Component {
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align">
-                            <div class="u-mar2"><img src={bookmark.tweet.tweetImage} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                            <div class="u-mar2"><img src={bookmark.user.profileImage} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
@@ -79,7 +79,7 @@ class bookmarks extends Component {
                             </div>
                 
                 <div class="img-tweets-div">
-                    <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
+                    <img src={bookmark.tweet.tweetImage} class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {bookmark.replyCount}</div>
                     <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {bookmark.retweetCount}</div>
