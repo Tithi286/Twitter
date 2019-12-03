@@ -58,7 +58,7 @@ const {
   IncProfileViewCount
 } = require("./analytics")
 
-const { getMessages, sendMessages, deleteMessages,getOwnMessages } = require("./messages");
+const { getMessages, sendMessages, deleteMessages, getOwnMessages } = require("./messages");
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -83,7 +83,7 @@ const getSQLConnection = () => {
 //Set up default mongoose connection
 const getMongoConnection = () => {
   return new Promise(async (resolve, reject) => {
-    const mongoDB = `'mongodb://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}/${mongo_database}`;
+    const mongoDB = `mongodb+srv://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}/${mongo_database}`;
     try {
       await mongoose.connect(mongoDB, {
         useNewUrlParser: true,
