@@ -68,7 +68,7 @@ class otherlists extends Component {
                         <Link class="a" to={{pathname:"/indlist", state:[list1.listName,list1.listDesc,list1.members.length,list1.subscribers.length,list1._id] }}>
                             <div class="u-flex-justify col-md-9" style={{float:"left"}}>
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{localStorage.getItem("username")}</div>
+                            <div class="s-list-item-primary u-mar1 fullname"></div>
                             <div class="s-list-item-primary u-mar1 listheading">{list1.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{list1.listDesc}</span>
@@ -111,9 +111,9 @@ class otherlists extends Component {
                     </div>
                         
                         <div class="topnav" id="myTopnav">
-                            <a class="active" class="col-md-4">Owned</a>
-                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
-                            <a href="/members" >Members</a>
+                            <a class="active" class="col-md-4">Lists</a>
+                            <a href="/subscribers" class="col-md-5">Subscribers</a>
+                            <a href="/othermembers" >Members</a>
                         </div>
                     <div >
                         {listCreated}
