@@ -17,11 +17,21 @@ class followers extends Component {
     }
 
     componentDidMount() {
-        const data = {
-            params : {
+        var a = sessionStorage.getItem("component")
+        let data;
+        if(a == "profile"){
+             data = {
+                params:{
                 userID : sessionStorage.getItem("userID")
-            }
+            }}
         }
+        else if(a == "explore"){
+             data = {
+                params:{
+                userID : sessionStorage.getItem("ID")
+            }}
+        }
+        
         console.log(data.params.userID)
         axios.defaults.withCredentials = true;
         axios.get("http://localhost:3001/userprofile/followers", data)
@@ -31,6 +41,13 @@ class followers extends Component {
                   
                 });
                 console.log(response.data)
+                let foll1 = []
+                var foll = this.state.followers;
+                foll.map(f1 => {
+                    foll1.push(f1.userID)
+                });
+                console.log("UserIDs of followers", foll1)
+                  
             }) .catch(error => {
                 this.setState({
                     message: "something went wrong"
@@ -51,6 +68,7 @@ class followers extends Component {
             else {
                 profileimg = people.profileImage;
             }
+            
             return(
             <div class="u-clickable followers-box" role="button">
                                 <div class="u-flex u-flex-align">

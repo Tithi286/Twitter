@@ -188,7 +188,7 @@
 
 .feed{
   width: auto;
-  height: 100%;
+  /* height: 100%; */
   float: left;
   background-color: white;
   border-right: 1px solid grey

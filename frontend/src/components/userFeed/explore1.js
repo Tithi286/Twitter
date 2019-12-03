@@ -35,7 +35,10 @@ class profile extends Component {
             isComponent: "",
             profile: [],
             userID:this.props.location.state.userID,
-            user: this.props.location.state.profile
+            user: this.props.location.state.profile,
+            following: [],
+            follArr: [],
+            follText: ""
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
@@ -99,6 +102,7 @@ class profile extends Component {
         console.log("Data: ",this.props.location.state.userID)
         console.log("UserID: ", this.props.location.state.profile)
         console.log("inside edit profile get request")
+        this.getFollowing()
         axios.defaults.withCredentials = true;
         axios.get("http://localhost:3001/users/profile")
             .then((response) => {
@@ -126,26 +130,69 @@ class profile extends Component {
                     
                 
             }
-            axios.defaults.withCredentials = true;
-            console.log("inc")
-            console.log(response.data)
-            // console.log("Data: ",this.state.user)
-            // console.log("UserID: ", this.state.userID)
-            axios.post('http://localhost:3001/analytics/incprofileviewcount',data)
-                    .then((response) => {
+            // axios.defaults.withCredentials = true;
+            // console.log("inc")
+            // console.log(response.data)
+            // // console.log("Data: ",this.state.user)
+            // // console.log("UserID: ", this.state.userID)
+            // axios.post('http://localhost:3001/analytics/incprofileviewcount',data)
+            //         .then((response) => {
                    
                 
                  
                     
-                }); }) .catch(error => {
-                this.setState({
-                    //message: error.response.data.error
-                })
+            //     }); }) .catch(error => {
+            //     this.setState({
+            //         //message: error.response.data.error
+            //     })
             });
-
-       
     }
 
+    getFollowing() {
+        const data = {
+            params : {
+                userID : sessionStorage.getItem("userID")
+            }
+        }
+        console.log(data.params.userID)
+        axios.defaults.withCredentials = true;
+        axios.get("http://localhost:3001/userprofile/followed", data)
+            .then((response) => {
+                this.setState({
+                    following: response.data
+                });
+                console.log("following",response.data)
+                let foll1 = []
+                var foll = this.state.following;
+                foll.map(f1 => {
+                    foll1.push(f1.userID)
+                });
+                console.log("UserIDs of following", foll1)
+                var flag = foll1.includes(sessionStorage.getItem("userID"))
+                if(flag == false){
+                    this.setState({
+                        follText : "Follow"
+                    })
+                }
+                else if(flag ==true){
+                    this.setState({
+                        follText : "Unfollow"
+                    })
+                }
+                this.setState({
+                    follArr: foll1
+                })
+
+            }) .catch(error => {
+                this.setState({
+                    message: "something went wrong"
+                })
+            });
+    }
+
+    followUser = () => {
+        
+    }
 
     render() {
 
@@ -154,6 +201,7 @@ class profile extends Component {
 
         let Contents;
         
+        //render different components
         if(isComponent == "tweet"){
             Contents = (
                 <Tweets/>
@@ -185,7 +233,7 @@ class profile extends Component {
         }
         const { handleSubmit } = this.props;
         //console.log(this.state.errormsg)
-
+        console.log("Follow: ", this.state.follText)
         let user1 = this.state.user
         return (
             <div class="container-flex">
@@ -212,7 +260,7 @@ class profile extends Component {
                         <div class="">
                             <div class="rest-img">
                                 <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
-                                <button  class="logob">Follow</button>
+                                <button  class="logob">{this.state.follText}</button>
                                 <Link to={{pathname:"/otherlist",state:this.props.location.state}}><button class="logod">View Lists</button></Link>                            </div>
                             
                             <div>
