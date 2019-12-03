@@ -19,7 +19,7 @@ class othermembers extends Component {
     componentDidMount() {
         const data = {
             params : {
-                userID : sessionStorage.getItem("userID")
+                userID : this.props.location.state.userID
             }
         }
         console.log(data.params.userID)
@@ -41,7 +41,8 @@ class othermembers extends Component {
 
 
     render() {
-
+console.log("membersssss")
+console.log(this.props.location.state.userID)
         let Contents;
         Contents = this.state.followers.map(people => {
            

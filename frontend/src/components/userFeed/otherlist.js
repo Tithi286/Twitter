@@ -111,8 +111,8 @@ class otherlists extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a class="active" class="col-md-4">Lists</a>
-                            <a href="/subscribers" class="col-md-5">Subscribers</a>
-                            <a href="/othermembers" >Members</a>
+                            <Link class="a" to={{pathname:"/subscribers", state:this.props.location.state }}>Subscribers</Link>
+                            <Link class="a" to={{pathname:"/othermembers", state:this.props.location.state }}>Members</Link>
                         </div>
                     <div >
                         {listCreated}
