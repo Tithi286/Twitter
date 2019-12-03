@@ -36,7 +36,7 @@ class Main extends Component {
         return ( 
             <div>
                 <Route path="/signup" component={Signup} />
-           
+                <Route exact path="/" component={Signup} />
                 <Route path="/login" component={Login} />
                 <Route path="/launchpage" component={Launchpage} />
                 <Route path="/home" component={UserHome} />
