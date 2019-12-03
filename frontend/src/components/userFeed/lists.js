@@ -61,7 +61,7 @@ class lists extends Component {
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align container-flex">
-                        <Link class="a" to={{pathname:"/indlist", state:[list1.listName,list1.listDesc,list1.members.length,list1.subscribers.length] }}>
+                        <Link class="a" to={{pathname:"/indlist", state:[list1.listName,list1.listDesc,list1.members.length,list1.subscribers.length,list1._id] }}>
                             <div class="u-flex-justify col-md-9" style={{float:"left"}}>
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">{localStorage.getItem("username")}</div>
@@ -77,7 +77,7 @@ class lists extends Component {
                             </div>
                         </Link>
                             <div class="col-md-3" style={{float:"left"}}>
-                            <Link to={{pathname:"/adduser", state:list1._id }}><button>Add Members</button></Link>
+                            <Link to={{pathname:"/adduser", state:list1._id }}><button class="buttons3">Add Members</button></Link>
                             </div>
                             </div>            
             </div>
@@ -102,9 +102,9 @@ class lists extends Component {
                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 </div>
                 <div class="col-md-6 feed">
-                    <div class="home-font">
-                        <div class="msg-block">Lists </div>
-                        <span class="uppernav"><Link to="/create"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
+                    <div class="list-font">
+                        <div class="word-block">Lists </div>
+                        <span class="uppernav" ><Link to="/create"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
                     </div>
                         
                         <div class="topnav" id="myTopnav">

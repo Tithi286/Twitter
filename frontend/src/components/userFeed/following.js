@@ -44,10 +44,18 @@ class following extends Component {
 
         let Contents;
         Contents = this.state.following.map(people => {
+            var profileimg = people.profileImage;
+            if (profileimg == null) {
+                profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+            }
+            else {
+                profileimg = people.profileImage;
+            }
             return(
+                
             <div class="u-clickable followers-box" role="button">
                                 <div class="u-flex u-flex-align">
-                                    <div class="u-mar2" style={{paddingLeft:"15px"}}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                                    <div class="u-mar2" style={{paddingLeft:"15px"}}><img src={profileimg}  class="logo5"></img></div>
                                     <div class="u-flex-justify">
                                     <div class="u-mar1" style={{width:"450px"}}>
                                     <div class="s-list-item-primary u-mar1 fullname">{people.firstName} {people.lastName} </div>
@@ -84,8 +92,8 @@ class following extends Component {
 
                 <div class="col-md-6 feed1 u-list1">
                 <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
-                    <div class="home-font">User Name</div>
-                    <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">UserName</span></div>
+                    <div class="home-font">{sessionStorage.getItem('fName')} {sessionStorage.getItem('lName')}</div>
+                    <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">{sessionStorage.getItem('userName')}</span></div>
                     </div>
 
                     <div class="home-font1">

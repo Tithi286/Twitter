@@ -142,6 +142,8 @@ class profile extends Component {
                     //message: error.response.data.error
                 })
             });
+
+       
     }
 
 
@@ -211,8 +213,7 @@ class profile extends Component {
                             <div class="rest-img">
                                 <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
                                 <button  class="logob">Follow</button>
-                                <Link to={{pathname:"/otherlist"}}><button class="logod">View Lists</button></Link>
-                            </div>
+                                <Link to={{pathname:"/otherlist",state:this.props.location.state}}><button class="logod">View Lists</button></Link>                            </div>
                             
                             <div>
                             

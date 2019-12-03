@@ -35,6 +35,7 @@ const {
 } = require("./lists");
 const {
   getFollowedUsers,
+  getFollowers,
   saveFollower,
   deleteFollower
 } = require("./follower");
@@ -43,7 +44,7 @@ const { getLike, saveLike, getLikeCount } = require("./like");
 const { getRetweet, saveRetweet, getRetweetCount } = require('./retweet');
 const { getReply, saveReply, getReplyCount } = require('./reply');
 
-const {setBookmarks,getBookmarks,deleteBookmarks}=require('./bookmarks')
+const { setBookmarks, getBookmarks, deleteBookmarks } = require('./bookmarks')
 
 const {
   getTweetViewCount,
@@ -55,9 +56,9 @@ const {
   getProfileViewCount,
   IncTweetViewCount,
   IncProfileViewCount
-} =require("./analytics")
+} = require("./analytics")
 
-const { getMessages, sendMessages, deleteMessages } = require("./messages");
+const { getMessages, sendMessages, deleteMessages, getOwnMessages } = require("./messages");
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -82,7 +83,7 @@ const getSQLConnection = () => {
 //Set up default mongoose connection
 const getMongoConnection = () => {
   return new Promise(async (resolve, reject) => {
-    const mongoDB = `'mongodb://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}/${mongo_database}`;
+    const mongoDB = `mongodb+srv://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}/${mongo_database}`;
     try {
       await mongoose.connect(mongoDB, {
         useNewUrlParser: true,
@@ -120,6 +121,11 @@ const _deleteUser = async whereClause => {
 const _getFollowedUsers = async whereClause => {
   const connection = await getSQLConnection();
   return getFollowedUsers(connection)(whereClause);
+};
+
+const _getFollowers = async whereClause => {
+  const connection = await getSQLConnection();
+  return getFollowers(connection)(whereClause);
 };
 
 const _saveFollower = async whereClause => {
@@ -302,6 +308,10 @@ const _getMessages = async whereClause => {
   await getMongoConnection();
   return getMessages()(whereClause);
 };
+const _getOwnMessages = async whereClause => {
+  await getMongoConnection();
+  return getOwnMessages()(whereClause);
+};
 
 const _sendMessages = async whereClause => {
   await getMongoConnection();
@@ -321,6 +331,7 @@ module.exports = {
 
   getFollowedUsers: _getFollowedUsers,
   saveFollower: _saveFollower,
+  getFollowers: _getFollowers,
   deleteFollower: _deleteFollower,
 
   getTweets: _getTweets,
@@ -350,8 +361,8 @@ module.exports = {
   setMembers: _setMembers,
   unsetSubscribers: _unsetSubscribers,
   unsetMembers: _unsetMembers,
-  deleteList:_deleteList,
- 
+  deleteList: _deleteList,
+
   getMongoConnection,
 
   getBookmarks: _getBookmarks,
@@ -371,6 +382,7 @@ module.exports = {
   IncProfileViewCount: _IncProfileViewCount,
 
   getMessages: _getMessages,
+  getOwnMessages: _getOwnMessages,
   sendMessages: _sendMessages,
   deleteMessages: _deleteMessages,
 };

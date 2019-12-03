@@ -53,6 +53,7 @@ class messages extends Component {
             receiverID  : userid
         }  
          console.log(data.receiverID)
+         console.log(sessionStorage.getItem("userID"))
          axios.defaults.withCredentials = true;
          axios.post('http://localhost:3001/messages/delete', data)
                  .then((response) => {

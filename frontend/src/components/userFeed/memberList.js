@@ -24,14 +24,22 @@ import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
 import {loop} from 'react-icons-kit/iconic/loop'
 
 
-var listsID
-class IndividualList extends Component {
+
+class MemberList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            fName: "",
+            lName: "",
+            errormsg: "",
+            authFlag: "",
+            year: "",
+            month: "",
+            day: "",
+            startDate: moment(),
+            isComponent: "",
             retweet: []
-            
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
@@ -83,39 +91,27 @@ class IndividualList extends Component {
         console.log(this);
     }
 
-    subscribe(){
-        console.log("listid"+listsID);
-        const data={
-           
-                listID:listsID
-            
-        }
-        axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/lists/subscribe',data)
-                .then((response) => {
-               
-                    window.location.assign("/subscriptions");
-             
-                
-            });
-    }
-    
-   deleteList(){
-        console.log("listid"+listsID);
-        const data={
-           
-                listID:listsID
-            
-        }
-        axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/lists/delete',data)
-                .then((response) => {
-               
-                    window.location.assign("/lists");
-             
-                
-            });
-    }
+    deleteClick = () => {
+        console.log(this.props.location.state[4])
+        const data = {
+            listID  : this.props.location.state[4]
+        }  
+        
+         axios.defaults.withCredentials = true;
+         axios.post('http://localhost:3001/lists/demember', data)
+                 .then((response) => {
+                    
+             })
+             .catch((error) => {
+                 this.setState({
+                     authFlag: "false"
+                 })
+             })
+             window.location.assign("/subscriptions");
+     }
+ 
+
+
     
     createRetweet = (v1) => {
         //e.preventDefault();
@@ -192,14 +188,8 @@ class IndividualList extends Component {
             });
 
     }
-
     render() {
-    console.log("list detailss")
-        console.log(this.props.location.state[4])
-        
-            listsID=this.props.location.state[4]
-           // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
-        
+
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
 
@@ -301,18 +291,17 @@ class IndividualList extends Component {
                         <div class="">
                             <div class="rest-img">
                             </div>
-                            <div class="s-list-item-primary u-mar1 fullname"></div>
+                            <div class="s-list-item-primary u-mar1 fullname">{this.props.location.state[1]}</div>
                             <div class="s-list-item-primary u-mar1 listheading"></div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{this.props.location.state[1]}</span>
+                                    <span class="span">Tweet</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{this.props.location.state[2]} members .</span>
                                     <span class="span">{this.props.location.state[3]} subscribers</span>
                             </div>
                             <div>
-                            <button class="logob" onClick={this.deleteList}>Delete List</button>
-                            <button class="logod" onClick={this.subscribe}>Subscribe</button>
+                           <button class="logob" onClick={() => this.deleteClick()}>Exit</button>
                             </div>
                         </div>
                     </div>
@@ -339,4 +328,4 @@ class IndividualList extends Component {
 }
 
 
-export default IndividualList;
+export default MemberList;

@@ -26,16 +26,20 @@ import DescribeTweets from './userFeed/describeTweet';
 import Members from './userFeed/members';
 import IndividualList from './userFeed/individualList';
 import SubscribedList from './userFeed/subscribedList';
+import MemberList from './userFeed/memberList';
 import ExploreList from './userFeed/exploreList'
 import editlist from './userFeed/editlist';
 import otherlist from './userFeed/otherlist';
+import subscribers from './userFeed/subscribers';
 
+import othermembers from './userFeed/othermembers';
 
 class Main extends Component {
     render() {
         return ( 
             <div>
                 <Route path="/signup" component={Signup} />
+                <Route exact path="/" component={Signup} />
                 <Route path="/login" component={Login} />
                 <Route path="/launchpage" component={Launchpage} />
                 <Route path="/home" component={UserHome} />
@@ -47,6 +51,7 @@ class Main extends Component {
                 <Route path="/indlist" component={IndividualList}/>
                 <Route path="editlist" component={editlist}/>
                 <Route path="/sublist" component={SubscribedList}/>
+                <Route path="/memlist" component={MemberList}/>
                 <Route path="/create" component = {listsCreate}/>
                 <Route path="/subscriptions" component= {Subscriptions}/>
                 <Route path="/members" component={Members}/>
@@ -63,6 +68,8 @@ class Main extends Component {
                 <Route path="/following" component={following} />
                 <Route path="/exploreList" component={ExploreList} />
                 <Route path="/otherlist" component={otherlist} />
+                <Route path="/subscribers" component={subscribers} />
+                <Route path="/othermembers" component={othermembers} />
 
             </div>
         )

@@ -72,7 +72,15 @@ router.get("/memberships", requireAuth, async function(req, res, next) {
       members: loggedInUser.userID
     };
     const results = await simulateRequestOverKafka("getMemberships", list);
-    res.json(results);
+    const user = { userID: results[0].ownerID };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    resultsf = results.map(res => ({
+      tweet: res,
+      user: chatRes
+      
+    }));
+    res.json(resultsf);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -268,6 +276,7 @@ router.post("/member", requireAuth, async function(req, res, next) {
 //Unsubscribe from a list
 router.post("/unsubscribe", requireAuth, async function(req, res, next) {
   try {
+    console.log(req.body)
     const { listID } = req.body;
     const loggedInUser = req.user;
     const list = {
@@ -285,11 +294,11 @@ router.post("/unsubscribe", requireAuth, async function(req, res, next) {
 
 router.post("/demember", requireAuth, async function(req, res, next) {
   try {
-    const { userID } = req.body;
-    const loggedInUser = req.user;
+    const { listID } = req.body;
+   
     const list = {
-      _id: req.body.listID,
-      user: userID
+      _id: listID,
+      user: req.user.userID
     };
     await simulateRequestOverKafka("unsetMembers", list);
     res.json("Member removed");

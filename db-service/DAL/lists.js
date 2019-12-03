@@ -55,7 +55,7 @@ const setSubscribers = connection => (list = {}) => {
     lists.updateOne(
       { _id: list.listID },
       {
-        $set: { subscribers: list.user }
+        $push: { subscribers: list.user }
       },
       { upsert: true },
       function(err, docs) {
@@ -70,7 +70,7 @@ const setMembers = connection => (list = {}) => {
     lists.updateOne(
       { _id: list.listID },
       {
-        $set: { members: list.user }
+        $push: { members: list.user }
       },
       { upsert: true },
       function(err, docs) {
@@ -92,7 +92,7 @@ const unsetSubscribers = connection => (list = {}) => {
 };
 const unsetMembers = connection => (list = {}) => {
   return new Promise((resolve, reject) => {
-    lists.update({ _id: list._id }, { $pull: { members: list.user } }, function(
+    lists.updateOne({ _id: list._id }, { $pull: { members: list.user } }, function(
       err,
       docs
     ) {

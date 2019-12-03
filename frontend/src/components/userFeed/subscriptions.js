@@ -38,7 +38,7 @@ class Subscriptions extends Component {
                 console.log(response.data)
                 this.state.listsubscriber.map(subscribe1 =>{
                     console.log("subsribesss")
-                    console.log(subscribe1.user.results[0].userName);
+                    console.log(subscribe1.tweet._id);
                 });
             });
     }
@@ -57,7 +57,7 @@ class Subscriptions extends Component {
         let listsubscriber;
         
         listsubscriber =this.state.listsubscriber.map(subscribe1 =>(
-            <Link class="a" to="/sublist">
+            <Link class="a" to={{pathname:"/sublist", state:[subscribe1.tweet.listName,subscribe1.tweet.listDesc,subscribe1.tweet.members.length,subscribe1.tweet.subscribers.length,subscribe1.tweet._id] }}>
             <div class="tweets-div u-list1">    
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">
@@ -97,15 +97,15 @@ class Subscriptions extends Component {
                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 </div>
                 <div class="col-md-6 feed">
-                    <div class="home-font">
-                        <div class="msg-block">Lists </div>
+                    <div class="list-font">
+                        <div class="word-block">Lists </div>
                         <span class="uppernav"><Link to="/newmessages"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
                     </div>
                         
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
                             <a class="active" class="col-md-5">Subscribed</a>
-                            <a href="#contact" >Members</a>
+                            <a href="/members" >Members</a>
                         </div>
                     <div>
                         {listsubscriber}

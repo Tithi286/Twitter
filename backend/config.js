@@ -6,11 +6,18 @@ module.exports = {
     sql_database: "twitter",
     sql_connectionLimit: 10,
 
-    mongo_host: 'ec2-54-183-64-236.us-west-1.compute.amazonaws.com',
-    mongo_port: "27017",
+    // mongo_host: 'ec2-54-183-64-236.us-west-1.compute.amazonaws.com',
+    // mongo_port: "27017",
+    // mongo_user: 'admin',
+    // mongo_password: 'admin',
+    // mongo_database: 'twitter',
+    // mongo_connectionLimit: 10,
+
+    mongo_host: 'cluster0-9rsni.mongodb.net',
+    mongo_port: "",
     mongo_user: 'admin',
     mongo_password: 'admin',
-    mongo_database: 'twitter',
+    mongo_database: 'test',
     mongo_connectionLimit: 10,
 
     initDb: process.env.INITDB === "true",
