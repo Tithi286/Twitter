@@ -105,11 +105,7 @@ class settings extends Component {
                             <div className="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span className="span">
                             You’re about to start the process of deactivating your Twitter account. Your display name, @username, 
                             and public profile will no longer be viewable on Twitter.com, Twitter for iOS, or Twitter for Android.</span></div>
-<<<<<<< HEAD
-                            <span className="home-buttons" style={{marginLeft: "8%"}}><button className="buttons3">Deactivate</button></span>
-=======
                             <span class="home-buttons" style={{marginLeft: "8%"}}><button class="buttons3" name="delete" onClick={this.deleteClick}>Deactivate</button></span>
->>>>>>> edd46eab76613e834698cff7ae33c8b53bea0689
                     
                 </div>
                 <div className="col-md-3 feed">

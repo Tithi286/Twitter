@@ -26,13 +26,7 @@ class ListsCreate extends Component {
         
     }
 
-<<<<<<< HEAD
-   
-
-    fnameChangeHandler = (e) => {
-=======
     
->>>>>>> edd46eab76613e834698cff7ae33c8b53bea0689
     listNameChangeHandler = (e) => {
         this.setState({
             listName: e.target.value
