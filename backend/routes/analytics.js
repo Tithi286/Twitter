@@ -51,10 +51,23 @@ router.post("/incprofileviewcount", requireAuth, async function(
 router.get("/viewcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
-
+    const likedTweetID=[]
     const query = {};
     results = await simulateRequestOverKafka("getTweetViewCount",query);
-    res.json(results);
+    for (let i = 0; i < results.length; i++) {
+      likedTweetID.push(results[i]._id);
+  }
+    const tweet = {
+      tweetID: { $in: likedTweetID }
+  };
+  let tweets = await simulateRequestOverKafka("getTweets", tweet);
+ 
+  const resultsf = results.map(res => ({
+    tweet: res,
+    tweets
+  }));
+
+  res.json(resultsf);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -63,10 +76,23 @@ router.get("/viewcount", requireAuth, async function(req, res, next) {
 router.get("/likecount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
-
+    const likedTweetID=[]
     const query = {};
     results = await simulateRequestOverKafka("getTweetLikeCount",query);
-    res.json(results);
+    for (let i = 0; i < results.length; i++) {
+      likedTweetID.push(results[i]._id);
+  }
+    const tweet = {
+      tweetID: { $in: likedTweetID }
+  };
+  let tweets = await simulateRequestOverKafka("getTweets", tweet);
+ 
+  const resultsf = results.map(res => ({
+    tweet: res,
+    tweets
+  }));
+
+  res.json(resultsf);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -75,10 +101,23 @@ router.get("/likecount", requireAuth, async function(req, res, next) {
 router.get("/retweetcount", requireAuth, async function(req, res, next) {
   try {
     const loggedInUser = req.user;
-
+    const likedTweetID=[]
     const query = {};
     results = await simulateRequestOverKafka("getARetweetCount",query);
-    res.json(results);
+    for (let i = 0; i < results.length; i++) {
+      likedTweetID.push(results[i]._id);
+  }
+    const tweet = {
+      tweetID: { $in: likedTweetID }
+  };
+  let tweets = await simulateRequestOverKafka("getTweets", tweet);
+ 
+  const resultsf = results.map(res => ({
+    tweet: res,
+    tweets
+  }));
+
+  res.json(resultsf);
   } catch (e) {
     res.status(500).send(e.message || e);
   }

@@ -57,7 +57,7 @@ class Subscriptions extends Component {
         let listsubscriber;
         
         listsubscriber =this.state.listsubscriber.map(subscribe1 =>(
-            <Link class="a" to={{pathname:"/sublist", state:[subscribe1.tweet.listName,subscribe1.tweet.listDesc,subscribe1.tweet.members.length,subscribe1.tweet.subscribers.length,subscribe1.tweet._id] }}>
+            <Link class="a" to={{pathname:"/memlist", state:[subscribe1.tweet.listName,subscribe1.tweet.listDesc,subscribe1.tweet.members.length,subscribe1.tweet.subscribers.length,subscribe1.tweet._id] }}>
             <div class="tweets-div u-list1">    
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">

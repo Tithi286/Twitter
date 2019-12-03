@@ -92,7 +92,7 @@ const unsetSubscribers = connection => (list = {}) => {
 };
 const unsetMembers = connection => (list = {}) => {
   return new Promise((resolve, reject) => {
-    lists.update({ _id: list._id }, { $pull: { members: list.user } }, function(
+    lists.updateOne({ _id: list._id }, { $pull: { members: list.user } }, function(
       err,
       docs
     ) {
