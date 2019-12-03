@@ -44,8 +44,8 @@ class otherlists extends Component {
                     listCreated : response.data,
                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
-                
-                console.log(this.state.listCreated)
+                console.log("lissstttt")
+                console.log(response)
                 
             });
     }
