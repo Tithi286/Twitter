@@ -94,7 +94,7 @@ class IndividualList extends Component {
         axios.post('http://localhost:3001/lists/subscribe',data)
                 .then((response) => {
                
-       
+                    window.location.assign("/subscriptions");
              
                 
             });
