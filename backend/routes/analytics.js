@@ -14,7 +14,7 @@ var requireAuth = passport.authenticate("jwt", { session: false });
 
 router.post("/inctweetviewcount", requireAuth, async function(req, res, next) {
   try {
-    const loggedInUser = req.user;
+  
     const { tweetID } = req.body;
 
     const query = {
@@ -35,10 +35,10 @@ router.post("/incprofileviewcount", requireAuth, async function(
   next
 ) {
   try {
-    const loggedInUser = req.user;
+    const {userID}=req.body
 
     const query = {
-      userID: loggedInUser.userID
+      userID: userID
     };
     results = await simulateRequestOverKafka("IncProfileViewCount",query);
     res.json(results);
