@@ -43,7 +43,7 @@ class login extends Component {
             .then((response) => {
                 console.log("response"+response)
                
-                localStorage.setItem("username",response.data.userName)
+                sessionStorage.setItem("username",response.data.userName)
                 if (response.status === 200) {
                     this.setState({
                         authFlag: true
