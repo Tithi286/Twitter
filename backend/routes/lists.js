@@ -136,6 +136,49 @@ router.get("/members", requireAuth, async function(req, res, next) {
   }
 });
 
+router.get("/ownmembers", requireAuth, async function(req, res, next) {
+  try {
+    members = [];
+
+    const list = {
+     _id: req.query.listID
+    };
+    const results = await simulateRequestOverKafka("getMembers", list);
+
+    results[0].members.forEach(mem => members.push(mem));
+
+    quoted = "'" + members.join("','") + "'";
+    const user = { usersID: [quoted] };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    res.json(chatRes.results);
+    console.log(chatRes)
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+router.get("/ownsubscribers", requireAuth, async function(req, res, next) {
+  try {
+    members = [];
+
+    const list = {
+     _id: req.query.listID
+    };
+    const results = await simulateRequestOverKafka("getSubscribers", list);
+
+    results[0].members.forEach(mem => members.push(mem));
+
+    quoted = "'" + members.join("','") + "'";
+    const user = { usersID: [quoted] };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    res.json(chatRes.results);
+    console.log(chatRes)
+  } catch (e) {
+    res.status(500).send(e.message || e);
+  }
+});
+
 //Returns subscribers of selected list
 
 router.get("/subscribers", requireAuth, async function(req, res, next) {

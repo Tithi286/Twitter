@@ -290,8 +290,8 @@ class IndividualList extends Component {
                                     <span class="span">{this.props.location.state[1]}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{this.props.location.state[2]} members .</span>
-                                    <span class="span">{this.props.location.state[3]} subscribers</span>
+                                    <span class="span">{this.props.location.state[2]} <Link to={{pathname:"/ownmembers", state:this.props.location.state[4] }} style={{color:"black"}}>Members</Link> </span>
+                                    <span class="span">{this.props.location.state[3]} <Link to={{pathname:"/ownsubscribers", state:this.props.location.state[4] }} style={{color:"black"}}>Subscribers</Link> </span>
                             </div>
                             <div>
                             <button class="logob" onClick={this.deleteList}>Delete List</button>
