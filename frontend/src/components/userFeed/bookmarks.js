@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import '../../App.css';
+
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Icon from 'react-icons-kit';
 import {commentO} from 'react-icons-kit/fa/commentO'
 import {heartO} from 'react-icons-kit/fa/heartO'
