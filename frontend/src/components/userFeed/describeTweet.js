@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import Icon from 'react-icons-kit';
-import { commentO } from 'react-icons-kit/fa/commentO'
-import { heartO } from 'react-icons-kit/fa/heartO'
-import { bookmarkO } from 'react-icons-kit/fa/bookmarkO'
-import { loop } from 'react-icons-kit/iconic/loop'
-import '../../App.css';
-import './tweet.css';
-import axios from 'axios';
-import { Redirect } from 'react-router';
+import React, { Component } from "react";
+import Icon from "react-icons-kit";
+import { commentO } from "react-icons-kit/fa/commentO";
+import { heartO } from "react-icons-kit/fa/heartO";
+import { bookmarkO } from "react-icons-kit/fa/bookmarkO";
+import { loop } from "react-icons-kit/iconic/loop";
+import "../../App.css";
+import "./tweet.css";
+import axios from "axios";
+import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
+import ModernDatepicker from "react-modern-datepicker";
+import moment from "moment";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Favicon from "react-favicon";
 import { Link } from "react-router-dom";
 
 class describeTweet extends Component {
@@ -212,17 +212,9 @@ class describeTweet extends Component {
                 </div>
 
             </div>
-
-
-        )
-    }
-
+          
+    );
+  }
 }
 
-
 export default describeTweet;
-
-
-
-
-

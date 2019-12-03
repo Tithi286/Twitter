@@ -294,11 +294,11 @@ router.post("/unsubscribe", requireAuth, async function(req, res, next) {
 
 router.post("/demember", requireAuth, async function(req, res, next) {
   try {
-    const { userID } = req.body;
-    const loggedInUser = req.user;
+    const { listID } = req.body;
+   
     const list = {
-      _id: req.body.listID,
-      user: userID
+      _id: listID,
+      user: req.user.userID
     };
     await simulateRequestOverKafka("unsetMembers", list);
     res.json("Member removed");

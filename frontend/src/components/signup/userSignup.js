@@ -8,6 +8,7 @@ import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Link } from "react-router-dom";
 
 class userSignup extends Component {
 
@@ -143,6 +144,10 @@ class userSignup extends Component {
                     <div className="">
                         <div className="elements2">
                             <h3 class="label">Create your account</h3>
+                            <div>
+                            <h6 class="label">Already have account?</h6>
+                            <Link to="/login" style={{float:"left"}}>Login</Link>
+                            </div>
                             <br />
                             <p>{this.props.message}</p>
                         </div>
@@ -176,10 +181,10 @@ class userSignup extends Component {
                             </div>
                             <div class="">
                             <br/>
-                                <div class="elements2">
+                                {/* <div class="elements2">
                                     <span class="label">Date of Birth</span>
                                     <div class="label datepicker" name="startDate"><DatePicker selected={this.state.startDate} onChange={this.dobChangeHandler} /></div>
-                                </div>
+                                </div> */}
                             </div>
                             <div class="">
                                 <br />
