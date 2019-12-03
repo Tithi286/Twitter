@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import '../../App.css';
+
 import axios from 'axios';
 //import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { Link } from "react-router-dom";
 import moment from 'moment';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 class followers extends Component {
 
