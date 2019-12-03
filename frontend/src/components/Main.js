@@ -35,6 +35,7 @@ import ownsubscribers from './userFeed/ownsubscribers';
 import subscribers from './userFeed/subscribers';
 
 import othermembers from './userFeed/othermembers';
+import otherindlist from './userFeed/otherindlist';
 
 class Main extends Component {
     render() {
@@ -51,6 +52,7 @@ class Main extends Component {
                 <Route path="/bookmarks" component={Bookmarks} />
                 <Route path="/lists" component={Lists} />
                 <Route path="/indlist" component={IndividualList}/>
+                <Route path="/otherindlist" component={otherindlist}/>
                 <Route path="editlist" component={editlist}/>
                 <Route path="/sublist" component={SubscribedList}/>
                 <Route path="/memlist" component={MemberList}/>
