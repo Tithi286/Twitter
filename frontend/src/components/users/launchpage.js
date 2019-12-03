@@ -9,6 +9,7 @@ import { Field, reduxForm } from "redux-form";
 //import uuid from 'react-native-uuid';
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
+import { Link } from "react-router-dom";
 
 class launchpage extends Component {
 
@@ -107,15 +108,7 @@ class launchpage extends Component {
                 </div>
                 <div class="landingpage">
                 <br/><br/>
-                <div class="home-div1">
-                <input type="email" placeholder="Email" class="input">
-                </input>
-                <input type="password" placeholder="Password"  class="input">
-                </input>
-                <button class="login1">
-                    Login
-                </button>
-                </div>
+                
                 <br/>
                 <div class="home-div">
                 <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo1"></img>
@@ -125,12 +118,15 @@ class launchpage extends Component {
                 <h4>
                 Join Twitter today. 
                 </h4>
-                <button class="buttons1">
+                <Link to="/signup"><button class="buttons1">
                     Sign up
                 </button><br/><br/>
+                </Link>
+                <Link to="/login">
                 <button class="buttons2">
                     Log in
                 </button>
+                </Link>
                 </div>
                 </div>
             </div>
