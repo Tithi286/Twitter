@@ -110,7 +110,82 @@ class SubscribedList extends Component {
  
 
 
+    
+    createRetweet = (v1) => {
+        //e.preventDefault();
+        const data = {
+            retweet: "",
+            tweetID: v1
+        }
+        console.log("v1 values", v1)
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/userfeed/retweet', data)
+            .then((response) => {
+                console.log("in axios call for post retweet")
+                console.log(response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
 
+    createLike = (v1) => {
+        //e.preventDefault();
+        const data = {
+            tweetID: v1
+        }
+        console.log("v1 values", v1)
+        axios.defaults.withCredentials = true;
+        axios.put('http://localhost:3001/userfeed/like', data)
+            .then((response) => {
+                console.log("in axios call for like")
+                console.log(response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
+
+    createBookmark = (v1) => {
+        //e.preventDefault();
+        const data = {
+            tweetID: v1
+        }
+        console.log("v1 values", v1)
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/bookmarks/create', data)
+            .then((response) => {
+                console.log("in axios call for creating bookmark")
+                console.log(response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
+
+
+    sendReply = (v1) => {
+        console.log("inside send reply")
+        const data = {
+            tweetID: v1,
+            reply: this.state.firstName
+        }
+        console.log("Data", data)
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/userfeed/reply', data)
+            .then((response) => {
+                console.log("in axios call for creating bookmark")
+                console.log(response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+
+    }
     render() {
 
         const isComponent = this.state.isComponent;
@@ -176,10 +251,10 @@ class SubscribedList extends Component {
                 <div class="img-tweets-div">
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%"}}>
-                    <div class="col-sm-3 buttons-div">{retweet1.replyCount}<Icon icon={commentO} role="button"/></div>
-                    <div class="col-sm-3 buttons-div">{retweet1.retweetCount}<Icon icon={loop} role="button"/></div>
-                    <div class="col-sm-3 buttons-div">{retweet1.likeCount}<Icon icon={heartO} role="button"/></div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button"/></div>                
+                    <div class="col-sm-3 buttons-div">{retweet1.replyCount}<Icon icon={commentO} role="button" onClick={() => this.sendReply(retweet1.tweet.tweetID)} /></div>
+                    <div class="col-sm-3 buttons-div">{retweet1.retweetCount}<Icon icon={loop} role="button" onClick={() => this.createRetweet(retweet1.tweet.tweetID)} /></div>
+                    <div class="col-sm-3 buttons-div">{retweet1.likeCount}<Icon icon={heartO} role="button" onClick={() => this.createLike(retweet1.tweet.tweetID)}/></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.createBookmark(retweet1.tweet.tweetID)} /></div>                
                     </div>
                 </div>
                 
@@ -208,20 +283,20 @@ class SubscribedList extends Component {
                 </div>
 
                 <div class="col-md-6 feed1 u-list1">
-                    <div class="home-font">User Name</div>
+                    <div class="home-font">{this.props.location.state[0]}</div>
 
                     <div class="home-font1">
                         <div class="">
                             <div class="rest-img">
                             </div>
-                            <div class="s-list-item-primary u-mar1 fullname">Username</div>
-                            <div class="s-list-item-primary u-mar1 listheading">LIST heading</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{this.props.location.state[1]}</div>
+                            <div class="s-list-item-primary u-mar1 listheading"></div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">Tweet</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">members .</span>
-                                    <span class="span">subscribers</span>
+                                    <span class="span">{this.props.location.state[2]} members .</span>
+                                    <span class="span">{this.props.location.state[3]} subscribers</span>
                             </div>
                             <div>
                             <Link><button class="logob" onClick={() => this.deleteClick()}>Unsubcribe</button></Link>
