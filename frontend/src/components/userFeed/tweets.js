@@ -33,11 +33,25 @@ class tweets extends Component {
     componentDidMount(){
         console.log("in componentdidmount")
         console.log("profileimage: ",this.state.profileImage)
-        const data = {
-            params:{
-            userID : sessionStorage.getItem("userID")
-        }}
-       console.log(data.userID)
+        //console.log("path: ", this.props.match.path)
+        console.log("Profile of", sessionStorage.getItem("component"))
+        var a = sessionStorage.getItem("component")
+        let data;
+        if(a == "profile"){
+             data = {
+                params:{
+                userID : sessionStorage.getItem("userID")
+            }}
+        }
+        else if(a == "explore"){
+             data = {
+                params:{
+                userID : sessionStorage.getItem("ID")
+            }}
+        }
+        console.log("USERID: ",data)
+        
+        console.log(data.userID)
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/userprofile/tweets', data)
                 .then((response) => {

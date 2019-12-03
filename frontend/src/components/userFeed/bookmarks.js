@@ -139,7 +139,7 @@ class bookmarks extends Component {
                             </div>
                 
                 <div class="img-tweets-div">
-                    <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
+                    <img src={bookmark.tweet.tweetImage} class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {bookmark.replyCount}</div>
                     <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {bookmark.retweetCount}</div>
