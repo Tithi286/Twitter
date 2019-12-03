@@ -40,7 +40,7 @@ class otherindlist extends Component {
     }
 
     componentDidMount(){
-        
+        console.log("list"+this.props.location.state[4])
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/lists/tweets')
                 .then((response) => {
