@@ -42,6 +42,13 @@ class othermembers extends Component {
 
 
     render() {
+
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
 console.log("membersssss")
 console.log(this.props.location.state.userID)
         let Contents;
@@ -67,7 +74,7 @@ console.log(this.props.location.state.userID)
          ) } )
         return (
             <div class="container-flex">
-               
+                {redirectVar}
                 <Navbar/>
 
                 <div class="col-md-6 feed1 u-list1">

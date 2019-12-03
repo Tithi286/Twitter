@@ -78,6 +78,12 @@ class followers extends Component {
 
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
         const {followers,currentPage, itemsPerPage} = this.state;
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -128,7 +134,7 @@ class followers extends Component {
 
         return (
             <div class="container-flex">
-               
+               {redirectVar}
                 <Navbar/>
 
                 <div class="col-md-6 feed1 u-list1">

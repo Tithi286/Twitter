@@ -52,14 +52,14 @@ class exploreList extends Component {
         let Contents;
 
         let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
         }
-        const { handleSubmit } = this.props;
 
         return (
             <div class="container-flex">
-
+                {redirectVar}
                 <Navbar/>
 
 

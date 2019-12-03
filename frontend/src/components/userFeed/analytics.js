@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import PieChart from "highcharts-react-official";
+import { Redirect } from 'react-router';
 import Navbar from '../navbar'
 
 class analytics extends Component {
@@ -18,6 +19,11 @@ class analytics extends Component {
         }
     }
     render() {
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         const tweetview10 = {
             chart: {
                 zoomType: 'x',
@@ -413,6 +419,7 @@ class analytics extends Component {
 
         return (
             <div className="container-flex">
+            {redirectVar}
                 <Navbar/>
                 <div className="col-md-9 feed">
                     <div class="home-font">Analytics</div>

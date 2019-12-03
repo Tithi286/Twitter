@@ -70,6 +70,12 @@ class messages extends Component {
 
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
        let content;
         content =this.state.messages.map(message => (
             
@@ -95,6 +101,7 @@ class messages extends Component {
 
         return (
             <div class="container-flex">
+                {redirectVar}
                 <Navbar/>
 
                 <div class="col-md-6 feed">

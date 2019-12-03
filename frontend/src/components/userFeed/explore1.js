@@ -73,25 +73,6 @@ class profile extends Component {
         console.log(this);
     }
 
-   
-
-    // componentDidMount(){
-    //     const data = {
-    //         params:{
-    //         topic: this.props.location.state.search
-    //         }
-    //     }
-    //     console.log("Data from explore: ", data)
-    //     axios.defaults.withCredentials = true;
-    //     axios.get('http://localhost:3001/userfeed/search',data)
-    //             .then((response) => {
-    //             this.setState({
-    //                 profile : response.data
-    //             });
-    //             console.log(response)
-    //             console.log(this.state.profile)
-    //         });
-    // }
 
     componentDidMount() {
         this.setState({
@@ -230,6 +211,12 @@ class profile extends Component {
 
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
 
@@ -260,14 +247,6 @@ class profile extends Component {
             )            
         }
 
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
-        console.log("Follow: ", this.state.follText)
         let user1 = this.state.user
         return (
             <div class="container-flex">

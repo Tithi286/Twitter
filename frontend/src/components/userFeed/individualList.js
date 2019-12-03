@@ -194,6 +194,7 @@ class IndividualList extends Component {
     }
 
     render() {
+
     console.log("list detailss")
         console.log(this.props.location.state[4])
         
@@ -229,14 +230,11 @@ class IndividualList extends Component {
             )            
         }
 
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
+ let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
         }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
-
         let retweet;
         
         retweet = this.state.retweet.map(retweet1 =>(
