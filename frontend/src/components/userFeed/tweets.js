@@ -145,7 +145,7 @@ class tweets extends Component {
                             </div>
                 </div>
                 <div class="img-tweets-div">
-                    <img src={tweet.tweetImage} class="tweets-img" ></img>
+                    <img src={tweet.tweet.tweetImage} class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%"}}>
                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {tweet.replyCount}</div>
                     <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {tweet.retweetCount}</div>
