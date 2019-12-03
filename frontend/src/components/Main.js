@@ -26,6 +26,7 @@ import DescribeTweets from './userFeed/describeTweet';
 import Members from './userFeed/members';
 import IndividualList from './userFeed/individualList';
 import SubscribedList from './userFeed/subscribedList';
+import MemberList from './userFeed/memberList';
 import ExploreList from './userFeed/exploreList'
 import editlist from './userFeed/editlist';
 import otherlist from './userFeed/otherlist';
@@ -50,6 +51,7 @@ class Main extends Component {
                 <Route path="/indlist" component={IndividualList}/>
                 <Route path="editlist" component={editlist}/>
                 <Route path="/sublist" component={SubscribedList}/>
+                <Route path="/memlist" component={MemberList}/>
                 <Route path="/create" component = {listsCreate}/>
                 <Route path="/subscriptions" component= {Subscriptions}/>
                 <Route path="/members" component={Members}/>

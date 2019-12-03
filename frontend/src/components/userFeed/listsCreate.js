@@ -65,7 +65,7 @@ class ListsCreate extends Component {
                 console.log(response.status);
                 if (response.status === 200) {
                     this.props.history.push({
-                        pathname: "/adduser",
+                        pathname: "/lists",
                     })
                     this.setState({
                         authFlag: true
@@ -103,14 +103,14 @@ class ListsCreate extends Component {
                         <br/>
                             <div class="elements">
                                 <span class="label">Name</span>
-                                <input class="form-control1 elements1" placeholder={this.state.listName} pattern="[A-Z]*||[a-z]*" type="text" name="listName" onChange={this.listNameChangeHandler} required/>
+                                <input class="form-control1 elements1" placeholder={this.state.listName} type="text" name="listName" onChange={this.listNameChangeHandler} required/>
                             </div>
                         </div>
                         <div class="">
                         <br/>
                             <div class="elements">
                                 <span class="label">Description</span>
-                                <input class="form-control1 elements1" placeholder={this.state.listDesc} pattern="[A-Z]*||[a-z]*" type="text" name="listDesc" onChange={this.listDescChangeHandler} required/>
+                                <input class="form-control1 elements1" placeholder={this.state.listDesc}  type="text" name="listDesc" onChange={this.listDescChangeHandler} required/>
                             </div>
                         </div>>
                     </div>
