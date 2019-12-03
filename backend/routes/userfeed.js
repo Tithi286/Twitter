@@ -14,7 +14,6 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 // search hashtags or people
 router.get('/search', requireAuth, async function (req, res, next) {
     const { topic } = req.query
-    console.log(topic)
     try {
         if (topic) {
             //Hashtag search
@@ -67,7 +66,6 @@ router.get('/search', requireAuth, async function (req, res, next) {
 router.post('/', upload.single('tweetImage'), requireAuth, async function (req, res, next) {
     const { tweet } = req.body;
     const tweetImage = req.file ? `/${req.file.filename}` : '';
-    console.log("tweetInage" + tweetImage);
     var d = new Date();
     var curr_date = d.getDate();
     var curr_month = d.getMonth() + 1;
@@ -86,7 +84,6 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
             tweet, tweetImage,
         };
         const results = await simulateRequestOverKafka("saveTweet", tweetDoc);
-        console.log("results", results)
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
