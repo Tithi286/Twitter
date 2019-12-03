@@ -312,7 +312,7 @@ class IndividualList extends Component {
                             </div>
                             <div>
                             <button class="logob" onClick={this.deleteList}>Delete List</button>
-                            <button class="logod" onClick={this.subscribe}>Subscribe</button>
+                            {/*<button class="logod" onClick={this.subscribe}>Subscribe</button>*/}
                             </div>
                         </div>
                     </div>
