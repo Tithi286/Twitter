@@ -44,6 +44,8 @@ class login extends Component {
                 console.log("response"+response)
                
                 sessionStorage.setItem("username",response.data.userName)
+                sessionStorage.setItem("name",response.data.firstName)
+
                 if (response.status === 200) {
                     this.setState({
                         authFlag: true
