@@ -33,7 +33,9 @@ class profile extends Component {
             day: "",
             startDate: moment(),
             isComponent: "",
-            profile: []
+            profile: [],
+            userID:this.props.location.state.userID,
+            user: this.props.location.state.profile
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
@@ -88,6 +90,14 @@ class profile extends Component {
     // }
 
     componentDidMount() {
+        this.setState({
+            userID:this.state.userID,
+            user: this.state.user
+        })
+        sessionStorage.setItem("component","explore")
+        sessionStorage.setItem("ID",this.state.userID)
+        console.log("Data: ",this.props.location.state.userID)
+        console.log("UserID: ", this.props.location.state.profile)
         console.log("inside edit profile get request")
         axios.defaults.withCredentials = true;
         axios.get("http://localhost:3001/users/profile")
@@ -109,7 +119,25 @@ class profile extends Component {
                         profileimage : response.data.profileImage
                     })
                 }
-            }) .catch(error => {
+                
+                const data={
+           
+                    userID:this.state.userID,
+                    
+                
+            }
+            axios.defaults.withCredentials = true;
+            console.log("inc")
+            console.log(response.data)
+            // console.log("Data: ",this.state.user)
+            // console.log("UserID: ", this.state.userID)
+            axios.post('http://localhost:3001/analytics/incprofileviewcount',data)
+                    .then((response) => {
+                   
+                
+                 
+                    
+                }); }) .catch(error => {
                 this.setState({
                     //message: error.response.data.error
                 })
@@ -156,7 +184,7 @@ class profile extends Component {
         const { handleSubmit } = this.props;
         //console.log(this.state.errormsg)
 
-        
+        let user1 = this.state.user
         return (
             <div class="container-flex">
                 {redirectVar}
@@ -189,18 +217,18 @@ class profile extends Component {
                             <div>
                             
                             </div><br /><br />
-                            <h5 class="rest-name-div1">Name</h5>
-                            <h5 class="rest-name-div">Address</h5>
-                            <h5 class="rest-name-div">Bio and Date</h5>
-                            <h5 class="rest-name-div">10 Followers 50 Following </h5>
+                            <h5 class="rest-name-div1">{user1.firstName} {user1.lastName}</h5>
+                            <h5 class="rest-name-div">{user1.city}, {user1.state}-{user1.zipcode}</h5>
+                            <h5 class="rest-name-div">{user1.bio}</h5>
+                            <h5 class="rest-name-div"> <Link to="/followers" style={{color:"black"}}>Followers</Link>    <Link to="/following" style={{color:"black"}}>Following </Link></h5>
                         </div>
                         
                     </div>
                     <div class="home-font2">
-                        <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleTweetClick} role="button">Tweets</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRetweetClick} role="button">Retweets</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRepliesClick} role="button">Replies</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleLikesClick} role="button">Likes</span></div>
+                        <div class="col-md-4 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleTweetClick} role="button">Tweets</span></div>
+                        <div class="col-md-4 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRetweetClick} role="button">Retweets</span></div>
+                        {/* <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRepliesClick} role="button">Replies</span></div> */}
+                        <div class="col-md-4 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleLikesClick} role="button">Likes</span></div>
                     </div>
                     
                  <div>

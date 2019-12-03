@@ -56,6 +56,16 @@ class explore extends Component {
         })
     }
 
+    nextPage = (v1) => {
+        console.log(v1)
+        this.props.history.push({
+            pathname: '/explore1',
+            state: {
+                profile: v1,
+                userID : v1.userID
+            }
+        })
+    }
 
 
 
@@ -67,6 +77,8 @@ class explore extends Component {
         let profile1;
         var a = this.state.search.startsWith("#")
         console.log("var a: ", a)
+
+        // search tweets with hashtag
         if (a == true) {
             profile1 = this.state.profile.map(profile => {
                 if (profile.tweet.tweetImage == "") {
@@ -157,7 +169,7 @@ class explore extends Component {
             }
             )
         }
-
+        // Search people
         else {
             profile1 = this.state.profile.map(profile => (
                 // console.log("no tweet image")
@@ -172,14 +184,14 @@ class explore extends Component {
                     <div class="u-flex u-flex-align container-flex">
                         <div class="u-mar2 col-sm-1" style={{ float: "left" }}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
                         <div class="col-md-8" style={{ float: "left" }}>
-                            <Link class="a" to={{pathname:"/explore1"}}>
-                                <div class="u-mar3">
+                        {/* <Link class="a" to={{pathname:"/explore1",state:profile}} >                                 */}
+                                    <div class="u-mar3" role="button" onClick={() => this.nextPage(profile)}>
                                     <div class="s-list-item-primary u-mar3 fullname">{profile.firstName} {profile.lastName}</div>
                                     <div class="s-list-item-secondary u-mar3 snippet">
                                         <span class="span">{profile.profileDesc}</span>
                                     </div>
                                 </div>
-                            </Link>
+                        {/* </Link> */}
                         </div>
                         <div class="col-sm-3" style={{ float: "left" }}>
                             <button class="logoc" style={{ float: "left" }}>Follow</button>
