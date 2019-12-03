@@ -80,6 +80,15 @@ router.get('/details', requireAuth, async function (req, res, next) {
         if (tweetID) {
             // get the tweets details
             results = await simulateRequestOverKafka("getTweets", { tweetID });
+            replyOwner=[]
+            resultsr=await simulateRequestOverKafka("getReply", { tweetID })
+            resultsr.forEach(retwt => {
+                replyOwner.push(retwt.replyOwnerID);
+              });
+              quoted = "'" + replyOwner.join("','") + "'";
+              const user = { usersID: [quoted] };
+              
+              let chatRes = await simulateRequestOverKafka("getUsers", user);
             if (results.length > 0) {
                 // get all replies,retweets,likeCount,retweetCount and replyCount in parallel
                 const [likeCounts, retweetCounts, retweet, replyCounts, reply] = await Promise.all([
@@ -103,13 +112,16 @@ router.get('/details', requireAuth, async function (req, res, next) {
                         }
                     ]
                 */
+               replyRes=chatRes.results
+                console.log(chatRes)
                 results = results.map(res => ({
                     tweet: res,
                     likeCount: likeCounts[res.tweetID],
                     replyCount: replyCounts[res.tweetID],
                     retweetCount: retweetCounts[res.tweetID],
                     reply,
-                    retweet
+                    retweet,
+                    replyRes
                 }));
             }
             return res.json(results);
@@ -121,5 +133,6 @@ router.get('/details', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
+
 
 module.exports = router;
