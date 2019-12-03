@@ -3,6 +3,11 @@ import '../../App.css';
 import axios from 'axios';
 import { Link } from "react-router-dom";
 //import cookie from 'react-cookies';
+import { Redirect } from 'react-router';
+import { connect } from "react-redux";
+import { Field, reduxForm } from "redux-form";
+//import jwt_decode from 'jwt-decode';
+//import uuid from 'react-native-uuid';
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,61 +15,72 @@ import { faHome, faList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Favicon from 'react-favicon';
 
-class Members extends Component {
+class Subscriptions extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            listmembers: []
+            listsubscriber: []
         }
         
     }
-
-
+ 
     componentDidMount(){
         
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/lists/memberships')
                 .then((response) => {
+                    console.log(response)
                 this.setState({
-                    listmembers : response.data
+                    listsubscriber : response.data
                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
                 });
                 console.log(response.data)
-                this.state.listmembers.map(member1 =>{
-                    console.log("members");
-                    console.log(member1);
+                this.state.listsubscriber.map(subscribe1 =>{
+                    console.log("subsribesss")
+                    console.log(subscribe1.user.results[0].userName);
                 });
             });
     }
-   
+
+
+
     render() {
+
+        let redirectVar = null;
+        if (this.props.authFlag == true) {
+            redirectVar = <Redirect to="blogin" />
+        }
+        const { handleSubmit } = this.props;
+        //console.log(this.state.errormsg)
        
-        let listmembers;
+        let listsubscriber;
         
-        listmembers =this.state.listmembers.map(member1 =>(
-            <div class="tweets-div u-list1">
-                
+        listsubscriber =this.state.listsubscriber.map(subscribe1 =>(
+            <Link class="a" to="/sublist">
+            <div class="tweets-div u-list1">    
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{member1.user.results[0].userName}</div>
-                            <div class="s-list-item-primary u-mar1 listheading">{member1.tweet.listName}</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{subscribe1.user.results[0].userName}</div>
+                            <div class="s-list-item-primary u-mar1 listheading">{subscribe1.tweet.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{member1.tweet.listName}</span>
+                                    <span class="span">{subscribe1.tweet.listDesc}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span"> {member1.tweet.members.length} members .</span>
-                                    <span class="span">{member1.tweet.subscribers.length} subscribers</span>
+                                    <span class="span">{subscribe1.tweet.members.length} members .</span>
+                                    <span class="span">{subscribe1.tweet.subscribers.length}subscribers</span>
                             </div>
                             </div>
                             </div>
                             </div>            
             </div>
-        ))
+            </Link>
+            ))
 
         return (
             <div class="container-flex">
+                {redirectVar}
                 <div class="col-md-3 feed">
                 <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br/><br/>
                 <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br/><br/></a>
@@ -88,11 +104,11 @@ class Members extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
-                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
-                            <a class="active" >Members</a>
+                            <a class="active" class="col-md-5">Subscribed</a>
+                            <a href="/members" >Members</a>
                         </div>
                     <div>
-                        {listmembers}
+                        {listsubscriber}
                     </div>
                 </div>
                 <div class="col-md-3 feed">
@@ -114,4 +130,4 @@ class Members extends Component {
 }
 
 
-export default Members;
+export default Subscriptions;

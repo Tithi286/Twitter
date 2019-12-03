@@ -100,6 +100,23 @@ class IndividualList extends Component {
             });
     }
     
+   deleteList(){
+        console.log("listid"+listsID);
+        const data={
+           
+                listID:listsID
+            
+        }
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/lists/delete',data)
+                .then((response) => {
+               
+                    window.location.assign("/lists");
+             
+                
+            });
+    }
+    
 
 
     render() {
@@ -220,7 +237,7 @@ class IndividualList extends Component {
                                     <span class="span">{this.props.location.state[3]} subscribers</span>
                             </div>
                             <div>
-                            <Link to="/editlist"><button class="logob">Edit List</button></Link>
+                            <button class="logob" onClick={this.deleteList}>Delete List</button>
                             <button class="logod" onClick={this.subscribe}>Subscribe</button>
                             </div>
                         </div>

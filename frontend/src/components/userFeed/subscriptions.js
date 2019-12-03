@@ -105,7 +105,7 @@ class Subscriptions extends Component {
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
                             <a class="active" class="col-md-5">Subscribed</a>
-                            <a href="#contact" >Members</a>
+                            <a href="/members" >Members</a>
                         </div>
                     <div>
                         {listsubscriber}

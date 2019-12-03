@@ -72,7 +72,15 @@ router.get("/memberships", requireAuth, async function(req, res, next) {
       members: loggedInUser.userID
     };
     const results = await simulateRequestOverKafka("getMemberships", list);
-    res.json(results);
+    const user = { userID: results[0].ownerID };
+
+    let chatRes = await simulateRequestOverKafka("getUsers", user);
+    resultsf = results.map(res => ({
+      tweet: res,
+      user: chatRes
+      
+    }));
+    res.json(resultsf);
   } catch (e) {
     res.status(500).send(e.message || e);
   }
