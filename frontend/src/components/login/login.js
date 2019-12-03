@@ -42,6 +42,10 @@ class login extends Component {
         axios.post('/users/login', data)
             .then((response) => {
                 console.log("response"+response)
+               
+                sessionStorage.setItem("username",response.data.userName)
+                sessionStorage.setItem("name",response.data.firstName)
+
                 localStorage.setItem("email",response.data.email)
                 localStorage.setItem("username",response.data.userName)
                 if (response.status === 200) {
