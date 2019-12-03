@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import PieChart from "highcharts-react-official";
+import { Redirect } from 'react-router';
 
 class analytics extends Component {
     constructor(props) {
@@ -17,6 +18,11 @@ class analytics extends Component {
         }
     }
     render() {
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         const tweetview10 = {
             chart: {
                 zoomType: 'x',
@@ -412,6 +418,7 @@ class analytics extends Component {
 
         return (
             <div className="container-flex">
+            {redirectVar}
                 <div className="col-md-3 feed">
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br /><br /></a>

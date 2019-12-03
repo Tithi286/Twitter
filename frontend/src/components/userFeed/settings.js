@@ -48,6 +48,11 @@ class settings extends Component {
     render() {
 
         let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+        
         if(this.state.authFlag == "true"){
             redirectVar = <Redirect to="/login" />
         }

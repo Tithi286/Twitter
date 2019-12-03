@@ -110,6 +110,12 @@ class profile extends Component {
 
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+        
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
 
@@ -140,12 +146,7 @@ class profile extends Component {
         }
 
 
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
+
 
         return (
             <div class="container-flex">

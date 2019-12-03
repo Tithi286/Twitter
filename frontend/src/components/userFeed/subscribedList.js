@@ -190,6 +190,13 @@ class SubscribedList extends Component {
     }
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
+        
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
 
@@ -218,14 +225,6 @@ class SubscribedList extends Component {
                 <Likes/>
             )            
         }
-
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
 
         let retweet;
         

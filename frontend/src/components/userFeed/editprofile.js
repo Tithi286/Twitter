@@ -178,16 +178,17 @@ class editProfile extends Component {
 
     render() {
 
-        let redirectVar = null;
-        // if (this.props.authFlag == true) {
-        //     redirectVar = <Redirect to="blogin" />
-        // }
         
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         
 
         return (
             <div class="signup2">
-                {/* {redirectVar} */}
+                {redirectVar}
                 <br />
                 <form class="outer-box1 signup1" onSubmit={this.submitChanges} >
                     <br />

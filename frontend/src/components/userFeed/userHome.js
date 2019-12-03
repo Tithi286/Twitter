@@ -182,7 +182,11 @@ class userHome extends Component {
 
 
     render() {
-
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
 
         let tweet1;
         tweet1 = this.state.tweet.map(tweet => {
@@ -271,13 +275,6 @@ class userHome extends Component {
             }
         })
 
-
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
 
 
 
