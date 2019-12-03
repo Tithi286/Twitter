@@ -3,7 +3,7 @@ import '../../App.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import "react-datepicker/dist/react-datepicker.css";
-
+import { Link } from "react-router-dom";
 class editProfile extends Component {
 
     constructor(props) {
@@ -17,7 +17,8 @@ class editProfile extends Component {
             bio:"",
             email: "",
             profileimage: "https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png",
-            imageURL:""
+            imageURL:"",
+            authFlag:""
         }
 
         this.fnameChangeHandler = this.fnameChangeHandler.bind(this);
@@ -50,6 +51,7 @@ class editProfile extends Component {
                     state: response.data.state,
                     zipcode: response.data.zipcode,
                 });
+                
                 if(response.data.profileImage){
                     this.setState({
                         profileimage : response.data.profileImage
@@ -162,6 +164,11 @@ class editProfile extends Component {
             .then((response) => {
                 console.log("in axios call")
                 console.log(response)
+                if(response.status == 200){
+                    this.setState({
+                        authFlag : "Saved changes successfully"
+                    })
+                }
             })
             .catch((error) => {
                 console.log(error)
@@ -185,9 +192,12 @@ class editProfile extends Component {
                 <form class="outer-box1 signup1" onSubmit={this.submitChanges} >
                     <br />
                     <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img>
+                    <div><Link to="/profile"><button class="buttons3" name="back" style={{ marginTop: "30px", marginLeft: "5px", width: "70px", height: "35px" }} >Back</button></Link></div>
+                                       
                     <div className="">
                         <div className="elements2">
                             <h3 class="label">Edit Your Profile</h3>
+                            <h6 class="label">{this.state.authFlag}</h6>
                             <br />
                         </div>
                         <div class="">
@@ -196,37 +206,34 @@ class editProfile extends Component {
                                     <span class="label">Profile Image</span>
                                     <img id="img" src={this.state.profileimage} alt="Avatar" style={{ width: "200px", height: "200px", borderRadius: "50%" }}></img>
                                     <input type="file" onChange={this.ImageChange} style={{ textAlign: "center", margin: "auto" }} name="pic" accept="image/*"></input>
-                                    <button class="btn btn-primary btn-lg searchbox-submit js-searchSubmit" onClick={this.updateprofileimage} style={{ width: "200px", marginTop: "20px", marginBottom: "50px" }} data-effect="ripple" type="button" tabindex="5" data-loading-animation="true">
-                                        Upload
-                                    </button>
                                     </div>
                             </div>
                         <div class="">
                         <br/>
                             <div class="elements">
                                 <span class="label">First Name</span>
-                                <input class="form-control1 elements1" placeholder={this.state.fname} pattern="[A-Z]*||[a-z]*" type="text" name="fname" onChange={this.fnameChangeHandler} required/>
+                                <input class="form-control1 elements1" value={this.state.fname} pattern="[A-Z]*||[a-z]*" type="text" name="fname" onChange={this.fnameChangeHandler} required></input>
                             </div>
                         </div>
                         <div class="">
                             <br />
                             <div class="elements">
                                 <span class="label">Last Name</span>
-                                <input class="form-control1 elements1" placeholder={this.state.lname} pattern="[A-Z]*||[a-z]*" type="text" name="lname" onChange={this.lnameChangeHandler}required/>
+                                <input class="form-control1 elements1" value={this.state.lname} pattern="[A-Z]*||[a-z]*" type="text" name="lname" onChange={this.lnameChangeHandler}required/>
                             </div>
                             </div>
                         <div class="">
                             <br />
                             <div class="elements">
                                 <span class="label">Email</span>
-                                <input class="form-control1 elements1" placeholder={this.state.email}  type="text" name="email" onChange={this.emailChangeHandler}required/>
+                                <input class="form-control1 elements1" value={this.state.email}  type="text" name="email" onChange={this.emailChangeHandler}required/>
                             </div>
                         </div>
                             <div class="">
                             <br/>
                                 <div class="elements">
                                     <span class="label">Bio</span>
-                                    <input class="form-control1 elements1" placeholder={this.state.bio} type="text" name="bio" onChange={this.bioChangeHandler}/>
+                                    <input class="form-control1 elements1" value={this.state.bio} type="text" name="bio" onChange={this.bioChangeHandler}/>
                                 </div>
                             </div>
                             <div class="">
@@ -234,15 +241,15 @@ class editProfile extends Component {
                                 <div class="elements" style={{display:"flex"}}>
                                     <div class="inner-element">
                                     <span class="label">City</span>
-                                    <input class="form-control1 elements1" placeholder={this.state.city} pattern="[A-Z]*||[a-z]*" type="text" name="city" onChange={this.cityChangeHandler}/>
+                                    <input class="form-control1 elements1" value={this.state.city} pattern="[A-Z]*||[a-z]*" type="text" name="city" onChange={this.cityChangeHandler}/>
                                     </div>
                                     <div class="inner-element">
                                     <span class="label">State</span>
-                                    <input class="form-control1 elements1" placeholder={this.state.state} pattern="[A-Z]*||[a-z]*" type="text" name="state" onChange={this.stateChangeHandler}/>
+                                    <input class="form-control1 elements1" value={this.state.state} pattern="[A-Z]*||[a-z]*" type="text" name="state" onChange={this.stateChangeHandler}/>
                                     </div>
                                     <div class="inner-element">
                                     <span class="label">Zipcode</span>
-                                    <input class="form-control1 elements1" placeholder={this.state.zipcode} pattern="[0-9]*" type="text" name="zipcode" onChange={this.zipChangeHandler}/>
+                                    <input class="form-control1 elements1" value={this.state.zipcode} pattern="[0-9]*" type="text" name="zipcode" onChange={this.zipChangeHandler}/>
                                     </div>
                                 </div>
                             </div>
