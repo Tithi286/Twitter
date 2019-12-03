@@ -26,10 +26,12 @@ class profile extends Component {
         super(props);
         this.state = {
             isComponent: "",
+            userID:"",
             fname: "",
             lname: "",
             city:"",
             state:"",
+            userName:"",
             zipcode:"",
             bio:"",
             email: "",
@@ -81,12 +83,19 @@ class profile extends Component {
                     lname: response.data.lastName,
                     email: response.data.email,
                     bio: response.data.profileDesc,
+                    profileImage: response.data.profileImage,
                     city: response.data.city,
                     state: response.data.state,
                     zipcode: response.data.zipcode,
+                    userID: response.data.userID,
+                    userName: response.data.userName
                 });
                 sessionStorage.setItem("fName",this.state.fname)
-                if(response.data.profileImage){
+                sessionStorage.setItem("lName",this.state.lname)
+                sessionStorage.setItem("userName",this.state.userName)
+                sessionStorage.setItem("profileImage",this.state.profileImage)
+                sessionStorage.setItem("userID",this.state.userID)
+                if(response.data.profileImage != ""){
                     this.setState({
                         profileimage : response.data.profileImage
                     })
@@ -157,12 +166,12 @@ class profile extends Component {
                 </div>
 
                 <div class="col-md-6 feed1 u-list1">
-                    <div class="home-font">User Name</div>
+                    <div class="home-font">{this.state.userName}</div>
 
                     <div class="home-font1">
                         <div class="">
                             <div class="rest-img">
-                                <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
+                                <img src={this.state.profileImage} class="logoa"></img>
                                 <Link to="/editprofile"><button class="logob">Edit Profile</button></Link>
                             </div>
                             <div>
@@ -171,7 +180,7 @@ class profile extends Component {
                             <h5 class="rest-name-div1">{this.state.fname} {this.state.lname}</h5>
                             <h5 class="rest-name-div">{this.state.city}, {this.state.state}-{this.state.zipcode}</h5>
                             <h5 class="rest-name-div">{this.state.bio}</h5>
-                            <h5 class="rest-name-div">10 <Link to="/followers" style={{color:"black"}}>Followers</Link> 50 <Link to="/following" style={{color:"black"}}>Following </Link></h5>
+                            <h5 class="rest-name-div">  <Link to="/followers" style={{color:"black"}}>Followers</Link>    <Link to="/following" style={{color:"black"}}>Following </Link></h5>
                         </div>
                     </div>
                     <div class="home-font2">

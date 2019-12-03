@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../App.css';
+////import '../../App.css';
 import axios from 'axios';
 //import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
@@ -9,7 +9,7 @@ import { Field, reduxForm } from "redux-form";
 //import uuid from 'react-native-uuid';
 import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
-import 'bootstrap/dist/css/bootstrap.min.css';
+////import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
 
 class settings extends Component {
@@ -17,25 +17,30 @@ class settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+           authFlag: ""
         }
-        
+        this.deleteClick = this.deleteClick.bind(this)
     }
 
 
-   
-
-
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+    deleteClick = () => {
+        console.log("in delete click")
+        axios.defaults.withCredentials = true;
+        axios.delete('http://localhost:3001/users/')
+                .then((response) => {
+                    console.log("in axios", response)
+                    if(response.status == 200){
+                    this.setState({
+                        authFlag : "true"
+                    })
+                    }
+                    else{
+                        this.setState({
+                            authFlag : "false"
+                        }) 
+                    }
+                    console.log("account deleted")
+            });
     }
 
 
@@ -43,15 +48,13 @@ class settings extends Component {
     render() {
 
         let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
+        if(this.state.authFlag == "true"){
+            redirectVar = <Redirect to="/login" />
         }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
 
         return (
             <div class="container-flex">
-                {redirectVar}
+               {redirectVar}
                 <div class="col-md-3 feed">
                 <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br/><br/>
                 <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br/><br/></a>
@@ -68,31 +71,31 @@ class settings extends Component {
                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 </div>
                
-                <div class="col-md-6 feed">
+                <div className="col-md-6 feed">
                     <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
-                    <div class="home-font">Deactivate Account</div>
+                    <div className="home-font">Deactivate Account</div>
                     </div>
-                    <div class="u-flex u-flex-align" style={{marginTop: "20px"}}>
-                            <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
-                            <div class="u-flex-justify">
-                            <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">UserName</div>
+                    <div className="u-flex u-flex-align" style={{marginTop: "20px"}}>
+                            <div className="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" className="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                            <div className="u-flex-justify">
+                            <div className="u-mar1">
+                            <div className="s-list-item-primary u-mar1 fullname">UserName</div>
                             </div>
                             </div>
                             </div>
                             <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
-                            <div class="home-font">This will deactivate your account</div>
+                            <div className="home-font">This will deactivate your account</div>
                             </div>
-                            <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">
+                            <div className="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span className="span">
                             You’re about to start the process of deactivating your Twitter account. Your display name, @username, 
                             and public profile will no longer be viewable on Twitter.com, Twitter for iOS, or Twitter for Android.</span></div>
-                            <span class="home-buttons" style={{marginLeft: "8%"}}><button class="buttons3">Deactivate</button></span>
+                            <span class="home-buttons" style={{marginLeft: "8%"}}><button class="buttons3" name="delete" onClick={this.deleteClick}>Deactivate</button></span>
                     
                 </div>
-                <div class="col-md-3 feed">
+                <div className="col-md-3 feed">
                     <div>
                     <div>
-                    <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
+                    <input type="text" className="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
                     </div>
                     </div>
                 </div>

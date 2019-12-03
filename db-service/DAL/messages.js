@@ -14,6 +14,15 @@ const getMessages = connection => (message = {}) => {
   });
 };
 
+const getOwnMessages = connection => (message = {}) => {
+  return new Promise((resolve, reject) => {
+    messages.find(message, function (err, docs) {
+        return err ? reject(err) : resolve(docs);
+    });
+});
+};
+
+
 /*const getInMessages= connection => (message = {}) => {
   return new Promise((resolve, reject) => {
     messages.aggregate([{
@@ -44,5 +53,6 @@ module.exports = {
   getMessages,
   sendMessages,
   deleteMessages,
+  getOwnMessages
 
 };

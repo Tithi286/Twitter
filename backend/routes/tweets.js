@@ -79,16 +79,31 @@ router.get('/details', requireAuth, async function (req, res, next) {
     try {
         if (tweetID) {
             // get the tweets details
-            results = await simulateRequestOverKafka("getTweets", { tweetID });
+            let results = await simulateRequestOverKafka("getTweets", { tweetID });
             if (results.length > 0) {
                 // get all replies,retweets,likeCount,retweetCount and replyCount in parallel
-                const [likeCounts, retweetCounts, retweet, replyCounts, reply] = await Promise.all([
+                const [likeCounts, retweetCounts, retweets, replyCounts, reply, { results: [tweetOwner] }] = await Promise.all([
                     simulateRequestOverKafka("getLikeCount", [tweetID]),
                     simulateRequestOverKafka("getRetweetCount", [tweetID]),
                     simulateRequestOverKafka("getRetweet", { tweetID }),
                     simulateRequestOverKafka("getReplyCount", [tweetID]),
-                    simulateRequestOverKafka("getReply", { tweetID }),
+                    simulateRequestOverKafka("getReply", { tweetID }), //tweetOwnerID
+                    simulateRequestOverKafka("getUsers", { userID: results[0].tweetOwnerID }),
                 ]);
+                const replyOwnerIds = reply.map(r => r.replyOwnerID);
+                const retweetOwnerIds = retweets.map(r => r.retweetOwnerID);
+                const [{ results: repUsersArray }, { results: retweetUsersArray }] = await Promise.all([
+                    simulateRequestOverKafka("getUsers", { userID: Array.from(new Set(replyOwnerIds)) }),
+                    simulateRequestOverKafka("getUsers", { userID: Array.from(new Set(retweetOwnerIds)) })
+                ]);
+                const repUsersMap = repUsersArray.reduce((acc, u) => {
+                    acc[u.userID] = u;
+                    return acc;
+                }, {});
+                const retweetUsersMap = retweetUsersArray.reduce((acc, u) => {
+                    acc[u.userID] = u;
+                    return acc;
+                }, {});
 
                 // merge all results as so as to produce a response structure something like:
                 /*
@@ -108,8 +123,9 @@ router.get('/details', requireAuth, async function (req, res, next) {
                     likeCount: likeCounts[res.tweetID],
                     replyCount: replyCounts[res.tweetID],
                     retweetCount: retweetCounts[res.tweetID],
-                    reply,
-                    retweet
+                    replies: reply.map(r => ({ reply: r, user: repUsersMap[r.replyOwnerID] })),
+                    retweets: retweets.map(r => ({ retweet: r, user: retweetUsersMap[r.retweetOwnerID] })),
+                    tweetOwner
                 }));
             }
             return res.json(results);
@@ -121,5 +137,4 @@ router.get('/details', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 });
-
 module.exports = router;

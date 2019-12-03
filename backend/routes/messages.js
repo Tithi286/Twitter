@@ -18,16 +18,18 @@ router.get("/", requireAuth, async function (req, res, next) {
     const messages = {
       senderID: loggedInUser.userID
     };
-    results = await simulateRequestOverKafka("getMessages", messages);
+    console.log(messages)
+    results = await simulateRequestOverKafka("getOwnMessages", messages);
     results.forEach(retwt => {
       receiverID.push(retwt.receiverID);
     });
 
     quoted = "'" + receiverID.join("','") + "'";
     const user = { usersID: [quoted] };
-
+    console.log(results)
     let chatRes = await simulateRequestOverKafka("getUsers", user);
     res.json(chatRes.results)
+    console.log(chatRes)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -47,7 +49,6 @@ router.get('/search', requireAuth, async function (req, res, next) {
 
 router.post("/send", requireAuth, async function (req, res, next) {
   const { chat, receiverID } = req.body;
-
   try {
     const loggedInUser = req.user;
     const messages = {

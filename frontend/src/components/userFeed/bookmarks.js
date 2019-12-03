@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import '../../App.css';
+
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Icon from 'react-icons-kit';
 import {commentO} from 'react-icons-kit/fa/commentO'
 import {heartO} from 'react-icons-kit/fa/heartO'
@@ -70,6 +70,7 @@ class bookmarks extends Component {
                             <div class="u-flex-justify">
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
+                            <span class="span s-list-item-secondary u-mar1 snippet" >{bookmark.tweet.tweetDate.split("T")[0]}  {bookmark.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{bookmark.tweet.tweet}</span>
                             </div>

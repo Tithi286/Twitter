@@ -58,7 +58,7 @@ const {
   IncProfileViewCount
 } = require("./analytics")
 
-const { getMessages, sendMessages, deleteMessages } = require("./messages");
+const { getMessages, sendMessages, deleteMessages,getOwnMessages } = require("./messages");
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -308,6 +308,10 @@ const _getMessages = async whereClause => {
   await getMongoConnection();
   return getMessages()(whereClause);
 };
+const _getOwnMessages = async whereClause => {
+  await getMongoConnection();
+  return getOwnMessages()(whereClause);
+};
 
 const _sendMessages = async whereClause => {
   await getMongoConnection();
@@ -378,6 +382,7 @@ module.exports = {
   IncProfileViewCount: _IncProfileViewCount,
 
   getMessages: _getMessages,
+  getOwnMessages: _getOwnMessages,
   sendMessages: _sendMessages,
   deleteMessages: _deleteMessages,
 };
