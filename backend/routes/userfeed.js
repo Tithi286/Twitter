@@ -20,8 +20,34 @@ router.get('/search', requireAuth, async function (req, res, next) {
             //Hashtag search
             if (topic.startsWith("#")) {
                 const tweet = { $text: { $search: topic } };
-                const results = await getTweets(tweet);
-                return res.json(results);
+                const tweets = await getTweets(tweet);
+                const allTweetIds = tweets.map(t => t.tweetID);
+                const allTweetOwner = tweets.map(t => t.tweetOwnerID);
+
+                // get all users, likeCount, retweetCount and replyCount in parallel
+                const [
+                    { results: allFollowedUsers },
+                    likeCounts,
+                    retweetCounts,
+                    replyCounts
+                ] = await Promise.all([
+                    simulateRequestOverKafka("getUsers", { userID: allTweetOwner }),
+                    simulateRequestOverKafka("getLikeCount", allTweetIds),
+                    simulateRequestOverKafka("getRetweetCount", allTweetIds),
+                    simulateRequestOverKafka("getReplyCount", allTweetIds)
+                ]);
+                const followedUsersMap = allFollowedUsers.reduce((acc, f) => {
+                    acc[f.userID] = f;
+                    return acc;
+                }, {});
+                resultsf = tweets.map(res => ({
+                    tweet: res,
+                    user: followedUsersMap[res.tweetOwnerID],
+                    likeCount: likeCounts[res.tweetID],
+                    replyCount: replyCounts[res.tweetID],
+                    retweetCount: retweetCounts[res.tweetID]
+                }));
+                return res.json(resultsf);
             }
             //person search
             else {
@@ -60,6 +86,7 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
             tweet, tweetImage,
         };
         const results = await simulateRequestOverKafka("saveTweet", tweetDoc);
+        console.log("results", results)
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
@@ -67,8 +94,8 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
 
 });
 //Delete a owned tweet
-router.delete('/', requireAuth, async function (req, res, next) {
-    const { tweetID } = req.query;
+router.post('/', requireAuth, async function (req, res, next) {
+    const { tweetID } = req.body;
     try {
         const loggedInUser = req.user;
         const tweet = {
@@ -77,7 +104,6 @@ router.delete('/', requireAuth, async function (req, res, next) {
         let results = await simulateRequestOverKafka("getTweets", tweet);
         if (results.length > 0) {
             if (results[0].tweetOwnerID == loggedInUser.userID) {
-                console.log();
                 await simulateRequestOverKafka("deleteTweet", tweet);
                 res.json({ message: "Tweet Deleted" });
             }
@@ -129,6 +155,8 @@ router.get('/tweets', requireAuth, async function (req, res, next) {
         if (results.length > 0) {
             const followedUsers = JSON.parse(JSON.stringify(results));
             const followedUserIds = followedUsers.map(f => f.followedID);
+            //add tweets authored by logged in user as well
+            followedUserIds.push(req.user.userID);
 
             // get all tweets from all followed users
             results = await simulateRequestOverKafka("getTweets", { tweetOwnerID: { $in: followedUserIds } });
@@ -173,7 +201,7 @@ router.get('/tweets', requireAuth, async function (req, res, next) {
 });
 //like a tweet
 router.put('/like', requireAuth, async function (req, res, next) {
-    const { tweetID } = req.query;
+    const { tweetID } = req.body;
     try {
         const user = req.user;
         const like = {

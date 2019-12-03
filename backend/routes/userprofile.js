@@ -7,18 +7,52 @@ const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
 
+// Get all tweets for a given user
+// sample response:
+/*
+    [
+        {
+            "tweet": {
+                "tweetID": "3bcb631e-c872-4b4b-beb0-db706893914a",
+                "tweet": "Minus molestias alias exercitationem excepturi et. #swag #sunset #home #smile #art #instalike ",
+                "tweetImage": "",
+                "tweetOwnerID": "062F71CC-EEDB-C475-0475-0007347D2915",
+                "likeCount": 3,
+                "tweetDate": "2019-11-16T20:05:33.187Z",
+                "viewCount": 0,
+            },
+            "likeCount": 2,
+            "replyCount": 0,
+            "retweetCount": 2
+        }
+    ]
+*/
+
 //Get the tweets written by user
 router.get('/tweets', requireAuth, async function (req, res, next) {
     const { userID } = req.query;
-    console.log("userid", userID)
     try {
         //tweet object
         const tweet = {
             tweetOwnerID: userID
         };
         results = await simulateRequestOverKafka("getTweets", tweet);
-        console.log(results)
-        res.json(results);
+        if (results.length > 0) {
+            const allTweetIds = results.map(t => t.tweetID);
+            // get all users, likeCount, retweetCount and replyCount in parallel
+            const [likeCounts, retweetCounts, replyCounts] = await Promise.all([
+                simulateRequestOverKafka("getLikeCount", allTweetIds),
+                simulateRequestOverKafka("getRetweetCount", allTweetIds),
+                simulateRequestOverKafka("getReplyCount", allTweetIds)
+            ]);
+            results = results.map(res => ({
+                tweet: res,
+                likeCount: likeCounts[res.tweetID],
+                replyCount: replyCounts[res.tweetID],
+                retweetCount: retweetCounts[res.tweetID]
+            }));
+        }
+        return res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
     }
@@ -197,6 +231,27 @@ router.get('/followed', requireAuth, async function (req, res, next) {
                 return acc;
             }, {});
             results = results.map(res => followedUsersMap[res.followedID]);
+        }
+        return res.json(results);
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
+//get given users followers person
+router.get('/followers', requireAuth, async function (req, res, next) {
+    const { userID } = req.query;
+    try {
+        let { results } = await simulateRequestOverKafka("getFollowers", { userID });
+        if (results.length > 0) {
+            const followers = JSON.parse(JSON.stringify(results));
+            const followerIds = followers.map(f => f.followerID);
+            // get all user details from all followed users
+            const { results: allFollowerUsers } = await simulateRequestOverKafka("getUsers", { userID: followerIds });
+            const followerUsersMap = allFollowerUsers.reduce((acc, f) => {
+                acc[f.userID] = f;
+                return acc;
+            }, {});
+            results = results.map(res => followerUsersMap[res.followerID]);
         }
         return res.json(results);
     } catch (e) {

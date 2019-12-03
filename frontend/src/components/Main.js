@@ -28,6 +28,7 @@ import IndividualList from './userFeed/individualList';
 import SubscribedList from './userFeed/subscribedList';
 import ExploreList from './userFeed/exploreList'
 import editlist from './userFeed/editlist';
+import otherlist from './userFeed/otherlist';
 
 
 class Main extends Component {
@@ -35,6 +36,7 @@ class Main extends Component {
         return ( 
             <div>
                 <Route path="/signup" component={Signup} />
+                <Route exact path="/" component={Signup} />
                 <Route path="/login" component={Login} />
                 <Route path="/launchpage" component={Launchpage} />
                 <Route path="/home" component={UserHome} />
@@ -61,6 +63,7 @@ class Main extends Component {
                 <Route path="/followers" component={followers} />
                 <Route path="/following" component={following} />
                 <Route path="/exploreList" component={ExploreList} />
+                <Route path="/otherlist" component={otherlist} />
 
             </div>
         )

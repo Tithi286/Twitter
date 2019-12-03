@@ -41,6 +41,9 @@ class login extends Component {
         axios.defaults.withCredentials = true;
         axios.post('/users/login', data)
             .then((response) => {
+                console.log("response"+response)
+               
+                localStorage.setItem("username",response.data.userName)
                 if (response.status === 200) {
                     this.setState({
                         authFlag: true

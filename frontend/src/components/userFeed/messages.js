@@ -20,7 +20,7 @@ class messages extends Component {
         this.state = {
           messages: []
         }
-
+        this.deleteClick = this.deleteClick.bind(this)
     }
 
     componentDidMount(){
@@ -53,6 +53,7 @@ class messages extends Component {
             receiverID  : userid
         }  
          console.log(data.receiverID)
+         console.log(sessionStorage.getItem("userID"))
          axios.defaults.withCredentials = true;
          axios.post('http://localhost:3001/messages/delete', data)
                  .then((response) => {
@@ -74,7 +75,7 @@ class messages extends Component {
             // <Link class="a" to="/inbox">
              <div class="u-clickable u-list"  >
                                 <div class="u-flex u-flex-align">
-                                <div class="u-mar2">{message.profileImage}</div>
+                                <div class="u-mar2"><img src={message.profileImage} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                                     <div class="u-flex-justify" >
                                     <div class="u-mar1">
                                     <div class="s-list-item-primary u-mar1 fullname"role="button" onClick ={() => {this.goto(message.userID)}}>{message.firstName} {message.lastName}</div>

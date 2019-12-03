@@ -25,15 +25,17 @@ class profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment(),
-            isComponent: ""
+            isComponent: "",
+            userID:"",
+            fname: "",
+            lname: "",
+            city:"",
+            state:"",
+            zipcode:"",
+            bio:"",
+            email: "",
+            profileimage: "https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png",
+            imageURL:""
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
@@ -68,7 +70,36 @@ class profile extends Component {
         console.log(this);
     }
 
-
+    componentDidMount() {
+        console.log("inside edit profile get request")
+        axios.defaults.withCredentials = true;
+        axios.get("http://localhost:3001/users/profile")
+            .then((response) => {
+                console.log("data: ", response.data)
+                //update the state with the response data
+                this.setState({
+                    fname: response.data.firstName,
+                    lname: response.data.lastName,
+                    email: response.data.email,
+                    bio: response.data.profileDesc,
+                    city: response.data.city,
+                    state: response.data.state,
+                    zipcode: response.data.zipcode,
+                    userID: response.data.userID
+                });
+                sessionStorage.setItem("fName",this.state.fname)
+                sessionStorage.setItem("userID",this.state.userID)
+                if(response.data.profileImage){
+                    this.setState({
+                        profileimage : response.data.profileImage
+                    })
+                }
+            }) .catch(error => {
+                this.setState({
+                    //message: error.response.data.error
+                })
+            });
+    }
 
     render() {
 
@@ -140,9 +171,9 @@ class profile extends Component {
                             <div>
 
                             </div><br /><br />
-                            <h5 class="rest-name-div1">Name</h5>
-                            <h5 class="rest-name-div">Address</h5>
-                            <h5 class="rest-name-div">Bio and Date</h5>
+                            <h5 class="rest-name-div1">{this.state.fname} {this.state.lname}</h5>
+                            <h5 class="rest-name-div">{this.state.city}, {this.state.state}-{this.state.zipcode}</h5>
+                            <h5 class="rest-name-div">{this.state.bio}</h5>
                             <h5 class="rest-name-div">10 <Link to="/followers" style={{color:"black"}}>Followers</Link> 50 <Link to="/following" style={{color:"black"}}>Following </Link></h5>
                         </div>
                     </div>

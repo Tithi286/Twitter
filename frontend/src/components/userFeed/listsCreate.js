@@ -17,7 +17,7 @@ class ListsCreate extends Component {
         this.state = {
             listName: "",
             listDesc: "",
-            isPrivate: "No",
+            isPrivate: 0,
         }
 
         this.listNameChangeHandler = this.listNameChangeHandler.bind(this);
@@ -26,9 +26,13 @@ class ListsCreate extends Component {
         
     }
 
+<<<<<<< HEAD
    
 
     fnameChangeHandler = (e) => {
+=======
+    
+>>>>>>> edd46eab76613e834698cff7ae33c8b53bea0689
     listNameChangeHandler = (e) => {
         this.setState({
             listName: e.target.value
@@ -41,20 +45,37 @@ class ListsCreate extends Component {
         })
     }
 
+    // goto = () => {
+    //     try {
+    //         this.props.history.push({
+    //             pathname: "/lists",
+    //         })
+    //        // console.log(this.state.userID)
+    //     } catch (e) { }
+    // }
+
+
     submitAdd = (e) => {
         e.preventDefault();
         const data = {
             listName: this.state.listName,
             listDesc: this.state.listDesc,
+            isPrivate:this.state.isPrivate
         }
         console.log(data);
         axios.defaults.withCredentials = true;
-        axios.post('/lists/create', data)
+        console.log("data"+data)
+        axios.post('http://localhost:3001/lists/create', data)
             .then((response) => {
+                console.log(response.status);
                 if (response.status === 200) {
+                    this.props.history.push({
+                        pathname: "/adduser",
+                    })
                     this.setState({
                         authFlag: true
                     })
+                    
                 }
                 else {
                     this.setState({ msg: response.body.message });
@@ -75,13 +96,13 @@ class ListsCreate extends Component {
         return (
             <div class="signup2">
                 <br />
-                <form class="outer-box1 signup1" onSubmit={this.submitAdd}>
+                <form class="outer-box1 signup1"  onSubmit={this.submitAdd}>
                     {/* <form onSubmit={handleSubmit(this.submitLogin.bind(this))}> */}
                     <br />
                     <div className="">
                         <div className="elements2">
                             <h3 class="label">Create new List</h3>
-                            <span class="home-buttons"><Link to="/adduser"><button class="buttons3" type="submit">Next</button></Link></span>
+                            <span class="home-buttons"><button class="buttons3" type="submit">Next</button></span>
                             {/*<button class="button">Next </button>*/}
                             
                             <br />
@@ -111,8 +132,8 @@ class ListsCreate extends Component {
         )
     }
 
-}
 
+}
 
 export default ListsCreate;
 

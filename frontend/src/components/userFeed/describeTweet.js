@@ -14,6 +14,7 @@ import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
+import { Link } from "react-router-dom";
 
 class describeTweet extends Component {
 
@@ -22,8 +23,41 @@ class describeTweet extends Component {
         this.state = {
             errormsg: "",
             authFlag: "",
+            tweetID: "",
+            tweet: [{likeCount: 3,
+                listID: "",
+                tweet: "Minus molestias alias exercitationem excepturi et. #swag #sunset #home #smile #art #instalike ",
+                tweetDate: "2019-11-16T20:05:33.187Z",
+                tweetID: "3bcb631e-c872-4b4b-beb0-db706893914a",
+                tweetImage: "",
+                tweetOwnerID: "062F71CC-EEDB-C475-0475-0007347D2915",
+                viewCount: 0,
+                replyCount: 2,
+                likeCount: 2,
+                retweetCount: 1}]
         }
 
+    }
+
+
+
+
+    componentDidMount() {
+        const data = {
+            //rId: this.props.location.state.rId,
+            tweetID: this.props.location.state
+        }
+        console.log("Data from home",data)
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:3001/tweets/details',data)
+            .then((response) => {
+                this.setState({
+                    tweet: response.data
+                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
+                });
+                console.log("Response from axios: ",response.data)
+                console.log("Tweet: ",this.state.tweet)
+            }); 
     }
 
 
@@ -42,38 +76,78 @@ class describeTweet extends Component {
 
         let tweet1;
 
-        tweet1 = (
-
-            <div class="tweets-div1" role="button">
-                <div>
+        tweet1 = this.state.tweet.map(tweet => {
+            if(tweet.tweetImage == "")
+            {
+            // var profileimg = tweet.user.profileimage;
+            // if(profileimg == null){
+            var profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+            // }
+            // else{
+            //     profileimg = tweet.user.profileimage;
+            // }
+            return(
+                <Link class="a" to="/descTweets">
+                <div class="tweets-div" role="button">
+                    <div>
                     <div class="u-flex u-flex-align">
-                        <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
-                        <div class="u-flex-justify">
-                            <div class="u-mar1">
-                                <div class="s-list-item-primary u-mar1 fullname">UserName</div>
+                                <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                                <div class="u-flex-justify">
+                                <div class="u-mar1">
+                                <div class="s-list-item-primary u-mar1 fullname">F N</div>
                                 <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">Tweet</span>
+                                        <span class="span">Tweet</span>
                                 </div>
-                            </div>
+                                </div>
+                                </div>
+                                </div>
+                    </div>
+                    <div class="img-tweets-div">
+                        {/* <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img> */}
+                        <div style={{paddingLeft: "12%"}}>
+                        <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {tweet.replyCount}</div>
+                        <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {tweet.retweetCount}</div>
+                        <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button"/> {tweet.likeCount}</div>
+                        <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button"/></div>                
                         </div>
                     </div>
-                    {/* UserName<br />
-                    Tweet Message */}
+                    
+                    <br/><br/>
+                </div>
+                </Link>
+            )}
+            else if(tweet.tweetImage != ""){
+            return(
+                <Link class="a" to="/descTweets">
+            <div class="tweets-div" role="button">
+                <div>
+                <div class="u-flex u-flex-align">
+                            <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                            <div class="u-flex-justify">
+                            <div class="u-mar1">
+                            <div class="s-list-item-primary u-mar1 fullname">Name</div>
+                            <div class="s-list-item-secondary u-mar1 snippet">
+                                    <span class="span">{tweet.tweet}</span>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
                 </div>
                 <div class="img-tweets-div">
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
-                    <div style={{ paddingLeft: "12%" }}>
-                        <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button" /></div>
-                        <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button" /></div>
-                        <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button" /></div>
-                        <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" /></div>
+                    <div style={{paddingLeft: "12%"}}>
+                    <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {tweet.replyCount}</div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {tweet.retweetCount}</div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button"/> {tweet.likeCount}</div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button"/></div>                
                     </div>
                 </div>
-
-                <br /><br />
+                
+                <br/><br/>
             </div>
-
-        )
+            </Link>
+            )}
+        })
 
         let reply = (
             <div class="u-flex u-flex-align u-list2">
