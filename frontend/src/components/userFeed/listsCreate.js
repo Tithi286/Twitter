@@ -9,6 +9,8 @@ import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ListsCreate extends Component {
 
@@ -26,13 +28,6 @@ class ListsCreate extends Component {
         
     }
 
-<<<<<<< HEAD
-   
-
-    fnameChangeHandler = (e) => {
-=======
-    
->>>>>>> edd46eab76613e834698cff7ae33c8b53bea0689
     listNameChangeHandler = (e) => {
         this.setState({
             listName: e.target.value
@@ -97,16 +92,12 @@ class ListsCreate extends Component {
             <div class="signup2">
                 <br />
                 <form class="outer-box1 signup1"  onSubmit={this.submitAdd}>
-                    {/* <form onSubmit={handleSubmit(this.submitLogin.bind(this))}> */}
                     <br />
                     <div className="">
-                        <div className="elements2">
-                            <h3 class="label">Create new List</h3>
+                        <div className="list-font">
+                            <span class="uppernav"><Link to="/lists"><a> <FontAwesomeIcon icon={ faWindowClose } /> </a></Link></span>
+                            <div class="letter-block">Create new List </div>
                             <span class="home-buttons"><button class="buttons3" type="submit">Next</button></span>
-                            {/*<button class="button">Next </button>*/}
-                            
-                            <br />
-                            <p>{this.props.message}</p>
                         </div>
                         <div class="">
                         <br/>
