@@ -20,7 +20,7 @@ class subscribers extends Component {
     componentDidMount() {
         const data = {
             params : {
-                userID : sessionStorage.getItem("userID")
+                userID : this.props.location.state.userID
             }
         }
         console.log(data.params.userID)
@@ -42,6 +42,11 @@ class subscribers extends Component {
 
 
     render() {
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
 
         let Contents;
         Contents = this.state.followers.map(people => {
@@ -67,7 +72,7 @@ class subscribers extends Component {
          ) } )
         return (
             <div class="container-flex">
-               
+                {redirectVar}
                 <Navbar/>
 
                 <div class="col-md-6 feed1 u-list1">

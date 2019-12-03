@@ -91,7 +91,7 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
 
 });
 //Delete a owned tweet
-router.post('/', requireAuth, async function (req, res, next) {
+router.post('/delete', requireAuth, async function (req, res, next) {
     const { tweetID } = req.body;
     try {
         const loggedInUser = req.user;

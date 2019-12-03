@@ -84,7 +84,8 @@ const getMongoConnection = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
-        autoIndex: true
+        autoIndex: true,
+        poolSize: 1
       });
     } catch (e) {
       console.log(e);

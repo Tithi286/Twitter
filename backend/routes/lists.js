@@ -119,7 +119,7 @@ router.get("/members", requireAuth, async function(req, res, next) {
     members = [];
 
     const list = {
-      _id: req.query.listID
+      ownerID: req.query.userID
     };
     const results = await simulateRequestOverKafka("getMembers", list);
 
@@ -130,6 +130,7 @@ router.get("/members", requireAuth, async function(req, res, next) {
 
     let chatRes = await simulateRequestOverKafka("getUsers", user);
     res.json(chatRes.results);
+    console.log(chatRes)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
@@ -141,7 +142,7 @@ router.get("/subscribers", requireAuth, async function(req, res, next) {
   try {
     subscribers = [];
     const list = {
-      _id: req.query.listID
+      ownerID: req.query.userID
     };
     const results = await simulateRequestOverKafka("getSubscribers", list);
     results[0].subscribers.forEach(subs => subscribers.push(subs));

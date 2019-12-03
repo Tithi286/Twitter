@@ -58,6 +58,12 @@ class describeTweet extends Component {
 
 
     render() {
+
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         console.log(this.state.tweet)
         let tweet1 = this.state.tweet.map(tweet => {
             if (tweet.tweet.tweetImage == "") {
@@ -176,6 +182,7 @@ class describeTweet extends Component {
 
         return (
             <div class="container-flex">
+            {redirectVar}
                 <Navbar/>
                 <div class="col-md-6 feed">
                     <div class="home-font">Thread</div><br />

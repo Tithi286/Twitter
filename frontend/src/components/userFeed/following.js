@@ -17,8 +17,18 @@ class following extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            following: []
+            following: [],
+            currentPage : 1,
+            itemsPerPage : 10
         }
+        this.handleClick = this.handleClick.bind(this); 
+    }
+
+    componentWillReceiveProps({following}) {
+        console.log('Inside menu will receive props');
+        this.setState({
+            following : following
+        });
     }
 
     componentDidMount() {
@@ -39,12 +49,30 @@ class following extends Component {
             });
     }
 
+    handleClick(event) {
+        console.log(event.target.id);
+        this.setState({
+          currentPage: Number(event.target.id)
+        });
+      }
+
 
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
+        const {following,currentPage, itemsPerPage} = this.state;
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = following.slice(indexOfFirstItem, indexOfLastItem);
+
 
         let Contents;
-        Contents = this.state.following.map(people => {
+        Contents = currentItems.map(people => {
             var profileimg = people.profileImage;
             if (profileimg == null) {
                 profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
@@ -70,11 +98,24 @@ class following extends Component {
                                 
                             </div>
          ) } )
-       
+                
+
+         const pageNumber = [];
+         for(let i = 1; i <= Math.ceil(following.length / itemsPerPage);i++) {
+             pageNumber.push(i);
+         }
+
+         const renderNumber = pageNumber.map(number => {
+            return (
+                <div role="button" style={{color: "#29a3ef", cursor: "pointer", borderRadius: "7px", float:"right"}} key = {number} id = {number} onClick = {this.handleClick}> 
+                    {number}
+                </div>
+            );
+        });
 
         return (
             <div class="container-flex">
-               
+                {redirectVar}
                 <Navbar/>
 
                 <div class="col-md-6 feed1 u-list1">
@@ -91,9 +132,12 @@ class following extends Component {
                         <div class="divs" style={{ color: "#29a3ef", width:"50%",paddingLeft: "50px", paddingTop: "5px" }}>
                         <a href="/following" class="a"><span onClick={this.handleRetweetClick} role="button">Following</span></a></div>
                     </div>
+                    
                     <div>
                         {Contents}
+                        {renderNumber}
                     </div>
+
                 </div>
                 <div class="col-md-3 feed1">
                     <div>

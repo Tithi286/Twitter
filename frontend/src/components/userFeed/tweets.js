@@ -72,7 +72,7 @@ class tweets extends Component {
             tweetID : tweetid
          }
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/', data)
+        axios.post('http://localhost:3001/userfeed/delete', data)
                 .then((response) => {
                     console.log("in axios", response)
                     if(response.status == 200){

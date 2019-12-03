@@ -13,9 +13,21 @@ class followers extends Component {
         super(props);
         this.state = {
            followers:[],
-           userID:""
+           userID:"",
+           currentPage : 1,
+           itemsPerPage : 10
         }
+        this.handleClick = this.handleClick.bind(this); 
+
     }
+
+    componentWillReceiveProps({followers}) {
+        console.log('Inside menu will receive props');
+        this.setState({
+            followers : followers
+        });
+    }
+
 
     componentDidMount() {
         var a = sessionStorage.getItem("component")
@@ -56,12 +68,29 @@ class followers extends Component {
             });
     }
 
+    handleClick(event) {
+        console.log(event.target.id);
+        this.setState({
+          currentPage: Number(event.target.id)
+        });
+      }
 
 
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
+        const {followers,currentPage, itemsPerPage} = this.state;
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = followers.slice(indexOfFirstItem, indexOfLastItem);
+
         let Contents;
-        Contents = this.state.followers.map(people => {
+        Contents = currentItems.map(people => {
             var profileimg = people.profileImage;
             if (profileimg == null) {
                 profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
@@ -87,9 +116,25 @@ class followers extends Component {
                                 
                             </div>
          ) } )
+
+
+         const pageNumber = [];
+         for(let i = 1; i <= Math.ceil(followers.length / itemsPerPage);i++) {
+             pageNumber.push(i);
+         }
+
+         const renderNumber = pageNumber.map(number => {
+            return (
+                <div role="button" style={{color: "#29a3ef", cursor: "pointer", borderRadius: "7px", float:"right"}} key = {number} id = {number} onClick = {this.handleClick}> 
+                    {number}
+                </div>
+            );
+        });
+
+
         return (
             <div class="container-flex">
-               
+               {redirectVar}
                 <Navbar/>
 
                 <div class="col-md-6 feed1 u-list1">
@@ -108,6 +153,7 @@ class followers extends Component {
                     </div>
                     <div>
                         {Contents}
+                        {renderNumber}
                     </div>
                 </div>
                 <div class="col-md-3 feed1">
