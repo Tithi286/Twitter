@@ -109,11 +109,28 @@ class profile extends Component {
                         profileimage : response.data.profileImage
                     })
                 }
-            }) .catch(error => {
+           
+                const data={
+           
+                    userID:this.props.location.state
+                
+            }
+            axios.defaults.withCredentials = true;
+            console.log("inc")
+            console.log(response.data)
+            axios.post('http://localhost:3001/analytics/incprofileviewcount',data)
+                    .then((response) => {
+                   
+                
+                 
+                    
+                }); }) .catch(error => {
                 this.setState({
                     //message: error.response.data.error
                 })
             });
+
+       
     }
 
 
