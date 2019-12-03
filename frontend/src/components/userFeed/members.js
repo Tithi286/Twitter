@@ -57,7 +57,7 @@ class Subscriptions extends Component {
         let listsubscriber;
         
         listsubscriber =this.state.listsubscriber.map(subscribe1 =>(
-            <Link class="a" to="/sublist">
+            <Link class="a" to={{pathname:"/sublist", state:[subscribe1.tweet.listName,subscribe1.tweet.listDesc,subscribe1.tweet.members.length,subscribe1.tweet.subscribers.length,subscribe1.tweet._id] }}>
             <div class="tweets-div u-list1">    
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">
@@ -104,7 +104,7 @@ class Subscriptions extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
-                            <a class="active" class="col-md-5">Subscribed</a>
+                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
                             <a href="/members" >Members</a>
                         </div>
                     <div>
