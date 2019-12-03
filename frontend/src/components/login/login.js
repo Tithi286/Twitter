@@ -73,18 +73,18 @@ class login extends Component {
                 {this.state.authFlag === true ? <Redirect to="/home" /> : ""}
                 <div className="loginnav">
                         <div>
-                            <div >
+                            <div>
                                 <a className="text" aria-hidden="true" href="/launchpage" >
                                     <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img>
                                     Home
                                 </a>
-                                <a className="text" href="https://about.twitter.com" >About</a>
+                                {/* <a className="text" href="https://about.twitter.com" >About</a> */}
                             </div>
                         </div>
                 </div>
                 <div><br/>
                 <br/><br/><br/>
-                    <form className = "loginform">
+                    <div className = "loginform">
                         <div >
                             <div >
                                 <h4 className="loginlabel" >Log in to Twitter</h4>
@@ -121,7 +121,7 @@ class login extends Component {
                             </form>
                         </div>
         
-                    </form>
+                    </div>
                 </div>
             </div>
         )
