@@ -77,7 +77,7 @@ class lists extends Component {
                             </div>
                         </Link>
                             <div class="col-md-3" style={{float:"left"}}>
-                            <Link to={{pathname:"/adduser", state:list1._id }}><button>Add Members</button></Link>
+                            <Link to={{pathname:"/adduser", state:list1._id }}><button class="buttons3">Add Members</button></Link>
                             </div>
                             </div>            
             </div>
