@@ -89,8 +89,8 @@ class followers extends Component {
 
                 <div class="col-md-6 feed1 u-list1">
                 <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
-                    <div class="home-font">User Name</div>
-                    <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">UserName</span></div>
+                    <div class="home-font">{sessionStorage.getItem('fName')} {sessionStorage.getItem('lName')}</div>
+                    <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span">{sessionStorage.getItem('userName')}</span></div>
                     </div>
 
                     <div class="home-font1">
