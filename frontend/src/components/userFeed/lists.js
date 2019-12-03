@@ -102,9 +102,9 @@ class lists extends Component {
                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 </div>
                 <div class="col-md-6 feed">
-                    <div class="home-font">
-                        <div class="msg-block">Lists </div>
-                        <span class="uppernav"><Link to="/create"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
+                    <div class="list-font">
+                        <div class="word-block">Lists </div>
+                        <span class="uppernav" ><Link to="/create"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
                     </div>
                         
                         <div class="topnav" id="myTopnav">

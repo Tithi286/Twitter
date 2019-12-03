@@ -9,6 +9,8 @@ import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ListsAdduser extends Component {
 
@@ -91,15 +93,14 @@ class ListsAdduser extends Component {
                 <div class="u-flex u-flex-align container-flex">
                     <div class="u-mar2 col-sm-1"  style={{float:"left"}}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
                     <div class="col-md-6" style={{float:"left"}}>
-                    {/* <Link class="a" to="/explore1"> */}
                         <div class="u-mar3">
                         <div class="s-list-item-primary u-mar3 fullname"> </div>
                             <div class="s-list-item-secondary u-mar3 snippet">
                             <span class="span">{username.firstName}</span>
                             </div>
                         </div>
-                    {/* </Link> */}
                     </div>
+                    <span></span>
                     <div class="col-sm-3" style={{float:"left"}}> 
                     <button class="logoc" style={{float:"left"}} onClick={() => this.submitChanges(username.userID)}>Add Member</button>
                     </div>
@@ -119,20 +120,21 @@ class ListsAdduser extends Component {
                 <div class="outer-box1 signup1" >
                     <div class="col-md-6">
                         <div className="container">
-                            <h3>Add Members</h3>
-                            <span>
-                                <Link to="/lists">
-                                <button class="button">Go back </button>
-                                </Link>
-                                 </span>    
+                        <div className="list-font">
+                            <span class="uppernav"><Link to="/lists"><a> <FontAwesomeIcon icon={ faWindowClose } /> </a></Link></span>
+                            <div class="letter-block">Add Members</div>
+                            <span> <Link to="/lists"> <button class="button">Go back </button></Link> </span> 
+                        </div>
+                        <div className="list-font">    
                             <div>
                                 <input type="text" class="searchbar1" placeholder="Add member" name="search" id="search" onChange={this.searchChangeHandler}></input>
                             </div>
-                            <div style={{ paddingLeft: "78%" }}>
-                            <button class="buttons3" onClick={this.goTo}>
+                            <span>
+                            <button class="button" onClick={this.goTo}>
                                 Search
                             </button>
-                            </div>
+                            </span>
+                        </div> 
                             {user1}
                         </div>
                     </div>

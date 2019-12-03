@@ -68,15 +68,8 @@ class login extends Component {
 
                 {this.state.authFlag === true ? <Redirect to="/home" /> : ""}
                 <div className="loginnav">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-4">
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-6" >
+                        <div>
+                            <div >
                                 <a className="text" aria-hidden="true" href="/launchpage" >
                                     <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img>
                                     Home
@@ -84,13 +77,6 @@ class login extends Component {
                                 <a className="text" href="https://about.twitter.com" >About</a>
                             </div>
                         </div>
-                    </div>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-2">
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div><br/>
                 <br/><br/><br/>

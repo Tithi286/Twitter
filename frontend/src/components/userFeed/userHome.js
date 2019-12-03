@@ -141,7 +141,7 @@ class userHome extends Component {
 
     fnameChangeHandler = (e) => {
         this.setState({
-            firstname: e.target.value
+            firstName: e.target.value
         })
     }
 
