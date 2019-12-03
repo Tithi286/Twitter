@@ -17,6 +17,7 @@ class bookmarks extends Component {
         this.state = {
             bookmarks : [],
             likeIcon : heartO,
+            profileImage: sessionStorage.getItem('profileImage')
             
         }
          this.changeIcon = this.changeIcon.bind(this)
@@ -33,6 +34,25 @@ class bookmarks extends Component {
                 });
                 console.log(response.data)
                 console.log(this.state.bookmarks)
+            });
+    }
+
+    deleteBookmark = (v1) => {
+        //e.preventDefault();
+        const data = {
+            tweetID: v1,
+            bookmarksID: ""
+        }
+        console.log("v1 values", v1)
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/bookmarks/delete', data)
+            .then((response) => {
+                console.log("in axios call for creating bookmark")
+                console.log(response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
             });
     }
     
@@ -62,11 +82,21 @@ class bookmarks extends Component {
         let bookmarkTweet;
         
         
-        bookmarkTweet =this.state.bookmarks.map(bookmark => (
+        bookmarkTweet =this.state.bookmarks.map(bookmark => {
+            var profileimg = this.state.profileImage;
+            if(profileimg == null){
+                profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+            }
+            else{
+                profileimg = this.state.profileImage;
+            }
+            if(bookmark.tweet.tweetImage == "")
+            {
+                return(
             <div class="tweets-div u-list1">
                 
                 <div class="u-flex u-flex-align">
-                            <div class="u-mar2"><img src={bookmark.tweet.tweetImage} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                            <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
                             <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
@@ -79,18 +109,49 @@ class bookmarks extends Component {
                             </div>
                 
                 <div class="img-tweets-div">
-                    <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
+                    {/* <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img> */}
                     <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {bookmark.replyCount}</div>
                     <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {bookmark.retweetCount}</div>
                     <div class="col-sm-3 buttons-div"><Icon icon={this.state.likeIcon} role="button" onClick={this.changeIcon}/> {bookmark.likeCount}</div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" /></div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.deleteBookmark(bookmark.tweet.tweetID)}/></div>
                 </div>
                 </div>
                 
                 <br/><br/>
             </div>
-            ))
+        )}
+        else if(bookmark.tweet.tweetImage != ""){
+            return(
+                <div class="tweets-div u-list1">
+                
+                <div class="u-flex u-flex-align">
+                            <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                            <div class="u-flex-justify">
+                            <div class="u-mar1">
+                            <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
+                            <span class="span s-list-item-secondary u-mar1 snippet" >{bookmark.tweet.tweetDate.split("T")[0]}  {bookmark.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
+                            <div class="s-list-item-secondary u-mar1 snippet">
+                                    <span class="span">{bookmark.tweet.tweet}</span>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                
+                <div class="img-tweets-div">
+                    <img src={bookmark.tweet.tweetImage} class="tweets-img" ></img>
+                    <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
+                    <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {bookmark.replyCount}</div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {bookmark.retweetCount}</div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={this.state.likeIcon} role="button" onClick={this.changeIcon}/> {bookmark.likeCount}</div>
+                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.deleteBookmark(bookmark.tweet.tweetID)}/></div>
+                </div>
+                </div>
+                
+                <br/><br/>
+            </div>
+        )}
+    })
 
         return (
             <div class="container-flex">

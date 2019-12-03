@@ -95,6 +95,7 @@ class profile extends Component {
                 sessionStorage.setItem("userName",this.state.userName)
                 sessionStorage.setItem("profileImage",this.state.profileImage)
                 sessionStorage.setItem("userID",this.state.userID)
+                sessionStorage.setItem("component","profile")
                 if(response.data.profileImage != ""){
                     this.setState({
                         profileimage : response.data.profileImage
@@ -184,10 +185,10 @@ class profile extends Component {
                         </div>
                     </div>
                     <div class="home-font2">
-                        <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleTweetClick} role="button">Tweets</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRetweetClick} role="button">Retweets</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRepliesClick} role="button">Replies</span></div>
-                        <div class="col-md-3 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleLikesClick} role="button">Likes</span></div>
+                        <div class="col-md-4 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleTweetClick} role="button">Tweets</span></div>
+                        <div class="col-md-4 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRetweetClick} role="button">Retweets</span></div>
+                        {/* <div class="col-md-3 divs" style={{ paddingLeft: "50px", paddingTop: "5px" }}><span onClick={this.handleRepliesClick} role="button">Replies</span></div> */}
+                        <div class="col-md-4 divs" style={{ paddingLeft: "60px", paddingTop: "5px" }}><span onClick={this.handleLikesClick} role="button">Likes</span></div>
                     </div>
                  <div>
                         {Contents}

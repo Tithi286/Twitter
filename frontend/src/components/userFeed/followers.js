@@ -12,16 +12,38 @@ class followers extends Component {
         super(props);
         this.state = {
            followers:[],
-           userID:""
+           userID:"",
+           currentPage : 1,
+           itemsPerPage : 10
         }
+        this.handleClick = this.handleClick.bind(this); 
+
     }
 
+    componentWillReceiveProps({followers}) {
+        console.log('Inside menu will receive props');
+        this.setState({
+            followers : followers
+        });
+    }
+
+
     componentDidMount() {
-        const data = {
-            params : {
+        var a = sessionStorage.getItem("component")
+        let data;
+        if(a == "profile"){
+             data = {
+                params:{
                 userID : sessionStorage.getItem("userID")
-            }
+            }}
         }
+        else if(a == "explore"){
+             data = {
+                params:{
+                userID : sessionStorage.getItem("ID")
+            }}
+        }
+        
         console.log(data.params.userID)
         axios.defaults.withCredentials = true;
         axios.get("http://localhost:3001/userprofile/followers", data)
@@ -31,6 +53,13 @@ class followers extends Component {
                   
                 });
                 console.log(response.data)
+                let foll1 = []
+                var foll = this.state.followers;
+                foll.map(f1 => {
+                    foll1.push(f1.userID)
+                });
+                console.log("UserIDs of followers", foll1)
+                  
             }) .catch(error => {
                 this.setState({
                     message: "something went wrong"
@@ -38,12 +67,23 @@ class followers extends Component {
             });
     }
 
+    handleClick(event) {
+        console.log(event.target.id);
+        this.setState({
+          currentPage: Number(event.target.id)
+        });
+      }
 
 
     render() {
 
+        const {followers,currentPage, itemsPerPage} = this.state;
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = followers.slice(indexOfFirstItem, indexOfLastItem);
+
         let Contents;
-        Contents = this.state.followers.map(people => {
+        Contents = currentItems.map(people => {
             var profileimg = people.profileImage;
             if (profileimg == null) {
                 profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
@@ -51,6 +91,7 @@ class followers extends Component {
             else {
                 profileimg = people.profileImage;
             }
+            
             return(
             <div class="u-clickable followers-box" role="button">
                                 <div class="u-flex u-flex-align">
@@ -68,6 +109,22 @@ class followers extends Component {
                                 
                             </div>
          ) } )
+
+
+         const pageNumber = [];
+         for(let i = 1; i <= Math.ceil(followers.length / itemsPerPage);i++) {
+             pageNumber.push(i);
+         }
+
+         const renderNumber = pageNumber.map(number => {
+            return (
+                <div role="button" style={{color: "#29a3ef", cursor: "pointer", borderRadius: "7px", float:"right"}} key = {number} id = {number} onClick = {this.handleClick}> 
+                    {number}
+                </div>
+            );
+        });
+
+
         return (
             <div class="container-flex">
                
@@ -103,6 +160,7 @@ class followers extends Component {
                     </div>
                     <div>
                         {Contents}
+                        {renderNumber}
                     </div>
                 </div>
                 <div class="col-md-3 feed1">

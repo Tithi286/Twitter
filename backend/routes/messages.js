@@ -29,7 +29,6 @@ router.get("/", requireAuth, async function (req, res, next) {
     console.log(results)
     let chatRes = await simulateRequestOverKafka("getUsers", user);
     res.json(chatRes.results)
-    console.log(chatRes)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
