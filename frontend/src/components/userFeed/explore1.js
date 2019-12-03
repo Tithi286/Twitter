@@ -44,6 +44,7 @@ class profile extends Component {
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
         this.handleRepliesClick = this.handleRepliesClick.bind(this);
         this.handleLikesClick = this.handleLikesClick.bind(this);
+        this.followUser = this.followUser.bind(this)
     }
 
     handleTweetClick() {
@@ -191,7 +192,40 @@ class profile extends Component {
     }
 
     followUser = () => {
-        
+
+        console.log("Follow user method called")
+        const data = {
+            followedID: this.state.userID
+        }
+        //console.log("v1 values", v1)
+        var a = this.state.follText;
+
+        if(a == "Follow"){
+
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/users/follow', data)
+            .then((response) => {
+                console.log("in axios call for follow")
+                console.log("follow resp: ",response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        }
+
+        else if(a == "Unfollow"){
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/users/unfollow', data)
+            .then((response) => {
+                console.log("in axios call for unfollow")
+                console.log(response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        }
     }
 
     render() {
@@ -260,7 +294,7 @@ class profile extends Component {
                         <div class="">
                             <div class="rest-img">
                                 <img src="https://platinumroyalties.com/wp-content/uploads/2018/01/bjs.jpg" class="logoa"></img>
-                                <button  class="logob">{this.state.follText}</button>
+                                <button  class="logob" onClick = {this.followUser}>{this.state.follText}</button>
                                 <Link to={{pathname:"/otherlist",state:this.props.location.state}}><button class="logod">View Lists</button></Link>                            </div>
                             
                             <div>
