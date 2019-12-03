@@ -276,6 +276,7 @@ router.post("/member", requireAuth, async function(req, res, next) {
 //Unsubscribe from a list
 router.post("/unsubscribe", requireAuth, async function(req, res, next) {
   try {
+    console.log(req.body)
     const { listID } = req.body;
     const loggedInUser = req.user;
     const list = {
