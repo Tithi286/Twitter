@@ -22,14 +22,17 @@ class tweets extends Component {
         super(props);
         this.state = {
             tweet: [],
-            fName: ""
+            fName: "",
+            profileImage: sessionStorage.getItem('profileImage')
         }
+
         this.deleteClick = this.deleteClick.bind(this)
     }
 
 
     componentDidMount(){
         console.log("in componentdidmount")
+        console.log("profileimage: ",this.state.profileImage)
         const data = {
             params:{
             userID : sessionStorage.getItem("userID")
@@ -49,15 +52,13 @@ class tweets extends Component {
             });
     }
 
-    deleteClick = (id) => {
-        console.log("in delete click")
+    deleteClick = (tweetid) => {
+        console.log("in delete click", tweetid)
         const data = {
-            params:{
-            tweetID : id
-           }
-        }
+            tweetID : tweetid
+         }
         axios.defaults.withCredentials = true;
-        axios.delete('http://localhost:3001/userfeed/', data)
+        axios.post('http://localhost:3001/userfeed/', data)
                 .then((response) => {
                     console.log("in axios", response)
                     if(response.status == 200){
@@ -75,33 +76,22 @@ class tweets extends Component {
     }
 
     render() {
-        // let Tweet = this.state.tweets.map(tweet => {
-        //     if (tweet != null)
-        //         return (
-
-        //             <div className="search">
-        //                 <br/>{tweet.item}
-        //                 <br/>{tweet.price}
-        //             </div>
-        //         )
-        // })
-
-
+    
         let tweet1;
         
         tweet1 = this.state.tweet.map(tweet => {
-            if(tweet.tweetImage == "")
-            {
             var profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
 
-            // var profileimg = tweet.user.profileimage;
-            // if(profileimg == null){
-            //     profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
-            // }
-            // else{
-            //     profileimg = tweet.user.profileimage;
-            // }
-            return(
+            var profileimg = this.state.profileImage;
+            if(profileimg == null){
+                profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+            }
+            else{
+                profileimg = this.state.profileImage;
+            }
+            if(tweet.tweet.tweetImage == "")
+            {
+                return(
                 
                 <div class="tweets-div" role="button">
                     <div>
@@ -111,13 +101,13 @@ class tweets extends Component {
                                 <div class="u-mar1">
                                 <Link class="a" to="/descTweets">
                                 <div class="s-list-item-primary u-mar1 fullname">{sessionStorage.getItem("fName")}</div>
-                                <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweetDate.split("T")[0]}  {tweet.tweetDate.split("T")[1].split(".")[0]}</span>
+                                <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweet.tweetDate.split("T")[0]}  {tweet.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                                 <div class="s-list-item-secondary u-mar1 snippet">
-                                        <span class="span">{tweet.tweet}</span>
+                                        <span class="span">{tweet.tweet.tweet}</span>
                                 </div></Link>
                                 </div>
                                 </div>
-                                <div class="edit"><button class="buttons3" style={{marginTop:"10px", width: "70px"}} onClick = {() => this.deleteClick(tweet.tweetID)}>Delete</button></div>
+                                <div class="edit"><button class="buttons3" style={{marginTop:"10px", width: "70px"}} onClick = {() => this.deleteClick(tweet.tweet.tweetID)}>Delete</button></div>
                                 </div>
                     </div>
                     <div class="img-tweets-div">
@@ -134,28 +124,28 @@ class tweets extends Component {
                 </div>
                 
             )}
-            else if(tweet.tweetImage != ""){
+            else if(tweet.tweet.tweetImage != ""){
             return(
                
             <div class="tweets-div" role="button">
                 <div>
                 <div class="u-flex u-flex-align">
-                            <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                            <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
                             <Link class="a" to="/descTweets">
                             <div class="s-list-item-primary u-mar1 fullname">{sessionStorage.getItem("fName")}</div>
-                            <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweetDate.split("T")[0]}  {tweet.tweetDate.split("T")[1].split(".")[0]}</span>
+                            <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweet.tweetDate.split("T")[0]}  {tweet.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{tweet.tweet.tweet}</span>
                             </div></Link>
                             </div>
                             </div>
-                            <div class="edit"><button class="buttons3" style={{marginTop:"10px", width: "70px"}} onClick = {this.deleteClick}>Delete</button></div>
+                            <div class="edit"><button class="buttons3" style={{marginTop:"10px", width: "70px"}} onClick = {() => this.deleteClick(tweet.tweet.tweetID)}>Delete</button></div>
                             </div>
                 </div>
                 <div class="img-tweets-div">
-                    <img src={tweet.tweetImage} class="tweets-img" ></img>
+                    <img src={tweet.tweet.tweetImage} class="tweets-img" ></img>
                     <div style={{paddingLeft: "12%"}}>
                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {tweet.replyCount}</div>
                     <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {tweet.retweetCount}</div>
