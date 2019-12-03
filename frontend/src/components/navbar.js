@@ -13,14 +13,20 @@ class followers extends Component {
         this.state = {
            
         }
+        this.handleLogout = this.handleLogout.bind(this)
     }
 
+    handleLogout = () => {
+        console.log("in handlelogout")
+        localStorage.clear();
+        sessionStorage.clear();
+        
+     }
     
 
 
     render() {
 
-        
         return (
                            
                 <div class="col-md-3 feed1" style={{borderRight:"1px solid black"}}>
@@ -33,8 +39,8 @@ class followers extends Component {
                     <a href="/profile" class="a"><span class="home-buttons"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo4"></img>Profile</span><br/><br/></a>
                     <a href="/analytics" class="a"><span class="home-buttons"><img src="https://cdn1.vectorstock.com/i/1000x1000/76/15/analytics-icon-on-transparent-analytics-sign-vector-20707615.jpg" class="logo4"></img>Analytics</span><br /><br /></a>
                     <a href="/settings" class="a"><span class="home-buttons"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Windows_Settings_app_icon.png" class="logo4"></img>Settings</span><br /><br /></a>
-                    <span class="home-buttons"><button class="buttons3">
-                        Logout
+                    <span class="home-buttons"><button class="buttons3" onClick = {this.handleLogout}>
+                        <Link to="/login">Logout</Link>
                 </button></span>
                     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </div>
