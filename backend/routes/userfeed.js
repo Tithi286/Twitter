@@ -86,6 +86,7 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
             tweet, tweetImage,
         };
         const results = await simulateRequestOverKafka("saveTweet", tweetDoc);
+        console.log("results", results)
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
@@ -93,8 +94,8 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
 
 });
 //Delete a owned tweet
-router.delete('/', requireAuth, async function (req, res, next) {
-    const { tweetID } = req.query;
+router.post('/', requireAuth, async function (req, res, next) {
+    const { tweetID } = req.body;
     try {
         const loggedInUser = req.user;
         const tweet = {
@@ -200,7 +201,7 @@ router.get('/tweets', requireAuth, async function (req, res, next) {
 });
 //like a tweet
 router.put('/like', requireAuth, async function (req, res, next) {
-    const { tweetID } = req.query;
+    const { tweetID } = req.body;
     try {
         const user = req.user;
         const like = {
