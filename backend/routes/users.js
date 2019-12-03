@@ -152,7 +152,7 @@ router.post('/follow', requireAuth, async function (req, res, next) {
 
 
 //unfollow the followed person on Twitter (get userID of user to unfollow from frontend in body)
-router.delete('/unfollow', requireAuth, async function (req, res, next) {
+router.post('/unfollow', requireAuth, async function (req, res, next) {
   const { followedID } = req.body;
   try {
     const loggedInUser = req.user;
