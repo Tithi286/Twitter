@@ -19,7 +19,7 @@ class subscribers extends Component {
     componentDidMount() {
         const data = {
             params : {
-                userID : sessionStorage.getItem("userID")
+                userID : this.props.location.state.userID
             }
         }
         console.log(data.params.userID)
