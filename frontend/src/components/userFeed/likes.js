@@ -57,6 +57,12 @@ class Likes extends Component {
     }
 
     render() {
+
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
      let likeTweets;
         
         likeTweets =this.state.likes.map(likes => {
@@ -105,7 +111,7 @@ class Likes extends Component {
                     return(
     
                         <div class="tweets-div u-list1">
-                
+                        {redirectVar}
                         <div class="u-flex u-flex-align">
                                     <div class="u-mar2"><img src={profileimg}  class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                                     <div class="u-flex-justify">

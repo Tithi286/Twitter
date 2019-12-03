@@ -83,6 +83,12 @@ class ListsAdduser extends Component {
 
     render() {
 
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
         let user1;
         console.log("sent value")
         console.log(this.props.location.state)
@@ -113,6 +119,7 @@ class ListsAdduser extends Component {
 
         return (
             <div className="opacity">
+            {redirectVar}
                 <div className="first">
                 <div class="signup2">
                 <div class="col-md-3">

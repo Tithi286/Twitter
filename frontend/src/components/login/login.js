@@ -43,6 +43,10 @@ class login extends Component {
             .then((response) => {
                 console.log("response"+response)
                
+                sessionStorage.setItem("username",response.data.userName)
+                sessionStorage.setItem("name",response.data.firstName)
+
+                localStorage.setItem("email",response.data.email)
                 localStorage.setItem("username",response.data.userName)
                 if (response.status === 200) {
                     this.setState({
@@ -50,13 +54,13 @@ class login extends Component {
                     })
                 }
                 else {
-                    this.setState({ msg: response.body.message });
+                    this.setState({ msg: "Invalid Credentials" });
                 }
             })
             .catch((err) => {
                 this.setState({
                     authFlag: false,
-                    msg: err.response.data.message,
+                    msg: "Invalid Credentials",
                 })
                 console.log("Error messagw", err.response.status);
             });
@@ -84,6 +88,7 @@ class login extends Component {
                         <div >
                             <div >
                                 <h4 className="loginlabel" >Log in to Twitter</h4>
+                                <p>{this.state.msg}</p>
                             </div>
                             <form name="loginForm" onSubmit={this.submitLogin}>
                                 <div >
@@ -101,7 +106,7 @@ class login extends Component {
                                     <button className="loginbutton" type="submit">Log in </button>
                                     <label className="buttonlabel">
                                     </label>
-                                    <p>{this.state.msg}</p>
+                                    
                                     
                                 </div>  
                                 </form> 
@@ -109,7 +114,7 @@ class login extends Component {
                             <form className="logininsideContainer">
                                 <div>
                                     <p className="logindownfont col-sm-6" > New to Twitter? 
-                                    <a className="col-sm-1" href="/signup"> Sign up now >> </a>
+                                    <a className="col-sm-1" href="/signup">Sign up now >> </a>
                                     </p>
                             
                                 </div>

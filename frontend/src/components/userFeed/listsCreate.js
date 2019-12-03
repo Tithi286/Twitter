@@ -40,16 +40,6 @@ class ListsCreate extends Component {
         })
     }
 
-    // goto = () => {
-    //     try {
-    //         this.props.history.push({
-    //             pathname: "/lists",
-    //         })
-    //        // console.log(this.state.userID)
-    //     } catch (e) { }
-    // }
-
-
     submitAdd = (e) => {
         e.preventDefault();
         const data = {
@@ -88,8 +78,15 @@ class ListsCreate extends Component {
    
 
     render() {
+
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         return (
             <div class="signup2">
+            {redirectVar}
                 <br />
                 <form class="outer-box1 signup1"  onSubmit={this.submitAdd}>
                     <br />
