@@ -4,35 +4,31 @@ import './Chat.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
+
 
 class Inbox extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            userID:this.props.location.state.userID,
+            userID: this.props.location.state.userID,
             chats: [],
-          }
+        }
 
         this.sendChange = this.sendChange.bind(this)
         this.onSend = this.onSend.bind(this)
     }
 
     componentDidMount() {
-        console.log("hey",this.state.userID)
+        console.log("hey", this.state.userID)
         const data = {
             params: {
                 receiverID: this.state.userID
             }
         }
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/messages/view',data)
+        axios.get('/messages/view', data)
             .then((response) => {
                 this.setState({
                     chats: response.data
@@ -58,7 +54,7 @@ class Inbox extends Component {
 
         console.log(data.receiverID)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/messages/send', data)
+        axios.post('/messages/send', data)
             .then((response) => {
                 console.log(response)
 
@@ -66,7 +62,7 @@ class Inbox extends Component {
             .catch((error) => {
                 console.log("Something went wrong")
             })
-            this.componentDidMount()
+        this.componentDidMount()
     }
 
     render() {
@@ -79,9 +75,9 @@ class Inbox extends Component {
 
         console.log("user id ", this.state.userID)
         let content = this.state.chats.map(chat => (
-                <div class="mesgs">
+            <div class="mesgs">
                 <div class="msg_history"  >
-                   {chat.senderID == this.state.userID && <div class="incoming_msg" >
+                    {chat.senderID == this.state.userID && <div class="incoming_msg" >
                         <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></img> </div>
                         <div class="received_msg">
                             <div class="received_withd_msg">
@@ -90,15 +86,15 @@ class Inbox extends Component {
                             </div>
                         </div>
                     </div>}
-            
-                {chat.receiverID == this.state.userID && <div class="outgoing_msg" >
-                    <div class="sent_msg">
-                        <p>{chat.chat}</p>
-                        <span class="time_date">{chat.createdAt.split("T")[0]}  {chat.createdAt.split("T")[1].split(".")[0]} </span>
-                    </div>
-                </div>}
+
+                    {chat.receiverID == this.state.userID && <div class="outgoing_msg" >
+                        <div class="sent_msg">
+                            <p>{chat.chat}</p>
+                            <span class="time_date">{chat.createdAt.split("T")[0]}  {chat.createdAt.split("T")[1].split(".")[0]} </span>
+                        </div>
+                    </div>}
+                </div>
             </div>
-        </div>
         ))
 
         return (
@@ -121,7 +117,7 @@ class Inbox extends Component {
                 </div>
 
                 <div class="col-md-6 feed">
-                    
+
                     <div class="messaging" >
                         <div class="inbox_msg">
                             <h2>
@@ -136,26 +132,6 @@ class Inbox extends Component {
                                 </div>
                             </h2>
                             {content}
-                            {/* <div class="mesgs">
-                                <div class="msg_history"  >
-                                    <div class="incoming_msg" >
-                                        <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></img> </div>
-                                        <div class="received_msg">
-                                            <div class="received_withd_msg">
-                                                <p>chat msg</p>
-                                                <span class="time_date"> time</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="outgoing_msg" >
-                                        <div class="sent_msg">
-                                            <p>chat.msg</p>
-                                            <span class="time_date">date </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                     <div class="contact-form" style={{ width: "80%", margin: "0 auto" }}>
@@ -164,14 +140,6 @@ class Inbox extends Component {
                             <button class="buttons3" onClick={this.onSend} style={{ width: "70px", height: "35px" }}>Send</button>
                         </div></div>
                 </div>
-
-                {/* <div class="col-md-3 feed">
-                    <div>
-                        <div>
-                            <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
-                        </div>
-                    </div>
-                </div> */}
 
             </div>
 

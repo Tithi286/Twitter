@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
 import Icon from 'react-icons-kit';
@@ -68,13 +61,8 @@ class userHome extends Component {
         image.append("tweet", this.state.caption);
         image.append("email", this.state.email);
         console.log(image);
-        // const data = {
-        //     tweet: this.state.caption,
-        //     email: this.state.email,
-        // }
-        // console.log(data)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/', image)
+        axios.post('/userfeed/', image)
             .then((response) => {
                 console.log("in axios call for post tweet")
                 console.log("response",response)
@@ -92,7 +80,7 @@ class userHome extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/retweet', data)
+        axios.post('/userfeed/retweet', data)
             .then((response) => {
                 console.log("in axios call for post retweet")
                 console.log(response)
@@ -110,7 +98,7 @@ class userHome extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/userfeed/like', data)
+        axios.put('/userfeed/like', data)
             .then((response) => {
                 console.log("in axios call for like")
                 console.log(response)
@@ -128,7 +116,7 @@ class userHome extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/bookmarks/create', data)
+        axios.post('/bookmarks/create', data)
             .then((response) => {
                 console.log("in axios call for creating bookmark")
                 console.log(response)
@@ -154,7 +142,7 @@ class userHome extends Component {
         }
         console.log("Data", data)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/reply', data)
+        axios.post('/userfeed/reply', data)
             .then((response) => {
                 console.log("in axios call for creating bookmark")
                 console.log(response)
@@ -169,7 +157,7 @@ class userHome extends Component {
     componentDidMount() {
 
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userfeed/tweets')
+        axios.get('/userfeed/tweets')
             .then((response) => {
                 this.setState({
                     tweet: response.data

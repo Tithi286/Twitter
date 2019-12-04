@@ -3,11 +3,6 @@ import '../../App.css';
 import axios from 'axios';
 //import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
-import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import { Link } from "react-router-dom";
 
@@ -18,9 +13,6 @@ class launchpage extends Component {
         this.state = {
             fName: "",
             lName: "",
-            //   email: "",
-            //   password: "",
-            //   phone: "",
             errormsg: "",
             authFlag: "",
             year: "",
@@ -90,16 +82,11 @@ class launchpage extends Component {
 
     render() {
 
-        let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
-        }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
+
 
         return (
             <div>
-                {redirectVar}
+                
                 <div class="landingpage1">
                 
                     <svg class="twitterIcon-bird" viewBox="0 0 1208 982" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>

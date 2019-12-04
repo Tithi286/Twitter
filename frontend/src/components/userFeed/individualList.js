@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import { Link } from "react-router-dom";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
 import './tweet.css'
 import Tweets from './tweets'
 import Retweets from './retweets'
@@ -42,7 +34,7 @@ class IndividualList extends Component {
     componentDidMount(){
         
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/tweets')
+        axios.get('/lists/tweets')
                 .then((response) => {
                 this.setState({
                     retweet : response.data
@@ -91,7 +83,7 @@ class IndividualList extends Component {
             
         }
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/lists/subscribe',data)
+        axios.post('/lists/subscribe',data)
                 .then((response) => {
                
                     window.location.assign("/subscriptions");
@@ -255,8 +247,6 @@ class IndividualList extends Component {
                             </div>
                             </div>
                             </div>
-                    {/* UserName<br />
-                    Tweet Message */}
                 </div>
                 <div class="img-tweets-div">
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
