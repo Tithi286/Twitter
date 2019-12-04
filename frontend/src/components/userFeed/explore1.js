@@ -86,7 +86,7 @@ class profile extends Component {
         console.log("inside edit profile get request")
         this.getFollowing()
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/users/profile")
+        axios.get("http://localhost:3001/users/profile",)
             .then((response) => {
                 console.log("data: ", response.data)
                 //update the state with the response data
@@ -99,7 +99,7 @@ class profile extends Component {
                     state: response.data.state,
                     zipcode: response.data.zipcode,
                 });
-                sessionStorage.setItem("fName",this.state.fname)
+                sessionStorage.setItem("exploreUser",this.state.user)
                 if(response.data.profileImage){
                     this.setState({
                         profileimage : response.data.profileImage
@@ -265,7 +265,7 @@ class profile extends Component {
                             
                             <div>
                             
-                            </div><br /><br />
+                            </div><br /><br /><br/>
                             <h5 class="rest-name-div1">{user1.firstName} {user1.lastName}</h5>
                             <h5 class="rest-name-div">{user1.city}, {user1.state}-{user1.zipcode}</h5>
                             <h5 class="rest-name-div">{user1.bio}</h5>
