@@ -212,6 +212,23 @@ router.put('/like', requireAuth, async function (req, res, next) {
     }
 
 });
+//unlike a tweet
+router.put('/unlike', requireAuth, async function (req, res, next) {
+    try {
+        const { tweetID } = req.body;
+        if (tweetID) {
+            const user = req.user;
+            const like = {
+                tweetID,
+                userID: user.userID
+            };
+            await simulateRequestOverKafka("delLike", like);
+            res.json({ message: "Tweet unliked" });
+        }
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
+});
 //retweet a tweet
 router.post('/retweet', requireAuth, async function (req, res, next) {
     const { retweet, tweetID } = req.body;

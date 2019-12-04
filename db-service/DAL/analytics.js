@@ -6,7 +6,7 @@ const { retweets } = require("./Models/RetweetSchema");
 const getTweetViewCount = connection => (query = {}) => {
   return new Promise((resolve, reject) => {
     tweets
-      .find(function(err, docs) {
+      .find(function (err, docs) {
         return err ? reject(err) : resolve(docs);
       })
       .sort({ viewCount: -1 })
@@ -19,7 +19,7 @@ const getTweetLikeCount = connection => (query = {}) => {
     likes
       .aggregate(
         [{ $group: { _id: "$tweetID", count: { $sum: 1 } } }],
-        function(err, docs) {
+        function (err, docs) {
           return err ? reject(err) : resolve(docs);
         }
       )
@@ -32,7 +32,7 @@ const getARetweetCount = connection => (query = {}) => {
     retweets
       .aggregate(
         [{ $group: { _id: "$tweetID", count: { $sum: 1 } } }],
-        function(err, docs) {
+        function (err, docs) {
           return err ? reject(err) : resolve(docs);
         }
       )
@@ -57,7 +57,7 @@ const getTweetCountHour = connection => (query = {}) => {
         },
         { $project: { tweet: 1, count: 1 } }
       ],
-      function(err, docs) {
+      function (err, docs) {
         return err ? reject(err) : resolve(docs);
       }
     );
@@ -79,7 +79,7 @@ const getTweetCountDay = connection => (query = {}) => {
         },
         { $project: { tweet: 1, count: 1 } }
       ],
-      function(err, docs) {
+      function (err, docs) {
         return err ? reject(err) : resolve(docs);
       }
     );
@@ -101,7 +101,7 @@ const getTweetCountMonth = connection => (query = {}) => {
         },
         { $project: { tweet: 1, count: 1 } }
       ],
-      function(err, docs) {
+      function (err, docs) {
         return err ? reject(err) : resolve(docs);
       }
     );
@@ -111,7 +111,7 @@ const getTweetCountMonth = connection => (query = {}) => {
 const getProfileViewCount = connection => (query = {}) => {
   return new Promise((resolve, reject) => {
     const userID = query.userID;
-    console.log(userID);
+
     profileview.aggregate(
       [
         { $match: { userID: userID } },
@@ -127,7 +127,7 @@ const getProfileViewCount = connection => (query = {}) => {
           }
         }
       ],
-      function(err, docs) {
+      function (err, docs) {
         return err ? reject(err) : resolve(docs);
       }
     );
@@ -137,7 +137,7 @@ const getProfileViewCount = connection => (query = {}) => {
 const IncTweetViewCount = connection => (query = {}) => {
   return new Promise((resolve, reject) => {
     const tweetID = query.tweetID;
-    tweets.updateOne({ tweetID: tweetID }, { $inc: { viewCount: 1 } }, function(
+    tweets.updateOne({ tweetID: tweetID }, { $inc: { viewCount: 1 } }, function (
       err,
       docs
     ) {
@@ -155,7 +155,7 @@ const IncProfileViewCount = connection => (query = {}) => {
         $inc: { viewCount: 1 }
       },
       { upsert: true },
-      function(err, docs) {
+      function (err, docs) {
         return err ? reject(err) : resolve(docs);
       }
     );

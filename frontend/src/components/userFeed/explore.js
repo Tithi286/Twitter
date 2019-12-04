@@ -201,7 +201,7 @@ class explore extends Component {
                         {/* </Link> */}
                         </div>
                         <div class="col-sm-3" style={{ float: "left" }}>
-                            <button class="logoc" style={{ float: "left" }}>Follow</button>
+                            {/* <button class="logoc" style={{ float: "left" }}>Follow</button> */}
                         </div>
                     </div>
                 </div>
