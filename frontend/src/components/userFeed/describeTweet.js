@@ -53,7 +53,19 @@ class describeTweet extends Component {
                 console.log("Reply ", this.state.reply)
 
             });
-    }
+         const data1 = {
+      tweetID: this.props.location.state
+    };
+    axios.defaults.withCredentials = true;
+    console.log("inc");
+    console.log(this.props.location.state);
+
+    axios
+      .post("http://localhost:3001/analytics/inctweetviewcount", data1)
+      .then(response => {});
+  }
+
+    
 
 
     render() {
