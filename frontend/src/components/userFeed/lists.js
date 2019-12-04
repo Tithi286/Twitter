@@ -79,7 +79,7 @@ class lists extends Component {
                             <div class="col-md-3" style={{float:"left"}}>
                             <Link to={{pathname:"/adduser", state:list1._id }}><button class="buttons3">Add Members</button></Link>
                             </div>
-                            </div>            
+                </div>            
             </div>
             ))
 
@@ -96,8 +96,8 @@ class lists extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a class="active" class="col-md-4">Owned</a>
-                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
-                            <a href="/members" >Members</a>
+                            <a href="/subscriptions" class="col-md-4">Subscribed</a>
+                            <a href="/members" class="col-md-4" >Members</a>
                         </div>
                     <div >
                         {listCreated}

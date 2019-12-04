@@ -93,24 +93,40 @@ class ListsAdduser extends Component {
         console.log("sent value")
         console.log(this.props.location.state)
         user1 = this.state.user1.map(username => (
-
-
-            <div class="u-clickable u-list" role="button">
+            <div class="u-clickable u-list" role="button" style={{}}>
                 <div class="u-flex u-flex-align container-flex">
-                    <div class="u-mar2 col-sm-1" style={{ float: "left" }}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
-                    <div class="col-md-6" style={{ float: "left" }}>
+                    <div class="u-mar2 col-md-1" style={{ float: "left" }}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                    <div class="col-md-8" style={{ float: "left" }}>
                         <div class="u-mar3">
-                            <div class="s-list-item-primary u-mar3 fullname"> </div>
-                            <div class="s-list-item-secondary u-mar3 snippet">
-                                <span class="span">{username.firstName}</span>
-                                <span class="col-sm-3" style={{ float: "left" }}>
-                                    <button class="logoc" style={{ float: "left" }} onClick={() => this.submitChanges(username.userID)}>Add Member</button>
-                                </span>
-                            </div>
+                           <div>{username.firstName} {username.lastName}</div>
+                            {/* <div class="s-list-item-secondary u-mar3 snippet"> */}
+                        
+                            {/* </div> */}
                         </div>
+                    </div>
+                    <div class="col-sm-3" style={{ float: "left" }}>
+                        <button class="logoc" style={{ float: "left" }}>Add</button>
                     </div>
                 </div>
             </div>
+
+            // <div class="u-flex u-flex-align container-flex" style={{width:"400px",border:"1px solid black"}}>
+            //     <div class="u-mar2 col-md-2"  style={{float:"left"}}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+            //     <div class="col-md-7">
+
+            //         {/* <div class="s-list-item-primary u-mar3 fullname"> </div> */}
+            //             {/* <div class="s-list-item-secondary u-mar3 snippet" style={{}}> */}
+
+            //             <span>{username.firstName}</span>
+
+
+            //     </div>
+            //     {/* <span></span> */}
+            //     <div class="col-sm-3" style={{float:"left"}}> 
+            //     <button class="logoe" onClick={() => this.submitChanges(username.userID)} style={{width:"120px"}}>Add Member</button>
+            //     </div>
+            // </div>
+
 
         ))
 
@@ -121,27 +137,33 @@ class ListsAdduser extends Component {
                 {redirectVar}
                 <div className="first">
                     <div class="signup2">
+                        <div class="col-md-3">
+                        </div>
                         <div class="outer-box1 signup1" >
-                            <div class="col-md-6">
+                            <div class="">
                                 <div className="container">
                                     <div className="list-font">
                                         <span class="uppernav"><Link to="/lists"><a> <FontAwesomeIcon icon={faWindowClose} /> </a></Link></span>
                                         <div class="letter-block">Add Members</div>
-                                        <span> <Link to="/lists"> <button class="button">Go back </button></Link> </span>
+                                        {/* <Link to="/lists"> <button class="button">Go back </button></Link> */}
                                     </div>
                                     <div className="list-font">
                                         <div>
-                                            <input type="text" class="searchbar1" placeholder="Add member" name="search" id="search" onChange={this.searchChangeHandler}></input>
-                                        </div>
-                                        <span>
+                                            <input type="text" class="searchbar1" style={{width:"400px"}} placeholder="Add member" name="search" id="search" onChange={this.searchChangeHandler}></input>
                                             <button class="button" onClick={this.goTo}>
                                                 Search
-                            </button>
-                                        </span>
+                                            </button>
+                                            {user1}
+                                        </div>
+                                        
+                                           
+                                       
                                     </div>
-                                    {user1}
+                                    
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-3">
                         </div>
                     </div>
                 </div>
