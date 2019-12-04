@@ -100,7 +100,7 @@ class ListsAdduser extends Component {
                         </div>
                     </div>
                     <div class="col-sm-3" style={{ float: "left" }}>
-                        <button class="logoc" style={{ float: "left" }}>Add</button>
+                        <button  onClick={() => this.submitChanges(username.userID)} class="logoc" style={{ float: "left" }}>Add</button>
                     </div>
                 </div>
             </div>
