@@ -124,28 +124,6 @@ class editProfile extends Component {
         }
     }
 
-    // updateprofileimage = (e) => {
-    //     const image = new FormData();
-    //     image.append("image", this.state.imageURL);
-
-    //     axios.defaults.withCredentials = true;
-    //     //make a post request with the user data
-    //     axios.post('http://localhost:3001/updatepic', image)
-    //         .then(response => {
-    //             console.log("Status Code : ", response.status);
-    //             console.log("Status Code : ", response);
-    //             if (response.status === 200) {
-    //                 this.setState({
-    //                     message: response.data.message
-    //                 })
-    //             }
-    //         })
-    //         .catch(error => {
-    //             this.setState({
-    //                 //message: error.response.data.error
-    //             })
-    //         });
-    // }
 
     submitChanges(e) {
         e.preventDefault()
@@ -213,21 +191,21 @@ class editProfile extends Component {
                         <br/>
                             <div class="elements">
                                 <span class="label">First Name</span>
-                                <input class="form-control1 elements1" value={this.state.fname} pattern="[A-Z]*||[a-z]*" type="text" name="fname" onChange={this.fnameChangeHandler} required></input>
+                                <input class="form-control1 elements1" value={this.state.fname} pattern="[A-Za-z]*" type="text" name="fname" onChange={this.fnameChangeHandler} required></input>
                             </div>
                         </div>
                         <div class="">
                             <br />
                             <div class="elements">
                                 <span class="label">Last Name</span>
-                                <input class="form-control1 elements1" value={this.state.lname} pattern="[A-Z]*||[a-z]*" type="text" name="lname" onChange={this.lnameChangeHandler}required/>
+                                <input class="form-control1 elements1" value={this.state.lname} pattern="[A-Za-z]*" type="text" name="lname" onChange={this.lnameChangeHandler}required/>
                             </div>
                             </div>
                         <div class="">
                             <br />
                             <div class="elements">
                                 <span class="label">Email</span>
-                                <input class="form-control1 elements1" value={this.state.email}  type="text" name="email" onChange={this.emailChangeHandler}required/>
+                                <input class="form-control1 elements1" value={this.state.email}  type="email" name="email" onChange={this.emailChangeHandler}required/>
                             </div>
                         </div>
                             <div class="">
@@ -242,7 +220,7 @@ class editProfile extends Component {
                                 <div class="elements" style={{display:"flex"}}>
                                     <div class="inner-element">
                                     <span class="label">City</span>
-                                    <input class="form-control1 elements1" value={this.state.city} pattern="[A-Z]*||[a-z]*" type="text" name="city" onChange={this.cityChangeHandler}/>
+                                    <input class="form-control1 elements1" value={this.state.city} pattern="[A-Za-z]*\s*[A-Za-z]*" type="text" name="city" onChange={this.cityChangeHandler}/>
                                     </div>
                                     <div class="inner-element">
                                     <span class="label">State</span>
@@ -250,7 +228,7 @@ class editProfile extends Component {
                                     </div>
                                     <div class="inner-element">
                                     <span class="label">Zipcode</span>
-                                    <input class="form-control1 elements1" value={this.state.zipcode} pattern="[0-9]*" type="text" name="zipcode" onChange={this.zipChangeHandler}/>
+                                    <input class="form-control1 elements1" value={this.state.zipcode} pattern="[0-9]{5}-[0-9]{4}||[0-9]{5}" type="text" name="zipcode" onChange={this.zipChangeHandler}/>
                                     </div>
                                 </div>
                             </div>
