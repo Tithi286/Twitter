@@ -3,11 +3,6 @@ import { Link } from "react-router-dom";
 import '../../App.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -50,7 +45,7 @@ class ListsCreate extends Component {
         console.log(data);
         axios.defaults.withCredentials = true;
         console.log("data" + data)
-        axios.post('http://localhost:3001/lists/create', data)
+        axios.post('/lists/create', data)
             .then((response) => {
                 console.log(response.status);
                 if (response.status === 200) {

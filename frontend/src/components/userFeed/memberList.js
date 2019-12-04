@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import { Link } from "react-router-dom";
-import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
 import './tweet.css'
 import Tweets from './tweets'
 import Retweets from './retweets'
@@ -51,7 +44,7 @@ class MemberList extends Component {
     componentDidMount(){
         
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/tweets')
+        axios.get('/lists/tweets')
                 .then((response) => {
                 this.setState({
                     retweet : response.data
@@ -99,7 +92,7 @@ class MemberList extends Component {
         }  
         
          axios.defaults.withCredentials = true;
-         axios.post('http://localhost:3001/lists/demember', data)
+         axios.post('/lists/demember', data)
                  .then((response) => {
                     
              })
@@ -122,7 +115,7 @@ class MemberList extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/retweet', data)
+        axios.post('/userfeed/retweet', data)
             .then((response) => {
                 console.log("in axios call for post retweet")
                 console.log(response)
@@ -140,7 +133,7 @@ class MemberList extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/userfeed/like', data)
+        axios.put('/userfeed/like', data)
             .then((response) => {
                 console.log("in axios call for like")
                 console.log(response)
@@ -158,7 +151,7 @@ class MemberList extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/bookmarks/create', data)
+        axios.post('/bookmarks/create', data)
             .then((response) => {
                 console.log("in axios call for creating bookmark")
                 console.log(response)
@@ -178,7 +171,7 @@ class MemberList extends Component {
         }
         console.log("Data", data)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/reply', data)
+        axios.post('/userfeed/reply', data)
             .then((response) => {
                 console.log("in axios call for creating bookmark")
                 console.log(response)
@@ -246,8 +239,6 @@ class MemberList extends Component {
                             </div>
                             </div>
                             </div>
-                    {/* UserName<br />
-                    Tweet Message */}
                 </div>
                 <div class="img-tweets-div">
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>

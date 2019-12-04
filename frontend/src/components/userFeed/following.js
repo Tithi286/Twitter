@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { Link } from "react-router-dom";
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from '../navbar'
-
-
-
 
 
 class following extends Component {
@@ -33,7 +27,7 @@ class following extends Component {
 
     componentDidMount() {
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/userprofile/followed")
+        axios.get("/userprofile/followed")
             .then((response) => {
                 //update the state with the response data
                 this.setState({

@@ -2,23 +2,8 @@ import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { faHome, faList } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Favicon from 'react-favicon';
-import Icon from 'react-icons-kit';
-import {commentO} from 'react-icons-kit/fa/commentO'
-import {heartO} from 'react-icons-kit/fa/heartO'
-import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
-import {loop} from 'react-icons-kit/iconic/loop'
 import Navbar from '../navbar'
 
 class otherlists extends Component {
@@ -38,7 +23,7 @@ class otherlists extends Component {
             }
         }
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/others',data)
+        axios.get('/lists/others',data)
                 .then((response) => {
                 this.setState({
                     listCreated : response.data,

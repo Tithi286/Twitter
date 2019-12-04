@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { Link } from "react-router-dom";
-import moment from 'moment';
 import Navbar from '../navbar'
 
 class followers extends Component {
@@ -47,7 +43,7 @@ class followers extends Component {
         
         console.log(data.params.userID)
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/userprofile/followers", data)
+        axios.get("/userprofile/followers", data)
             .then((response) => {
                 this.setState({
                     followers: response.data
