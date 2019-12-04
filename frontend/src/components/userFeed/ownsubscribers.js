@@ -79,7 +79,8 @@ console.log(this.props.location.state.userID)
 
                 <div class="col-md-6 feed1 u-list1">
                 <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
-                    <div class="home-font">Members</div>
+                                        <div class="home-font">Subscribers</div>
+
                     <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span"></span></div>
                     </div>
 

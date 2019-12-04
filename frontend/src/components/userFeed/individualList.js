@@ -41,8 +41,13 @@ class IndividualList extends Component {
 
     componentDidMount(){
         
+       const data={
+           params:{
+            listID:listsID}
+        
+    }
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/tweets')
+        axios.get('http://localhost:3001/lists/tweets',data)
                 .then((response) => {
                 this.setState({
                     retweet : response.data

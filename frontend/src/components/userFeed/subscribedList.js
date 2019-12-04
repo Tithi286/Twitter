@@ -50,8 +50,13 @@ class SubscribedList extends Component {
 
     componentDidMount(){
         
+           const data = {
+            params:{
+            listID  : this.props.location.state[4]
+            }
+        }  
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/tweets')
+        axios.get('http://localhost:3001/lists/tweets',data)
                 .then((response) => {
                 this.setState({
                     retweet : response.data
