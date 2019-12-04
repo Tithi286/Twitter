@@ -64,7 +64,7 @@ class lists extends Component {
                         <Link class="a" to={{pathname:"/indlist", state:[list1.listName,list1.listDesc,list1.members.length,list1.subscribers.length,list1._id] }}>
                             <div class="u-flex-justify col-md-9" style={{float:"left"}}>
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{localStorage.getItem("username")}</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{sessionStorage.getItem("name")}</div>
                             <div class="s-list-item-primary u-mar1 listheading">{list1.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{list1.listDesc}</span>
