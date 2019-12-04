@@ -77,12 +77,21 @@ class messages extends Component {
         }
 
        let content;
-        content =this.state.messages.map(message => (
-            
+        content =this.state.messages.map(message => {
+            sessionStorage.setItem('msg_user',message.firstName)
+            sessionStorage.setItem('msg_img',message.profileImage)
+            var profileimg = message.profileImage;
+            if(profileimg == null){
+                profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+            }
+            else{
+                profileimg = message.profileImage;
+            }
+            return(
             // <Link class="a" to="/inbox">
              <div class="u-clickable u-list"  >
                                 <div class="u-flex u-flex-align">
-                                <div class="u-mar2"><img src={message.profileImage} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
+                                <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                                     <div class="u-flex-justify" >
                                     <div class="u-mar1">
                                     <div class="s-list-item-primary u-mar1 fullname"role="button" onClick ={() => {this.goto(message.userID)}}>{message.firstName} {message.lastName}</div>
@@ -95,7 +104,7 @@ class messages extends Component {
                                        </div>
                                     </div>
                             // </Link>
-            )
+            )}
         )
         
 
@@ -111,22 +120,7 @@ class messages extends Component {
                     </div>
 
                     {content}
-                    {/* <Link class="a" to="/inbox"><div class="u-clickable u-list" role="button">
-                                <div class="u-flex u-flex-align">
-                                    <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
-                                    <div class="u-flex-justify">
-                                    <div class="u-mar1">
-                                    <div class="s-list-item-primary u-mar1 fullname">Email Id </div>
-                                        <div class="s-list-item-secondary u-mar1 snippet">
-                                            <span class="span">hey email</span>
-                                        </div>
-                                        </div>
-                                        </div>
-                                    <div class="edit">15h</div>
-                                </div>
-                                
-                            </div>
-                    </Link> */}
+        
                 </div>
 
                 
