@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import axios from 'axios';
-//import cookie from 'react-cookies';
+import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { Link } from "react-router-dom";
 import moment from 'moment';
@@ -20,6 +20,8 @@ class followers extends Component {
         console.log("in handlelogout")
         localStorage.clear();
         sessionStorage.clear();
+        cookie.remove('authCookie', { path: '/' });
+        this.setState({ isLoggedin: false });
         
      }
     

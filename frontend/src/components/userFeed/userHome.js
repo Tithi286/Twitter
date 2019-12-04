@@ -191,14 +191,14 @@ class userHome extends Component {
 
         let tweet1;
         tweet1 = this.state.tweet.map(tweet => {
-            if (tweet.tweet.tweetImage == "") {
-                var profileimg = tweet.user.profileimage;
+            var profileimg = tweet.user.profileImage;
                 if (profileimg == null) {
                     profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
                 }
                 else {
-                    profileimg = tweet.user.profileimage;
+                    profileimg = tweet.user.profileImage;
                 }
+            if (tweet.tweet.tweetImage == "") {
                 return (
                     <div class="tweets-div" role="button">
                         <Link class="a" to={{ pathname: "/descTweets", state: tweet.tweet.tweetID }} >
@@ -243,7 +243,7 @@ class userHome extends Component {
                         <Link class="a" to={{ pathname: "/descTweets", state: tweet.tweet.tweetID }}>
                             <div>
                                 <div class="u-flex u-flex-align">
-                                    <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
+                                    <div class="u-mar2"><img src={profileimg} class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
                                     <div class="u-flex-justify">
                                         <div class="u-mar1">
                                             <div class="s-list-item-primary u-mar1 fullname">{tweet.user.firstName} {tweet.user.lastName} <span class="span s-list-item-secondary u-mar1 snippet" style={{ marginLeft: "40%" }}>{tweet.tweet.tweetDate.split("T")[0]}</span></div>
@@ -288,7 +288,7 @@ class userHome extends Component {
                     <div class="home-font">Home</div>
                     <div class="u-clickable u-list1" role="button">
                         <div class="u-flex">
-                            <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo6"></img></div>
+                            <div class="u-mar2"><img src={sessionStorage.getItem('profileImage')} class="logo6"></img></div>
                             <div class="u-flex-justify">
                                 <div class="u-mar1">
                                     <form onSubmit={this.submitChanges} >
