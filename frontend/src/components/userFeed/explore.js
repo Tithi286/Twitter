@@ -90,15 +90,15 @@ class explore extends Component {
             profile1 = this.state.profile.map(profile => {
                 if (profile.tweet.tweetImage == "") {
                     // console.log("no tweet image")
-                    var profileimg = profile.user.profileimage;
+                    var profileimg = profile.user.profileImage;
                     if (profileimg == null) {
                         profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
                     }
                     else {
-                        profileimg = profile.user.profileimage;
+                        profileimg = profile.user.profileImage;
                     }
                     return (
-                        <Link class="a" to="/descTweets">
+                        <Link class="a" to={{ pathname: "/descTweets", state: profile.tweet.tweetID }}>
                             <div class="tweets-div" role="button">
                                 <div>
                                     <div class="u-flex u-flex-align">
@@ -107,9 +107,9 @@ class explore extends Component {
                                             </div>
                                         <div class="u-flex-justify">
                                             <div class="u-mar1">
-                                                <div class="s-list-item-primary u-mar1 fullname">{profile.user.firstName}</div>
+                                                <div class="s-list-item-primary u-mar1 fullname">{profile.user.firstName} {profile.user.lastName}</div>
                                                 <div class="s-list-item-secondary u-mar1 snippet">
-                                                    <span class="span">Tweet</span>
+                                                    <span class="span">{profile.tweet.tweet}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -134,24 +134,24 @@ class explore extends Component {
                 else if(profile.tweet.tweetImage != ""){
                     console.log("with tweet image")
                     // console.log("no tweet image")
-                    var profileimg = profile.user.profileimage;
+                    var profileimg = profile.user.profileImage;
                     if (profileimg == null) {
                         profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
                     }
                     else {
-                        profileimg = profile.user.profileimage;
+                        profileimg = profile.user.profileImage;
                     }
                 return (
-                    <Link class="a" to="/descTweets">
+                    <Link class="a" to={{ pathname: "/descTweets", state: profile.tweet.tweetID }}>
                         <div class="tweets-div" role="button">
                             <div>
                                 <div class="u-flex u-flex-align">
-                                    <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
+                                    <div class="u-mar2"><img src={profileimg} class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
                                     <div class="u-flex-justify">
                                         <div class="u-mar1">
-                                            <div class="s-list-item-primary u-mar1 fullname">{profile.user.firstName}</div>
+                                            <div class="s-list-item-primary u-mar1 fullname">{profile.user.firstName} {profile.user.lastName}</div>
                                             <div class="s-list-item-secondary u-mar1 snippet">
-                                                <span class="span">tweet</span>
+                                                <span class="span">{profile.tweet.tweet}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -160,7 +160,7 @@ class explore extends Component {
                         Tweet Message */}
                             </div>
                             <div class="img-tweets-div">
-                                <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
+                                <img src={profile.tweet.tweetImage} class="tweets-img" ></img>
                                 <div style={{ paddingLeft: "12%" }}>
                                     <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button" /> {profile.replyCount}</div>
                                     <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button" /> {profile.retweetCount}</div>
@@ -178,18 +178,18 @@ class explore extends Component {
         }
         // Search people
         else {
-            profile1 = this.state.profile.map(profile => (
-                // console.log("no tweet image")
-                    // var profileimg = profile.user.profileimage;
-                    // if (profileimg == null) {
-                    //     profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
-                    // }
-                    // else {
-                    //     profileimg = profile.user.profileimage;
-                    // }
+            profile1 = this.state.profile.map(profile => {
+                    var profileimg = profile.profileImage;
+                    if (profileimg == null) {
+                        profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
+                    }
+                    else {
+                        profileimg = profile.profileImage;
+                    }
+                return(
                 <div class="u-clickable u-list" role="button">
                     <div class="u-flex u-flex-align container-flex">
-                        <div class="u-mar2 col-sm-1" style={{ float: "left" }}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                        <div class="u-mar2 col-sm-1" style={{ float: "left" }}><img src={profileimg} class="logo5"></img></div>
                         <div class="col-md-8" style={{ float: "left" }}>
                         {/* <Link class="a" to={{pathname:"/explore1",state:profile}} >                                 */}
                                     <div class="u-mar3" role="button" onClick={() => this.nextPage(profile)}>
@@ -206,7 +206,7 @@ class explore extends Component {
                     </div>
                 </div>
 
-            ))
+             ) })
         }
 
         
