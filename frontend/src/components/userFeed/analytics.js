@@ -1,97 +1,452 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import axios from 'axios';
-//import cookie from 'react-cookies';
-import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
+import Highcharts from 'highcharts/highstock';
+import HighchartsReact from 'highcharts-react-official';
+import PieChart from "highcharts-react-official";
+import { Redirect } from 'react-router';
+import Navbar from '../navbar'
 
 class analytics extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment()
+            tweetview10: [],
+            tweetview10Xaxis: [],
+            tweetlike10: '',
+            tweetretweet5: '',
+            tweethourcount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            tweetmonthlycount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            tweetdailycount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            profileviewcount: 0,
         }
-        
     }
+    async componentDidMount() {
+        let viewtweetCounts = [];
+        let tweetXaxis = [];
+        let tweetliketop10 = [];
+        let retweettop10 = [];
+        let hourcount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let monthlycount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let dailycount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
+        try {
+            const responses = await Promise.all([
+                fetch(`/analytics/viewcount`, {
+                    method: 'get',
+                    mode: "cors",
+                    redirect: 'follow',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }),
+                fetch(`/analytics/likecount`, {
+                    method: 'get',
+                    mode: "cors",
+                    redirect: 'follow',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }),
+                fetch(`/analytics/retweetcount`, {
+                    method: 'get',
+                    mode: "cors",
+                    redirect: 'follow',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }),
+                fetch(`/analytics/hourcount`, {
+                    method: 'get',
+                    mode: "cors",
+                    redirect: 'follow',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }),
+                fetch(`/analytics/daycount`, {
+                    method: 'get',
+                    mode: "cors",
+                    redirect: 'follow',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }),
+                fetch(`/analytics/monthcount`, {
+                    method: 'get',
+                    mode: "cors",
+                    redirect: 'follow',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }),
+                fetch(`/analytics/profileviewcount`, {
+                    method: 'get',
+                    mode: "cors",
+                    redirect: 'follow',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+            ]);
+            const [res1, res2, res3, res4, res5, res6, res7] = await Promise.all(responses.map(r => r.json()));
 
-   
+            res1.forEach(obj => {
+                viewtweetCounts.push(obj.viewCount);
+                tweetXaxis.push(obj.tweetID);
+            });
 
-    
-    submitLogin(values) {
-        this.props.signup(values);
-        console.log(this);
+            res2.forEach(obj => {
+                tweetliketop10.push({ y: obj.count });
+            });
+
+            res3.forEach(obj => {
+                retweettop10.push(obj.count);
+            });
+
+            res4.forEach(cnt => {
+                hourcount[cnt._id.h] = cnt.count;
+            });
+
+            res5.forEach(cnt => {
+                dailycount[cnt._id.d] = cnt.count;
+            });
+
+            res6.forEach(cnt => {
+                monthlycount[Number(cnt._id.m) - 1] = cnt.count
+            });
+
+            this.setState({
+                tweetview10: viewtweetCounts,
+                tweetview10Xaxis: tweetXaxis,
+                tweetlike10: tweetliketop10,
+                tweetretweet5: retweettop10,
+                tweethourcount: hourcount,
+                tweetdailycount: dailycount,
+                tweetmonthlycount: monthlycount,
+                profileviewcount: res7[0].count,
+            });
+        }
+        catch (e) {
+            this.setState({ msg: e.message || e });
+        }
     }
-
-
-
     render() {
-
         let redirectVar = null;
-        if (this.props.authFlag == true) {
-            redirectVar = <Redirect to="blogin" />
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
         }
-        const { handleSubmit } = this.props;
-        //console.log(this.state.errormsg)
+        const tweetview10 = {
+            chart: {
+                zoomType: 'x',
+                backgroundColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                    stops: [
+                        [0, '#2a2a2b'],
+                        [1, '#3e3e40']
+                    ]
+                },
+                style: {
+                    fontFamily: '\'Unica One\', sans-serif'
+                },
+                plotBorderColor: '#606063'
+            },
+            title: {
+                text: 'Top 10 viewed tweets',
+                style: {
+                    color: '#E0E0E3',
+                    textTransform: 'uppercase',
+                    fontSize: '20px'
+                }
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in',
+                style: {
+                    color: '#E0E0E3',
+                    textTransform: 'uppercase'
+                }
+            },
+            xAxis: {
+                title: {
+                    text: 'Tweets',
+                    style: {
+                        color: '#A0A0A3'
+                    }
+                },
+                type: 'text',
+                categories: this.state.tweetview10Xaxis,
+                gridLineColor: '#707073',
+                labels: {
+                    style: {
+                        color: '#E0E0E3'
+                    }
+                },
+                lineColor: '#707073',
+                minorGridLineColor: '#505053',
+                tickColor: '#707073',
+                title: {
+                    style: {
+                        color: '#A0A0A3'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'View Count',
+                    style: {
+                        color: '#A0A0A3'
+                    }
+                },
+                gridLineColor: '#707073',
+                labels: {
+                    style: {
+                        color: '#E0E0E3'
+                    }
+                },
+                lineColor: '#707073',
+                minorGridLineColor: '#505053',
+                tickColor: '#707073',
+                tickWidth: 1,
+            },
+            legend: {
+                enabled: false,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                itemStyle: {
+                    color: '#E0E0E3'
+                },
+                itemHoverStyle: {
+                    color: '#FFF'
+                },
+                itemHiddenStyle: {
+                    color: '#606063'
+                },
+                title: {
+                    style: {
+                        color: '#C0C0C0'
+                    }
+                }
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+            series: [{
+                type: 'column',
+                name: 'USD to EUR',
+                data: this.state.tweetview10
+            }]
+        };
+        const top10like = {
+            chart: {
+                type: "pie"
+            },
+            title: {
+                text: 'Top 10 liked tweets',
+            },
+            series: [{
+                data: this.state.tweetlike10
+            }]
+        };
+        const top5retweet = {
+            chart: {
+                type: "pie"
+            },
+            title: {
+                text: 'Top 5 retweets',
+            },
+            series: [{
+                data: this.state.tweetretweet5
+            }]
+        };
+        var hourly = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Tweets Statistics'
+            },
+            subtitle: {
+                text: 'Hourly Tweet Count'
+            },
+            xAxis: {
+                categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Tweet Count'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [
+                {
+                    name: 'Hourly',
+                    data: this.state.tweethourcount
+                },
+                // {
+                //     name: 'Daily',
+                //     data: this.state.tweetdailycount
+                // },
+                // {
+                //     name: 'Monthly',
+                //     data: this.state.tweetmonthlycount
+                // }
+            ]
+        };
+        var daily = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Tweets Statistics'
+            },
+            subtitle: {
+                text: 'Daily Tweet Count'
+            },
+            xAxis: {
+                // categories: [
+                //     'Jan'
+                // ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Tweet Count'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [
 
+                {
+                    name: 'Daily',
+                    data: this.state.tweetdailycount
+                },
+                // {
+                //     name: 'Monthly',
+                //     data: this.state.tweetmonthlycount
+                // }
+            ]
+        };
+        var monthly = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Tweets Statistics'
+            },
+            subtitle: {
+                text: 'Monthly Tweet Counts'
+            },
+            xAxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Tweet Count'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [
+                {
+                    name: 'Monthly',
+                    data: this.state.tweetmonthlycount
+                }
+            ]
+        };
         return (
-            <div class="container-flex">
-                {redirectVar}
-                <div class="col-md-3 feed">
-                <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br/><br/>
-                <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br/><br/></a>
-                <a href="/explore" class="a"><span class="home-buttons"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAe1BMVEX///8DAQQAAABhYWHCwsK7u7sDAATr6+vY2Nj8/PyBgYHS0tLV1dXp6enx8fGlpaWenp5aWlp6enqampp2dXZlZWUyMTIiISIsKyxRUFFWVVaFhYVNTE0hICHExMRcXFwUExWysbIbGhxHRkc6OjqTk5M/P0AYFhkPDRBEv2DjAAAE+ElEQVR4nO2d6VIbQQyE8QLmNlcAQ8AcOeD9nzCVyo/82ma2mZbbsr4HkEdVW5J6Znq8s9OFh2E2xrBPxnwFMS/7LHsCM7CaQzLmLxDze9fVtzCA1SzImN9AzPOuq2/gDCxmOCKD/gBB97ouv4FTsJhbNujdaNA5/eXToKLwQMZcKL58mgtBUTgY5qMxh66rbwEVhQsy5gmIedd19S3cC4rCPoh503X1LSyD2+Fx19U3cJS+HR6gdsgGfXRqh6goLNmg6LsIb4eoKOyyQcebxRraISoKV2RMNAjO2EGQ5kpQFNCX/7Pr6ltARSGHOnwRFIVrJ3UI2+EBGdSqHUrUoVU7ROqQboeKQZBGoQ4lgyCNRh2OxpzlV4f0l0+DNktzqMPxLaPZcErGtFKHks1SxSBII1GHVpulqCjQm6Ubow6fyZhe7VBRFNAg+JFeHdJfPk20OmS/fJ6nLVaHg0QdsoMgjaQdomOCVc/Vt4CKwhMbFA2CVu2Q3TLyaofB6nALzg7j2+FlenX4nl8dji5mnkMdhl+lYQdBGrRZSp+gfGxxOxzi2yGakRXqcN519S1Eq8P4zdL86nD8BIW/X7cp6lBzdphDHaJjAit1+MYGfduUdkgXBXSylr4dxqtDRTtEg+Dvry54dyI36Lj98WZquH8xUYu9a4gJMxwmM7qYv58UyRdjfpIhiL4ZVIaVoT+VYWXoT2VYGfpTGVaG/lSGlaE/lWFl6E9lWBn6UxlWhv58mmHg3rQqKMxwbwIrdO60XE0J9Z8TdKZ83hYUZjiJvWgbfrgNoWz4DGXDj6Vs+Axlww+lbPgM22C0AA2/6+pbyP9IW9nwGcyMFmXDJ1AMgjQS95XitV4azc1Sp3aIZuQc6vA4+GZpfhs+OwjyKMzIikGQpowWFIrXemlQUaBt+FbqELXD/OqQnZG324Yf7zuMtuHTxwQ06FWaEzKm4piAJ70NHxYFxWaplQ2fnpEVxwQ04e2QHQRpotVh/OkoUodsO5QcE9CgGTmHOlTMyKUOQ1lE2/Ct3ix9Z4OiL589JqBRvErjtVmaXx2iGTn/I21sO5QcE9Cgp6pYdagYBHkU6lBxTEAjUYeKQZDmUFEUNubN0nsyppc6rHbIgNQh/R4TjaIoKPZFeG6D1aHX/x2yRQF9+dddl9/AQnG/7hlk2PGRtjajxTm6MkEaLVbomOBiUlCYYZivRRn0kwzB72wGlWFl6E9lWBn6UxlWhv5UhpWhP5VhZehPZVgZ+lMZVob+VIaVoT8d3omC0Um6xoQZNvz7BDpfYP/RAv2T3HJyTJhhA4qzQ3TUs4arNME2/Pw3S61s+PR1c2S0qJul3SmjBQO6RJbDaKG4RMYTbcP3ukpzRga1ukoT/n+HVr5D+n4dGgSt2mEO36GiKIBBcA2PtCmKgtcjbeh+XQ6jBWqH2Y0W/IysGARp8hstJDZ89Pe/1Q67U+qQAX358e0wvzqMtuHnUIfIhr8Go8X4YugZWeG4pUFF4YUNir58dhCkkbivrDZLUVFg22F+3+HmPNKmaIfx/2hRNnyG/OrQ6pG2suEzSAZBmvw2fEVRQO0whw3f65G2suEzmKlDgQ3fSh2iovDBBkWbpVbqkL9KMxoziTr02iyNfpUm/pE2xYUCr1dpFPfrzNRh9pul4f93aKUOc/zfYalDBi91GH2V5qXn4puIboedNkv/AM+6hfVApDumAAAAAElFTkSuQmCC" class="logo4"></img>Explore</span></a><br/><br/>
-                <a href="/messages" class="a"><span class="home-buttons"><img src="https://img1.gratispng.com/20180910/cuf/kisspng-computer-icons-clip-art-email-font-awesome-symbol-message-svg-png-icon-free-download-371225-onl-5b96caeaac3f68.8944099415366090027055.jpg" class="logo4"></img>Messages</span><br/><br/></a>
-                <a href="/bookmarks" class="a"><span class="home-buttons"><img src="http://cdn.onlinewebfonts.com/svg/img_198285.png" class="logo4"></img>Bookmarks</span><br/><br/></a>
-                <a href="/lists" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/ad-network-icon-set-2/100/listing_1-512.png" class="logo4"></img>Lists</span><br/><br/></a>
-                <a href="/profile" class="a"><span class="home-buttons"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo4"></img>Profile</span><br/><br/></a>
-                <span class="home-buttons1"><img src="https://cdn1.vectorstock.com/i/1000x1000/76/15/analytics-icon-on-transparent-analytics-sign-vector-20707615.jpg" class="logo4"></img>Analytics</span><br/><br/>
-                <a href="/settings" class="a"><span class="home-buttons"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Windows_Settings_app_icon.png" class="logo4"></img>Settings</span><br/><br/></a>
-                <span class="home-buttons"><button class="buttons3">
-                    Tweet
-                </button></span>
-                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                </div>
-               
-                <div class="col-md-6 feed">
-                    <div class="home-font">Analytics</div>
-                </div>
-                <div class="col-md-3 feed">
-                    <div>
-                    <div>
-                    <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
+            <div className="container-flex">
+                <div className="col-md-12 feed">
+                    <div style={{ width: "60%", margin: "0 auto", textAlign: "center" }}>
+                        <h3>My Profile View Count         <span class="badge badge-primary">  {this.state.profileviewcount}</span></h3>
                     </div>
+                    <HighchartsReact highcharts={Highcharts} options={tweetview10} />
+                    <div class="col-md-6 feed">
+                        <PieChart highcharts={Highcharts} options={top5retweet} />
+                    </div>
+                    <div className="col-md-6 feed">
+                        <PieChart highcharts={Highcharts} options={top10like} />
+                    </div>
+                    <div className="col-md-12 feed">
+                        <div className="col-md-4 feed">
+                            <HighchartsReact highcharts={Highcharts} options={hourly} />
+                        </div>
+                        <div className="col-md-4 feed">
+                            <HighchartsReact highcharts={Highcharts} options={daily} />
+                        </div>
+                        <div className="col-md-4 feed">
+                            <HighchartsReact highcharts={Highcharts} options={monthly} />
+                        </div>
                     </div>
                 </div>
-                
             </div>
-
-
-
         )
     }
-
 }
-
-
 export default analytics;
-
-
-
-
-

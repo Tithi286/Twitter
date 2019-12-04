@@ -7,20 +7,18 @@ const path = require('path');
 
 const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
-const { getTweets } = require('../DataAccessLayer');
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
 
 // search hashtags or people
 router.get('/search', requireAuth, async function (req, res, next) {
     const { topic } = req.query
-    console.log(topic)
     try {
         if (topic) {
             //Hashtag search
             if (topic.startsWith("#")) {
                 const tweet = { $text: { $search: topic } };
-                const tweets = await getTweets(tweet);
+                const tweets = await simulateRequestOverKafka("getTweets", tweet);
                 const allTweetIds = tweets.map(t => t.tweetID);
                 const allTweetOwner = tweets.map(t => t.tweetOwnerID);
 
@@ -67,7 +65,6 @@ router.get('/search', requireAuth, async function (req, res, next) {
 router.post('/', upload.single('tweetImage'), requireAuth, async function (req, res, next) {
     const { tweet } = req.body;
     const tweetImage = req.file ? `/${req.file.filename}` : '';
-    console.log("tweetInage" + tweetImage);
     var d = new Date();
     var curr_date = d.getDate();
     var curr_month = d.getMonth() + 1;
@@ -86,7 +83,6 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
             tweet, tweetImage,
         };
         const results = await simulateRequestOverKafka("saveTweet", tweetDoc);
-        console.log("results", results)
         res.json(results);
     } catch (e) {
         res.status(500).send(e.message || e);
@@ -94,7 +90,7 @@ router.post('/', upload.single('tweetImage'), requireAuth, async function (req, 
 
 });
 //Delete a owned tweet
-router.post('/', requireAuth, async function (req, res, next) {
+router.post('/delete', requireAuth, async function (req, res, next) {
     const { tweetID } = req.body;
     try {
         const loggedInUser = req.user;
@@ -215,6 +211,23 @@ router.put('/like', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 
+});
+//unlike a tweet
+router.put('/unlike', requireAuth, async function (req, res, next) {
+    try {
+        const { tweetID } = req.body;
+        if (tweetID) {
+            const user = req.user;
+            const like = {
+                tweetID,
+                userID: user.userID
+            };
+            await simulateRequestOverKafka("delLike", like);
+            res.json({ message: "Tweet unliked" });
+        }
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
 });
 //retweet a tweet
 router.post('/retweet', requireAuth, async function (req, res, next) {

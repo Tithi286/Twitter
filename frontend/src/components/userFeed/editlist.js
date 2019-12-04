@@ -52,8 +52,14 @@ class editlist extends Component {
 
 
     render() {
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         return (
             <div class="signup2">
+            {redirectVar}
                 <br />
                 <form class="outer-box1 signup1" onSubmit={this.submitChanges} >
                     <div>

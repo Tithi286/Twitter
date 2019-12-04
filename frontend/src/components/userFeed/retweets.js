@@ -27,9 +27,25 @@ class Retweets extends Component {
     }
 
     componentDidMount(){
+        var a = sessionStorage.getItem("component")
+        let data;
+        if(a == "profile"){
+             data = {
+                params:{
+                userID : sessionStorage.getItem("userID")
+            }}
+        }
+        else if(a == "explore"){
+             data = {
+                params:{
+                userID : sessionStorage.getItem("ID")
+            }}
+        }
+        console.log("USERID: ",data)
         
+        console.log(data.userID)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userprofile/retweets')
+        axios.get('http://localhost:3001/userprofile/retweets',data)
                 .then((response) => {
                 this.setState({
                     retweet : response.data,

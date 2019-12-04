@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import moment from 'moment';
 import Navbar from '../navbar'
 
-class othermembers extends Component {
+class ownmembers extends Component {
 
     constructor(props) {
         super(props);
@@ -20,12 +20,12 @@ class othermembers extends Component {
     componentDidMount() {
         const data = {
             params : {
-                userID : this.props.location.state.userID
+                listID : this.props.location.state
             }
         }
         console.log(data.params.userID)
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/lists/members", data)
+        axios.get("http://localhost:3001/lists/ownmembers", data)
             .then((response) => {
                 this.setState({
                     followers: response.data
@@ -115,7 +115,7 @@ console.log(this.props.location.state.userID)
 }
 
 
-export default othermembers;
+export default ownmembers;
 
 
 

@@ -78,11 +78,19 @@ class Newmessages extends Component {
 
    render() {
 
+    let redirectVar = null;
+    if (localStorage.getItem('email') == null) {
+        console.log("in cookie if")
+        redirectVar = <Redirect to="/login" />
+    }
+
     let content;
     console.log(this.state.authFlag)
     if(this.state.authFlag == "true"){
-        content =this.state.people.map(people => (
+        content =this.state.people.map(people => {
             // <Link class="a" to="/inbox">
+            sessionStorage.setItem('msg_user',people.firstName)
+            return(
             <div class="u-clickable u-list" role="button" onClick ={() => {this.goto(people.userID)}}>
                                 <div class="u-flex u-flex-align">
                                     <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
@@ -98,7 +106,7 @@ class Newmessages extends Component {
                                 </div>
                             </div>
                     //  </Link>
-            )
+            )}
         )}
 
         else if(this.state.authFlag == "false"){
@@ -109,7 +117,7 @@ class Newmessages extends Component {
 
         return (
             <div class="container-flex">
-                
+                {redirectVar}
                 <div class="col-md-3 feed">
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br /><br /></a>

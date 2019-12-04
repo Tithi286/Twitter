@@ -52,8 +52,17 @@ const saveLike = connection => (like) => {
     });
 };
 
+const delLike = connection => (like) => {
+    return new Promise((resolve, reject) => {
+        likes.deleteOne(like, function (err, docs) {
+            return err ? reject(err) : resolve(docs);
+        })
+    });
+};
+
 module.exports = {
     getLike,
     saveLike,
-    getLikeCount
+    getLikeCount,
+    delLike
 };

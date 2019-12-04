@@ -40,7 +40,7 @@ const {
   deleteFollower
 } = require("./follower");
 
-const { getLike, saveLike, getLikeCount } = require("./like");
+const { getLike, saveLike, getLikeCount, delLike } = require("./like");
 const { getRetweet, saveRetweet, getRetweetCount } = require('./retweet');
 const { getReply, saveReply, getReplyCount } = require('./reply');
 
@@ -58,7 +58,7 @@ const {
   IncProfileViewCount
 } = require("./analytics")
 
-const { getMessages, sendMessages, deleteMessages,getOwnMessages } = require("./messages");
+const { getMessages, sendMessages, deleteMessages, getOwnMessages } = require("./messages");
 
 const options = {
   connectionLimit: sql_connectionLimit,
@@ -83,13 +83,14 @@ const getSQLConnection = () => {
 //Set up default mongoose connection
 const getMongoConnection = () => {
   return new Promise(async (resolve, reject) => {
-    const mongoDB = `'mongodb://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}/${mongo_database}`;
+    const mongoDB = `mongodb+srv://${mongo_user}:${mongo_password}@${mongo_host}:${mongo_port}/${mongo_database}`;
     try {
       await mongoose.connect(mongoDB, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
-        autoIndex: true
+        autoIndex: true,
+        poolSize: 1
       });
     } catch (e) {
       console.log(e);
@@ -176,6 +177,10 @@ const _getLike = async whereClause => {
 const _saveLike = async whereClause => {
   await getMongoConnection();
   return saveLike()(whereClause);
+};
+const _delLike = async whereClause => {
+  await getMongoConnection();
+  return delLike()(whereClause);
 };
 const _getLikeCount = async tweetIds => {
   await getMongoConnection();
@@ -344,6 +349,7 @@ module.exports = {
   getRetweetCount: _getRetweetCount,
 
   getLike: _getLike,
+  delLike: _delLike,
   saveLike: _saveLike,
   getLikeCount: _getLikeCount,
 

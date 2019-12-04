@@ -21,8 +21,8 @@ class ListsAdduser extends Component {
             user1: []
         }
 
-       this.submitChanges=this.submitChanges.bind(this);
-        
+        this.submitChanges = this.submitChanges.bind(this);
+
     }
 
     goTo = (e) => {
@@ -37,10 +37,10 @@ class ListsAdduser extends Component {
         axios.get('http://localhost:3001/lists/search', data)
             .then((response) => {
                 this.setState({
-                    user1 : response.data
+                    user1: response.data
                 });
                 console.log(this.state.user1);
-                this.state.user1.map(username =>{ 
+                this.state.user1.map(username => {
                     console.log("username")
                     console.log(username.firstName);
                     console.log(this.state.user1[0].userID)
@@ -56,12 +56,12 @@ class ListsAdduser extends Component {
 
     submitChanges = (v1) => {
         // e.preventDefault()
-        console.log("v1 valuse"+v1);
+        console.log("v1 valuse" + v1);
         console.log(this.props.location.state)
-       
+
         const data = {
             userID: v1,
-            listID:this.props.location.state
+            listID: this.props.location.state
 
         }
         console.log(data)
@@ -79,65 +79,73 @@ class ListsAdduser extends Component {
             });
 
 
-       }
+    }
 
     render() {
+
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
 
         let user1;
         console.log("sent value")
         console.log(this.props.location.state)
         user1 = this.state.user1.map(username => (
-             
-            
-                <div class="u-clickable u-list" role="button">
+
+
+            <div class="u-clickable u-list" role="button">
                 <div class="u-flex u-flex-align container-flex">
-                    <div class="u-mar2 col-sm-1"  style={{float:"left"}}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
-                    <div class="col-md-6" style={{float:"left"}}>
+                    <div class="u-mar2 col-sm-1" style={{ float: "left" }}><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                    <div class="col-md-6" style={{ float: "left" }}>
                         <div class="u-mar3">
-                        <div class="s-list-item-primary u-mar3 fullname"> </div>
+                            <div class="s-list-item-primary u-mar3 fullname"> </div>
                             <div class="s-list-item-secondary u-mar3 snippet">
-                            <span class="span">{username.firstName}</span>
-                            <span class="col-sm-3" style={{float:"left"}}>
-                            <button class="logoc" style={{float:"left"}} onClick={() => this.submitChanges(username.userID)}>Add Member</button>
-                            </span>
+                                <span class="span">{username.firstName}</span>
+                                <span class="col-sm-3" style={{ float: "left" }}>
+                                    <button class="logoc" style={{ float: "left" }} onClick={() => this.submitChanges(username.userID)}>Add Member</button>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
-         
+            </div>
+
         ))
-        
+
 
 
         return (
-                <div class="signup2">
-                
-                <div class="outer-box1 signup1" >
-                    <div class="col-md-6">
-                        <div className="container">
-                        <div className="list-font">
-                            <span class="uppernav"><Link to="/lists"><a> <FontAwesomeIcon icon={ faWindowClose } /> </a></Link></span>
-                            <div class="letter-block">Add Members</div>
-                            <span> <Link to="/lists"> <button class="button">Go back </button></Link> </span> 
-                        </div>
-                        <div className="list-font">    
-                            <div>
-                                <input type="text" class="searchbar1" placeholder="Add member" name="search" id="search" onChange={this.searchChangeHandler}></input>
-                            </div>
-                            <span>
-                            <button class="button" onClick={this.goTo}>
-                                Search
+            <div className="opacity">
+                {redirectVar}
+                <div className="first">
+                    <div class="signup2">
+                        <div class="outer-box1 signup1" >
+                            <div class="col-md-6">
+                                <div className="container">
+                                    <div className="list-font">
+                                        <span class="uppernav"><Link to="/lists"><a> <FontAwesomeIcon icon={faWindowClose} /> </a></Link></span>
+                                        <div class="letter-block">Add Members</div>
+                                        <span> <Link to="/lists"> <button class="button">Go back </button></Link> </span>
+                                    </div>
+                                    <div className="list-font">
+                                        <div>
+                                            <input type="text" class="searchbar1" placeholder="Add member" name="search" id="search" onChange={this.searchChangeHandler}></input>
+                                        </div>
+                                        <span>
+                                            <button class="button" onClick={this.goTo}>
+                                                Search
                             </button>
-                            </span>
-                        </div> 
-                            {user1}
+                                        </span>
+                                    </div>
+                                    {user1}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
-                    </div>
-
-
+                </div>
+            </div>
         )
     }
 

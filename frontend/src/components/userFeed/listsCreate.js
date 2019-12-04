@@ -25,10 +25,9 @@ class ListsCreate extends Component {
         this.listNameChangeHandler = this.listNameChangeHandler.bind(this);
         this.listDescChangeHandler = this.listDescChangeHandler.bind(this);
         this.submitAdd = this.submitAdd.bind(this);
-        
+
     }
 
-    
     listNameChangeHandler = (e) => {
         this.setState({
             listName: e.target.value
@@ -41,37 +40,27 @@ class ListsCreate extends Component {
         })
     }
 
-    // goto = () => {
-    //     try {
-    //         this.props.history.push({
-    //             pathname: "/lists",
-    //         })
-    //        // console.log(this.state.userID)
-    //     } catch (e) { }
-    // }
-
-
     submitAdd = (e) => {
         e.preventDefault();
         const data = {
             listName: this.state.listName,
             listDesc: this.state.listDesc,
-            isPrivate:this.state.isPrivate
+            isPrivate: this.state.isPrivate
         }
         console.log(data);
         axios.defaults.withCredentials = true;
-        console.log("data"+data)
+        console.log("data" + data)
         axios.post('http://localhost:3001/lists/create', data)
             .then((response) => {
                 console.log(response.status);
                 if (response.status === 200) {
                     this.props.history.push({
-                        pathname: "/adduser",
+                        pathname: "/lists",
                     })
                     this.setState({
                         authFlag: true
                     })
-                    
+
                 }
                 else {
                     this.setState({ msg: response.body.message });
@@ -86,32 +75,39 @@ class ListsCreate extends Component {
             });
 
     }
-   
+
 
     render() {
+
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         return (
-            <div class="listback">
+            <div class="signup2">
+                {redirectVar}
                 <br />
-                <form class="outer-box1 signup1"  onSubmit={this.submitAdd}>
+                <form class="outer-box1 signup1" onSubmit={this.submitAdd}>
                     <br />
                     <div className="">
                         <div className="list-font">
-                            <span class="uppernav"><Link to="/lists"><a> <FontAwesomeIcon icon={ faWindowClose } /> </a></Link></span>
+                            <span class="uppernav"><Link to="/lists"><a> <FontAwesomeIcon icon={faWindowClose} /> </a></Link></span>
                             <div class="letter-block">Create new List </div>
                             <span class="home-buttons"><button class="buttons3" type="submit">Next</button></span>
                         </div>
                         <div class="">
-                        <br/>
+                            <br />
                             <div class="elements">
                                 <span class="label">Name</span>
-                                <input class="form-control1 elements1" placeholder={this.state.listName} pattern="[A-Z]*||[a-z]*" type="text" name="listName" onChange={this.listNameChangeHandler} required/>
+                                <input class="form-control1 elements1" placeholder={this.state.listName} type="text" name="listName" onChange={this.listNameChangeHandler} required />
                             </div>
                         </div>
                         <div class="">
-                        <br/>
+                            <br />
                             <div class="elements">
                                 <span class="label">Description</span>
-                                <input class="form-control1 elements1" placeholder={this.state.listDesc} pattern="[A-Z]*||[a-z]*" type="text" name="listDesc" onChange={this.listDescChangeHandler} required/>
+                                <input class="form-control1 elements1" placeholder={this.state.listDesc} type="text" name="listDesc" onChange={this.listDescChangeHandler} required />
                             </div>
                         </div>>
                     </div>

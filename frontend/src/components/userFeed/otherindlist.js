@@ -24,23 +24,14 @@ import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
 import {loop} from 'react-icons-kit/iconic/loop'
 import Navbar from '../navbar'
 
-
-
-class SubscribedList extends Component {
+var listsID
+class otherindlist extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            fName: "",
-            lName: "",
-            errormsg: "",
-            authFlag: "",
-            year: "",
-            month: "",
-            day: "",
-            startDate: moment(),
-            isComponent: "",
             retweet: []
+            
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
@@ -49,7 +40,7 @@ class SubscribedList extends Component {
     }
 
     componentDidMount(){
-        
+        console.log("list"+this.props.location.state[4])
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/lists/tweets')
                 .then((response) => {
@@ -92,27 +83,39 @@ class SubscribedList extends Component {
         console.log(this);
     }
 
-    deleteClick = () => {
-        console.log(this.props.location.state[4])
-        const data = {
-            listID  : this.props.location.state[4]
-        }  
-        
-         axios.defaults.withCredentials = true;
-         axios.post('http://localhost:3001/lists/unsubscribe', data)
-                 .then((response) => {
-                    
-             })
-             .catch((error) => {
-                 this.setState({
-                     authFlag: "false"
-                 })
-             })
-             window.location.assign("/subscriptions");
-     }
- 
-
-
+    subscribe(){
+        console.log("listid"+listsID);
+        const data={
+           
+                listID:listsID
+            
+        }
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/lists/subscribe',data)
+                .then((response) => {
+               
+                    window.location.assign("/subscriptions");
+             
+                
+            });
+    }
+    
+   deleteList(){
+        console.log("listid"+listsID);
+        const data={
+           
+                listID:listsID
+            
+        }
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/lists/delete',data)
+                .then((response) => {
+               
+                    window.location.assign("/lists");
+             
+                
+            });
+    }
     
     createRetweet = (v1) => {
         //e.preventDefault();
@@ -189,14 +192,14 @@ class SubscribedList extends Component {
             });
 
     }
+
     render() {
 
-        let redirectVar = null;
-        if (localStorage.getItem('email') == null) {
-            console.log("in cookie if")
-            redirectVar = <Redirect to="/login" />
-        }
-
+    console.log("list detailss")
+        console.log(this.props.location.state[4])
+        
+            listsID=this.props.location.state[4]
+           // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
         
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
@@ -227,6 +230,11 @@ class SubscribedList extends Component {
             )            
         }
 
+ let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
         let retweet;
         
         retweet = this.state.retweet.map(retweet1 =>(
@@ -269,7 +277,6 @@ class SubscribedList extends Component {
             <div class="container-flex">
                 {redirectVar}
                 <Navbar/>
-
                 <div class="col-md-6 feed1 u-list1">
                     <div class="home-font">{this.props.location.state[0]}</div>
 
@@ -277,17 +284,18 @@ class SubscribedList extends Component {
                         <div class="">
                             <div class="rest-img">
                             </div>
-                            <div class="s-list-item-primary u-mar1 fullname">{this.props.location.state[1]}</div>
+                            <div class="s-list-item-primary u-mar1 fullname"></div>
                             <div class="s-list-item-primary u-mar1 listheading"></div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">Tweet</span>
+                                    <span class="span">{this.props.location.state[1]}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{this.props.location.state[2]} members .</span>
-                                    <span class="span">{this.props.location.state[3]} subscribers</span>
+                                    <span class="span">{this.props.location.state[2]} <Link to={{pathname:"/ownmembers", state:this.props.location.state[4] }} style={{color:"black"}}>Members</Link> </span>
+                                    <span class="span">{this.props.location.state[3]} <Link to={{pathname:"/ownsubscribers", state:this.props.location.state[4] }} style={{color:"black"}}>Subscribers</Link> </span>
                             </div>
                             <div>
-                           <button class="logob" onClick={() => this.deleteClick()}>Unsubcribe</button>
+                            <button class="logob" onClick={this.subscribe}>Subscribe</button>
+                            {/*<button class="logod" onClick={this.subscribe}>Subscribe</button>*/}
                             </div>
                         </div>
                     </div>
@@ -314,4 +322,4 @@ class SubscribedList extends Component {
 }
 
 
-export default SubscribedList;
+export default otherindlist;

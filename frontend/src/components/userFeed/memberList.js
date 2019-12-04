@@ -26,7 +26,7 @@ import Navbar from '../navbar'
 
 
 
-class SubscribedList extends Component {
+class MemberList extends Component {
 
     constructor(props) {
         super(props);
@@ -99,7 +99,7 @@ class SubscribedList extends Component {
         }  
         
          axios.defaults.withCredentials = true;
-         axios.post('http://localhost:3001/lists/unsubscribe', data)
+         axios.post('http://localhost:3001/lists/demember', data)
                  .then((response) => {
                     
              })
@@ -197,7 +197,6 @@ class SubscribedList extends Component {
             redirectVar = <Redirect to="/login" />
         }
 
-        
         const isComponent = this.state.isComponent;
         console.log("Component : ",isComponent)
 
@@ -287,7 +286,7 @@ class SubscribedList extends Component {
                                     <span class="span">{this.props.location.state[3]} subscribers</span>
                             </div>
                             <div>
-                           <button class="logob" onClick={() => this.deleteClick()}>Unsubcribe</button>
+                           <button class="logob" onClick={() => this.deleteClick()}>Exit</button>
                             </div>
                         </div>
                     </div>
@@ -314,4 +313,4 @@ class SubscribedList extends Component {
 }
 
 
-export default SubscribedList;
+export default MemberList;

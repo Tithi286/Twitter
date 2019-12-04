@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const uuidv4 = require('uuid/v4');
 var passport = require('passport');
 
 const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');

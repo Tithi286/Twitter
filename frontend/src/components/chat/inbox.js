@@ -16,15 +16,16 @@ class Inbox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: this.props.location.state.userID,
-            chats: []
-        }
+            userID:this.props.location.state.userID,
+            chats: [],
+          }
 
         this.sendChange = this.sendChange.bind(this)
         this.onSend = this.onSend.bind(this)
     }
 
     componentDidMount() {
+        console.log("hey",this.state.userID)
         const data = {
             params: {
                 receiverID: this.state.userID
@@ -69,6 +70,13 @@ class Inbox extends Component {
     }
 
     render() {
+
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
+
         console.log("user id ", this.state.userID)
         let content = this.state.chats.map(chat => (
                 <div class="mesgs">
@@ -95,6 +103,7 @@ class Inbox extends Component {
 
         return (
             <div class="container-flex">
+                {redirectVar}
                 <div class="col-md-3 feed">
                     <span class="home-buttons"><img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img></span><br /><br />
                     <a href="/home" class="a"><span class="home-buttons"><img src="https://cdn4.iconfinder.com/data/icons/roundies-2/32/birdhouse-512.png" class="logo4"></img>Home</span><br /><br /></a>
@@ -120,8 +129,8 @@ class Inbox extends Component {
                                     <div class="inbox-title" style={{ display: "flex" }} >
                                         <div><Link to="/messages"><button class="buttons3" name="back" style={{ marginTop: "30px", marginLeft: "5px", width: "70px", height: "35px" }} >Back</button></Link></div>
                                         <div style={{ width: "150px", marginLeft: "25%", marginTop: "3%" }}>
-                                            <img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo1" style={{ marginLeft: "45%" }}></img>
-                                            <div class="fullname" style={{ marginTop: "2%", marginLeft: "43%" }}>UserName </div>
+                                            <img src="https://ptetutorials.com/images/user-profile.png" class="logo1" style={{ marginLeft: "45%" }}></img>
+                                            <div class="fullname" style={{ marginTop: "2%", marginLeft: "50%" }}> {sessionStorage.getItem('msg_user')}</div>
                                         </div>
                                     </div>
                                 </div>
