@@ -5,7 +5,6 @@ import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import PieChart from "highcharts-react-official";
 import { Redirect } from 'react-router';
-import Navbar from '../navbar'
 
 class analytics extends Component {
     constructor(props) {
@@ -92,8 +91,8 @@ class analytics extends Component {
             const [res1, res2, res3, res4, res5, res6, res7] = await Promise.all(responses.map(r => r.json()));
 
             res1.forEach(obj => {
-                viewtweetCounts.push(obj.viewCount);
-                tweetXaxis.push(obj.tweetID);
+                viewtweetCounts.push(obj.tweet.viewCount);
+                tweetXaxis.push(obj.user.userName);
             });
 
             res2.forEach(obj => {
