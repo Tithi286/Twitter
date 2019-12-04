@@ -93,7 +93,7 @@ class analytics extends Component {
 
             res1.forEach(obj => {
                 viewtweetCounts.push(obj.tweet.viewCount);
-                tweetXaxis.push(obj.user.userName);
+                tweetXaxis.push(obj.tweet.tweetID);
             });
 
             res2.forEach(obj => {
