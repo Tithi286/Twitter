@@ -30,22 +30,25 @@ class otherindlist extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            retweet: []
+            retweet: [],
+            subscribers: []
             
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
         this.handleRepliesClick = this.handleRepliesClick.bind(this);
         this.handleLikesClick = this.handleLikesClick.bind(this);
+        this.getSubscribers = this.getSubscribers.bind(this)
     }
 
     componentDidMount(){
-            const data={
+        const data={
            
             params:{
                 listID:this.props.location.state[4]
         }
         }
+        this.getSubscribers()
         console.log("list"+this.props.location.state[4])
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/lists/tweets',data)
@@ -198,6 +201,49 @@ class otherindlist extends Component {
             });
 
     }
+
+    getSubscribers() {
+        const data = {
+            params : {
+                listID : sessionStorage.getItem("userID")
+            }
+        }
+        console.log(data.params.userID)
+        axios.defaults.withCredentials = true;
+        axios.get("http://localhost:3001/lists/ownsubscribers", data)
+            .then((response) => {
+                this.setState({
+                    subscribers: response.data
+                });
+                console.log("subscribers",response.data)
+                let foll1 = []
+                var foll = this.state.subscribers;
+                foll.map(f1 => {
+                    foll1.push(f1.userID)
+                });
+                console.log("UserIDs of following", foll1)
+                var flag = foll1.includes(sessionStorage.getItem("userID"))
+                if(flag == false){
+                    this.setState({
+                        follText : "Subscribe"
+                    })
+                }
+                else if(flag ==true){
+                    this.setState({
+                        follText : "Unsubscribe"
+                    })
+                }
+                this.setState({
+                    follArr: foll1
+                })
+
+            }) .catch(error => {
+                this.setState({
+                    message: "something went wrong"
+                })
+            });
+    }
+
 
     render() {
 
