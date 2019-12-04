@@ -42,13 +42,34 @@ router.post("/incprofileviewcount", requireAuth, async function (
 //Get the tweets with maximum views
 router.get("/viewcount", requireAuth, async function (req, res, next) {
   try {
+    const ownerID=[]
     const query = {};
     const results = await simulateRequestOverKafka("getTweetViewCount", query);
-    res.json(results);
+    results.forEach(retwt => {
+      ownerID.push(retwt.tweetOwnerID);
+    });
+
+    quoted = "'" + ownerID.join("','") + "'";
+    const user = { usersID: [quoted] };
+ 
+    let { results: allFollowedUsers } = await simulateRequestOverKafka("getUsers", user);
+
+
+    const followedUsersMap = allFollowedUsers.reduce((acc, f) => {
+      acc[f.userID] = f;
+      return acc;
+    }, {});
+    const   resultsf = results.map(res => ({
+      tweet: res,
+      user: followedUsersMap[res.tweetOwnerID]
+    }));
+    
+    res.json(resultsf)
   } catch (e) {
     res.status(500).send(e.message || e);
   }
 });
+
 router.get("/likecount", requireAuth, async function (req, res, next) {
   try {
     const loggedInUser = req.user;

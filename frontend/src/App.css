@@ -341,10 +341,6 @@
 }
 
 /* Change color on hover */
-.topnav a:hover {
-  background-color: black;
-  color: blue;
-}
 
 .loginform{
   background-color: #ffffff;
@@ -636,6 +632,16 @@ opacity.first {
   height: 180px;
   width : 680px;
   background-color: #CCD6DC;
+}
+
+.listback{
+  background-color: #b2b2b2;
+  background-size: cover;
+  padding-bottom: 500px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+
 }
 
 .logoa{
