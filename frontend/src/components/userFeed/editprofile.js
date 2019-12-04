@@ -31,7 +31,6 @@ class editProfile extends Component {
         this.zipChangeHandler = this.zipChangeHandler.bind(this);
         this.submitChanges = this.submitChanges.bind(this);
         this.ImageChange = this.ImageChange.bind(this);
-        // this.updateprofileimage = this.updateprofileimage.bind(this);
         
     }
     
@@ -41,7 +40,6 @@ class editProfile extends Component {
         axios.get("http://localhost:3001/users/profile")
             .then((response) => {
                 console.log("data: ", response.data)
-                //update the state with the response data
                 this.setState({
                     fname: response.data.firstName,
                     lname: response.data.lastName,
@@ -59,7 +57,6 @@ class editProfile extends Component {
                 }
             }) .catch(error => {
                 this.setState({
-                    //message: error.response.data.error
                 })
             });
     }
@@ -138,7 +135,7 @@ class editProfile extends Component {
         image.append("zipcode", this.state.zipcode);
         console.log(image)
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/users/profile', image)
+        axios.put('/users/profile', image)
             .then((response) => {
                 console.log("in axios call")
                 console.log(response)
@@ -236,7 +233,6 @@ class editProfile extends Component {
                                 <br />
                                 <button class="button" style={{width:"150px"}}>Save Changes</button>
                                 <br /><br />
-                                {/* <button class="btn btn-primary col-md-12 button" onClick={this.submitSignup}>Create your account</button> */}
                             </div>
 
 

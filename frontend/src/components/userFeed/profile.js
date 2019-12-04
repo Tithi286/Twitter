@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import { Link } from "react-router-dom";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
 import './tweet.css'
 import Tweets from './tweets'
 import Retweets from './retweets'
@@ -75,7 +67,7 @@ class profile extends Component {
     componentDidMount() {
         console.log("inside edit profile get request")
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/users/profile")
+        axios.get("/users/profile")
             .then((response) => {
                 console.log("data: ", response.data)
                 //update the state with the response data
@@ -104,7 +96,6 @@ class profile extends Component {
                 }
             }) .catch(error => {
                 this.setState({
-                    //message: error.response.data.error
                 })
             });
     }

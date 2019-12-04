@@ -4,11 +4,11 @@ import axios from 'axios';
 import { Redirect } from 'react-router';
 
 import Icon from 'react-icons-kit';
-import {commentO} from 'react-icons-kit/fa/commentO'
-import {heartO} from 'react-icons-kit/fa/heartO'
-import {heart} from 'react-icons-kit/fa/heart'
-import {bookmarkO} from 'react-icons-kit/fa/bookmarkO'
-import {loop} from 'react-icons-kit/iconic/loop'
+import { commentO } from 'react-icons-kit/fa/commentO'
+import { heartO } from 'react-icons-kit/fa/heartO'
+import { heart } from 'react-icons-kit/fa/heart'
+import { bookmarkO } from 'react-icons-kit/fa/bookmarkO'
+import { loop } from 'react-icons-kit/iconic/loop'
 import Navbar from '../navbar'
 
 class bookmarks extends Component {
@@ -16,32 +16,32 @@ class bookmarks extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            bookmarks : [],
-            currentPage : 1,
-            itemsPerPage : 10,
-            likeIcon : heartO,
+            bookmarks: [],
+            currentPage: 1,
+            itemsPerPage: 10,
+            likeIcon: heartO,
             profileImage: sessionStorage.getItem('profileImage')
-            
+
         }
-         this.changeIcon = this.changeIcon.bind(this)
-         this.handleClick = this.handleClick.bind(this); 
+        this.changeIcon = this.changeIcon.bind(this)
+        this.handleClick = this.handleClick.bind(this);
 
     }
 
-    componentWillReceiveProps({bookmarks}) {
+    componentWillReceiveProps({ bookmarks }) {
         console.log('Inside menu will receive props');
         this.setState({
-            bookmarks : bookmarks
+            bookmarks: bookmarks
         });
     }
 
-    componentDidMount(){
-        
+    componentDidMount() {
+
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/bookmarks/')
-                .then((response) => {
+        axios.get('/bookmarks/')
+            .then((response) => {
                 this.setState({
-                    bookmarks : response.data
+                    bookmarks: response.data
                 });
                 console.log(response.data)
                 console.log(this.state.bookmarks)
@@ -49,14 +49,13 @@ class bookmarks extends Component {
     }
 
     deleteBookmark = (v1) => {
-        //e.preventDefault();
         const data = {
             tweetID: v1,
             bookmarksID: ""
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/bookmarks/delete', data)
+        axios.post('/bookmarks/delete', data)
             .then((response) => {
                 console.log("in axios call for creating bookmark")
                 console.log(response)
@@ -66,21 +65,21 @@ class bookmarks extends Component {
                 console.log(error)
             });
     }
-    
+
     changeIcon = () => {
-        if(this.state.likeIcon == heartO){
+        if (this.state.likeIcon == heartO) {
             this.setState({
-                likeIcon : heart
+                likeIcon: heart
             })
         }
-        else if(this.state.likeIcon == heart){
+        else if (this.state.likeIcon == heart) {
             this.setState({
-                likeIcon : heartO
+                likeIcon: heartO
             })
         }
         console.log("icon ", this.state.likeIcon)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userfeed/like')
+        axios.get('/userfeed/like')
             .then((response) => {
                 console.log(response.data)
             });
@@ -89,10 +88,10 @@ class bookmarks extends Component {
     handleClick(event) {
         console.log(event.target.id);
         this.setState({
-          currentPage: Number(event.target.id)
+            currentPage: Number(event.target.id)
         });
-      }
-   
+    }
+
     render() {
 
         let redirectVar = null;
@@ -101,103 +100,103 @@ class bookmarks extends Component {
             redirectVar = <Redirect to="/login" />
         }
 
-        const {bookmarks,currentPage, itemsPerPage} = this.state;
+        const { bookmarks, currentPage, itemsPerPage } = this.state;
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
         const currentItems = bookmarks.slice(indexOfFirstItem, indexOfLastItem);
-       
+
         let bookmarkTweet;
-        
-        
-        bookmarkTweet =currentItems.map(bookmark => {
+
+
+        bookmarkTweet = currentItems.map(bookmark => {
             var profileimg = this.state.profileImage;
-            if(profileimg == null){
+            if (profileimg == null) {
                 profileimg = "https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg"
             }
-            else{
+            else {
                 profileimg = this.state.profileImage;
             }
-            if(bookmark.tweet.tweetImage == "")
-            {
-                return(
-            <div class="tweets-div u-list1">
-                
-                <div class="u-flex u-flex-align">
-                            <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
-                            <div class="u-flex-justify">
-                            <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
-                            <span class="span s-list-item-secondary u-mar1 snippet" >{bookmark.tweet.tweetDate.split("T")[0]}  {bookmark.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
-                            <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{bookmark.tweet.tweet}</span>
-                            </div>
-                            </div>
-                            </div>
-                            </div>
-                
-                <div class="img-tweets-div">
-                    {/* <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img> */}
-                    <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
-                    <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {bookmark.replyCount}</div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {bookmark.retweetCount}</div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={this.state.likeIcon} role="button" onClick={this.changeIcon}/> {bookmark.likeCount}</div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.deleteBookmark(bookmark.tweet.tweetID)}/></div>
-                </div>
-                </div>
-                
-                <br/><br/>
-            </div>
-        )}
-        else if(bookmark.tweet.tweetImage != ""){
-            return(
-                <div class="tweets-div u-list1">
-                {redirectVar}
-                <div class="u-flex u-flex-align">
-                            <div class="u-mar2"><img src={profileimg} class="logo5" style={{height:"40px", width:"40px"}}></img></div>
-                            <div class="u-flex-justify">
-                            <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
-                            <span class="span s-list-item-secondary u-mar1 snippet" >{bookmark.tweet.tweetDate.split("T")[0]}  {bookmark.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
-                            <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{bookmark.tweet.tweet}</span>
-                            </div>
-                            </div>
-                            </div>
-                            </div>
-                
-                <div class="img-tweets-div">
-                    <img src={bookmark.tweet.tweetImage} class="tweets-img" ></img>
-                    <div style={{paddingLeft: "12%", paddingTop: "2%",display: "flex"}}>
-                    <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button"/> {bookmark.replyCount}</div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button"/> {bookmark.retweetCount}</div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={this.state.likeIcon} role="button" onClick={this.changeIcon}/> {bookmark.likeCount}</div>
-                    <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.deleteBookmark(bookmark.tweet.tweetID)}/></div>
-                </div>
-                </div>
-                
-                <br/><br/>
-            </div>
-        )}
-    })
+            if (bookmark.tweet.tweetImage == "") {
+                return (
+                    <div class="tweets-div u-list1">
 
-    const pageNumber = [];
-    for(let i = 1; i <= Math.ceil(bookmarks.length / itemsPerPage);i++) {
-        pageNumber.push(i);
-    }
+                        <div class="u-flex u-flex-align">
+                            <div class="u-mar2"><img src={profileimg} class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
+                            <div class="u-flex-justify">
+                                <div class="u-mar1">
+                                    <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
+                                    <span class="span s-list-item-secondary u-mar1 snippet" >{bookmark.tweet.tweetDate.split("T")[0]}  {bookmark.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
+                                    <div class="s-list-item-secondary u-mar1 snippet">
+                                        <span class="span">{bookmark.tweet.tweet}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    const renderNumber = pageNumber.map(number => {
-       return (
-           <div role="button" style={{color: "#29a3ef", cursor: "pointer", borderRadius: "7px", float:"right"}} key = {number} id = {number} onClick = {this.handleClick}> 
-               {number}
-           </div>
-       );
-   });
+                        <div class="img-tweets-div">
+                            <div style={{ paddingLeft: "12%", paddingTop: "2%", display: "flex" }}>
+                                <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button" /> {bookmark.replyCount}</div>
+                                <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button" /> {bookmark.retweetCount}</div>
+                                <div class="col-sm-3 buttons-div"><Icon icon={this.state.likeIcon} role="button" onClick={this.changeIcon} /> {bookmark.likeCount}</div>
+                                <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.deleteBookmark(bookmark.tweet.tweetID)} /></div>
+                            </div>
+                        </div>
+
+                        <br /><br />
+                    </div>
+                )
+            }
+            else if (bookmark.tweet.tweetImage != "") {
+                return (
+                    <div class="tweets-div u-list1">
+                        {redirectVar}
+                        <div class="u-flex u-flex-align">
+                            <div class="u-mar2"><img src={profileimg} class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
+                            <div class="u-flex-justify">
+                                <div class="u-mar1">
+                                    <div class="s-list-item-primary u-mar1 fullname">{bookmark.user.firstName} {bookmark.user.lastName}</div>
+                                    <span class="span s-list-item-secondary u-mar1 snippet" >{bookmark.tweet.tweetDate.split("T")[0]}  {bookmark.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
+                                    <div class="s-list-item-secondary u-mar1 snippet">
+                                        <span class="span">{bookmark.tweet.tweet}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="img-tweets-div">
+                            <img src={bookmark.tweet.tweetImage} class="tweets-img" ></img>
+                            <div style={{ paddingLeft: "12%", paddingTop: "2%", display: "flex" }}>
+                                <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button" /> {bookmark.replyCount}</div>
+                                <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button" /> {bookmark.retweetCount}</div>
+                                <div class="col-sm-3 buttons-div"><Icon icon={this.state.likeIcon} role="button" onClick={this.changeIcon} /> {bookmark.likeCount}</div>
+                                <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.deleteBookmark(bookmark.tweet.tweetID)} /></div>
+                            </div>
+                        </div>
+
+                        <br /><br />
+                    </div>
+                )
+            }
+        })
+
+        const pageNumber = [];
+        for (let i = 1; i <= Math.ceil(bookmarks.length / itemsPerPage); i++) {
+            pageNumber.push(i);
+        }
+
+        const renderNumber = pageNumber.map(number => {
+            return (
+                <div role="button" style={{ color: "#29a3ef", cursor: "pointer", borderRadius: "7px", float: "right" }} key={number} id={number} onClick={this.handleClick}>
+                    {number}
+                </div>
+            );
+        });
 
         return (
             <div class="container-flex">
-               
-                <Navbar/>
-               
+
+                <Navbar />
+
                 <div class="col-md-6 feed2" >
                     <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
                     <div class="home-font">Bookmarks</div>
@@ -206,16 +205,16 @@ class bookmarks extends Component {
                     
                     </div>
                     {bookmarkTweet}
-                    
+
                 </div>
                 <div class="col-md-3 feed1">
                     <div>
-                    <div>
-                    <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
-                    </div>
+                        <div>
+                            <input type="text" class="searchbar" placeholder="Search Twitter" name="search" id="search"></input>
+                        </div>
                     </div>
                 </div>
-                
+
             </div>
 
 

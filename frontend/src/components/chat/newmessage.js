@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import { Link } from "react-router-dom";
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -13,59 +10,60 @@ class Newmessages extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchname:"",
-            userID:"",
-            people:[],
+            searchname: "",
+            userID: "",
+            people: [],
             authFlag: ""
         }
-        this.searchClick =this.searchClick.bind(this)
+        this.searchClick = this.searchClick.bind(this)
         this.searchChange = this.searchChange.bind(this)
 
     }
 
-   
+
     goto = (userid) => {
-            try {
-                this.props.history.push({
-                    pathname: "/inbox",
-                    state: {
-                        userID: userid,
-                    }
-                })
-                console.log(this.state.userID)
-            } catch (e) { }
-        }
-    
+        try {
+            this.props.history.push({
+                pathname: "/inbox",
+                state: {
+                    userID: userid,
+                }
+            })
+            console.log(this.state.userID)
+        } catch (e) { }
+    }
+
     searchChange = (e) => {
         this.setState({
-            searchname : e.target.value
+            searchname: e.target.value
         })
-        console.log("search name",this.state.searchname)
+        console.log("search name", this.state.searchname)
     }
 
     searchClick = () => {
-       const data = {
-           params: {
-            fname : this.state.searchname
-           }
-        }  
+        const data = {
+            params: {
+                fname: this.state.searchname
+            }
+        }
         console.log(data.params.fname)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/messages/search', data)
-                .then((response) => {
-                    console.log(response)
-                    if(response.data.length == 0){
-                        this.setState({
-                           
-                            authFlag: "false"
-                        })
-                    }
-                    else {
+        axios.get('/messages/search', data)
+            .then((response) => {
+                console.log(response)
+                if (response.data.length == 0) {
                     this.setState({
-                        people : response.data,
+
+                        authFlag: "false"
+                    })
+                }
+                else {
+                    this.setState({
+                        people: response.data,
                         authFlag: "true"
-                    })}
-                
+                    })
+                }
+
                 console.log(response)
                 console.log(this.state.people)
             })
@@ -76,40 +74,40 @@ class Newmessages extends Component {
             })
     }
 
-   render() {
+    render() {
 
-    let redirectVar = null;
-    if (localStorage.getItem('email') == null) {
-        console.log("in cookie if")
-        redirectVar = <Redirect to="/login" />
-    }
+        let redirectVar = null;
+        if (localStorage.getItem('email') == null) {
+            console.log("in cookie if")
+            redirectVar = <Redirect to="/login" />
+        }
 
-    let content;
-    console.log(this.state.authFlag)
-    if(this.state.authFlag == "true"){
-        content =this.state.people.map(people => {
-            // <Link class="a" to="/inbox">
-            sessionStorage.setItem('msg_user',people.firstName)
-            return(
-            <div class="u-clickable u-list" role="button" onClick ={() => {this.goto(people.userID)}}>
-                                <div class="u-flex u-flex-align">
-                                    <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
-                                    <div class="u-flex-justify">
-                                    <div class="u-mar1">
+        let content;
+        console.log(this.state.authFlag)
+        if (this.state.authFlag == "true") {
+            content = this.state.people.map(people => {
+                sessionStorage.setItem('msg_user', people.firstName)
+                return (
+                    <div class="u-clickable u-list" role="button" onClick={() => { this.goto(people.userID) }}>
+                        <div class="u-flex u-flex-align">
+                            <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                            <div class="u-flex-justify">
+                                <div class="u-mar1">
                                     <div class="s-list-item-primary fullname">{people.firstName} {people.lastName}</div>
-                                        <div class="s-list-item-secondary snippet">
-                                            <span class="span">{people.userName}</span>
-                                            
-                                        </div>
-                                        </div>
-                                        </div>
+                                    <div class="s-list-item-secondary snippet">
+                                        <span class="span">{people.userName}</span>
+
+                                    </div>
                                 </div>
                             </div>
-                    //  </Link>
-            )}
-        )}
+                        </div>
+                    </div>
+                )
+            }
+            )
+        }
 
-        else if(this.state.authFlag == "false"){
+        else if (this.state.authFlag == "false") {
             content = (
                 <div class="s-list-item-primary fullname"> No results found!!</div>
             )
@@ -142,21 +140,6 @@ class Newmessages extends Component {
                     <button class="buttons3" name="searchname" type="submit" style={{ width: "70px", height: "35px" }} onClick={this.searchClick}>Search</button>
 
                     {content}
-                   
-                    {/* <Link class="a" to="/inbox"><div class="u-clickable u-list" role="button">
-                                <div class="u-flex u-flex-align">
-                                    <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
-                                    <div class="u-flex-justify">
-                                    <div class="u-mar1">
-                                    <div class="s-list-item-primary fullname">User Name</div>
-                                        <div class="s-list-item-secondary snippet">
-                                            <span class="span">User Id</span>
-                                        </div>
-                                        </div>
-                                        </div>
-                                </div>
-                            </div>
-                    </Link> */}
                 </div>
 
             </div>

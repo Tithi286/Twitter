@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-
-import axios from 'axios';
 import cookie from 'react-cookies';
-import { Redirect } from 'react-router';
 import { Link } from "react-router-dom";
-import moment from 'moment';
+
 
 class followers extends Component {
 
@@ -41,7 +38,7 @@ class followers extends Component {
                     <a href="/profile" class="a"><span class="home-buttons"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo4"></img>Profile</span><br/><br/></a>
                     <a href="/analytics" class="a"><span class="home-buttons"><img src="https://cdn1.vectorstock.com/i/1000x1000/76/15/analytics-icon-on-transparent-analytics-sign-vector-20707615.jpg" class="logo4"></img>Analytics</span><br /><br /></a>
                     <a href="/settings" class="a"><span class="home-buttons"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Windows_Settings_app_icon.png" class="logo4"></img>Settings</span><br /><br /></a>
-                    <span class="home-buttons"><button class="buttons3" onClick = {this.handleLogout}>
+                    <span class="home-buttons"><button class="buttons22" onClick = {this.handleLogout}>
                         <Link to="/login">Logout</Link>
                 </button></span>
                     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />

@@ -3,11 +3,6 @@ import { Link } from "react-router-dom";
 import '../../App.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,7 +29,7 @@ class ListsAdduser extends Component {
         }
         console.log("Data from search lists: ", data)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/search', data)
+        axios.get('/lists/search', data)
             .then((response) => {
                 this.setState({
                     user1: response.data
@@ -68,7 +63,7 @@ class ListsAdduser extends Component {
 
         axios.defaults.withCredentials = true;
 
-        axios.post('http://localhost:3001/lists/member', data)
+        axios.post('/lists/member', data)
             .then((response) => {
                 console.log("in axios cal")
                 console.log(response)

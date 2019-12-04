@@ -13,7 +13,6 @@ class login extends Component {
             msg: "",
         }
 
-        //Bind events
         this.emailChangeHandler = this.emailChangeHandler.bind(this);
         this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
         this.submitLogin = this.submitLogin.bind(this);
@@ -78,7 +77,6 @@ class login extends Component {
                                     <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img>
                                     Home
                                 </a>
-                                {/* <a className="text" href="https://about.twitter.com" >About</a> */}
                             </div>
                         </div>
                 </div>

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { Link } from "react-router-dom";
-import moment from 'moment';
 import Navbar from '../navbar'
 
 class ownsubscribers extends Component {
@@ -25,7 +22,7 @@ class ownsubscribers extends Component {
         }
         console.log(data.params.userID)
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/lists/ownsubscribers", data)
+        axios.get("/lists/ownsubscribers", data)
             .then((response) => {
                 this.setState({
                     followers: response.data
