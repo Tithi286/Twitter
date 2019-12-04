@@ -123,7 +123,12 @@ class analytics extends Component {
             res6.forEach(cnt => {
                 monthlycount[Number(cnt._id.m) - 1] = cnt.count
             });
-
+            let cnt = 0;
+            if (res7.length > 0) {
+                cnt = res7[0].count;
+            } else {
+                cnt = 0;
+            }
             this.setState({
                 tweetview10: viewtweetCounts,
                 tweetview10Xaxis: tweetXaxis,
@@ -132,7 +137,7 @@ class analytics extends Component {
                 tweethourcount: hourcount,
                 tweetdailycount: dailycount,
                 tweetmonthlycount: monthlycount,
-                profileviewcount: res7[0].count,
+                profileviewcount: cnt,
             });
         }
         catch (e) {
