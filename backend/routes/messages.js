@@ -1,12 +1,8 @@
 var express = require("express");
 var router = express.Router();
-const uuidv4 = require("uuid/v4");
 var passport = require("passport");
-const multer = require("multer");
-const path = require("path");
 
 const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
-const upload = multer({ dest: path.join(__dirname, "..", "uploads/") });
 // Set up middleware
 var requireAuth = passport.authenticate("jwt", { session: false });
 
@@ -18,7 +14,7 @@ router.get("/", requireAuth, async function (req, res, next) {
     const messages = {
       senderID: loggedInUser.userID
     };
-    console.log(messages)
+
     results = await simulateRequestOverKafka("getOwnMessages", messages);
     results.forEach(retwt => {
       receiverID.push(retwt.receiverID);

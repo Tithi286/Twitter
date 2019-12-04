@@ -9,7 +9,6 @@ var passport = require('passport');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 
 const { jwtsecret, encrAlgorithm, encrSecret } = require('../config');
-const { getUsers } = require('../DataAccessLayer');
 const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 
 // crypto (can be updated to use 'bcrypt' instead)
@@ -26,8 +25,8 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 /* get all users test route */
 router.get('/', async function (req, res, next) {
   try {
-    const { results } = await getUsers();
-    //  const { results } = await simulateRequestOverKafka("getUsers", {});
+    const user = {};
+    const { results } = await simulateRequestOverKafka("getUsers", user);
     res.json(results);
   }
   catch (e) {
