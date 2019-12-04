@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
-import ModernDatepicker from 'react-modern-datepicker';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
 import './tweet.css'
 import Tweets from './tweets'
 import Retweets from './retweets'
@@ -86,10 +79,9 @@ class profile extends Component {
         console.log("inside edit profile get request")
         this.getFollowing()
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/users/profile",)
+        axios.get("/users/profile")
             .then((response) => {
                 console.log("data: ", response.data)
-                //update the state with the response data
                 this.setState({
                     fname: response.data.firstName,
                     lname: response.data.lastName,
@@ -109,25 +101,23 @@ class profile extends Component {
                 const data={
            
                     userID:this.state.userID,
-                    
-                
-            }
-            // axios.defaults.withCredentials = true;
-            // console.log("inc")
-            // console.log(response.data)
-            // // console.log("Data: ",this.state.user)
-            // // console.log("UserID: ", this.state.userID)
-            // axios.post('http://localhost:3001/analytics/incprofileviewcount',data)
-            //         .then((response) => {
-                   
-                
-                 
-                    
-            //     }); }) .catch(error => {
-            //     this.setState({
-            //         //message: error.response.data.error
-            //     })
+                }
             });
+        
+          const data={
+
+                    userID:this.props.location.state
+
+            }
+            axios.defaults.withCredentials = true;
+           
+            axios.post('http://localhost:3001/analytics/incprofileviewcount',data)
+                    .then((response) => {
+
+
+
+
+                });
     }
 
     getFollowing() {
@@ -138,7 +128,7 @@ class profile extends Component {
         }
         console.log(data.params.userID)
         axios.defaults.withCredentials = true;
-        axios.get("http://localhost:3001/userprofile/followed", data)
+        axios.get("/userprofile/followed", data)
             .then((response) => {
                 this.setState({
                     following: response.data
@@ -178,13 +168,12 @@ class profile extends Component {
         const data = {
             followedID: this.state.userID
         }
-        //console.log("v1 values", v1)
         var a = this.state.follText;
 
         if(a == "Follow"){
 
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/users/follow', data)
+        axios.post('/users/follow', data)
             .then((response) => {
                 console.log("in axios call for follow")
                 console.log("follow resp: ",response)
@@ -197,7 +186,7 @@ class profile extends Component {
 
         else if(a == "Unfollow"){
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/users/unfollow', data)
+        axios.post('/users/unfollow', data)
             .then((response) => {
                 console.log("in axios call for unfollow")
                 console.log(response)

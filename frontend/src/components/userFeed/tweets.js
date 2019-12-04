@@ -7,13 +7,7 @@ import {loop} from 'react-icons-kit/iconic/loop'
 import '../../App.css';
 import './tweet.css';
 import axios from 'axios';
-import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
 import { Link } from "react-router-dom";
 
 class tweets extends Component {
@@ -60,7 +54,7 @@ class tweets extends Component {
         
         console.log(data.userID)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userprofile/tweets', data)
+        axios.get('/userprofile/tweets', data)
                 .then((response) => {
                     console.log("in axios", response.data)
                 this.setState({
@@ -79,7 +73,7 @@ class tweets extends Component {
             tweetID : tweetid
          }
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/delete', data)
+        axios.post('/userfeed/delete', data)
                 .then((response) => {
                     console.log("in axios", response)
                     if(response.status == 200){

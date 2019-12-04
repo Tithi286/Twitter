@@ -4,9 +4,6 @@ import axios from 'axios';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 
@@ -138,7 +135,6 @@ class userSignup extends Component {
                 {redirectVar}
                 <br />
                 <form class="outer-box1 signup1" onSubmit={handleSubmit(this.submitLogin.bind(this))}>
-                    {/* <form onSubmit={handleSubmit(this.submitLogin.bind(this))}> */}
                     <br />
                     <img src="https://www.alc.edu/wp-content/uploads/2016/10/13-twitter-logo-vector-png-free-cliparts-that-you-can-download-to-you-Km878c-clipart.png" class="logo"></img>
                     <div className="">
@@ -181,21 +177,13 @@ class userSignup extends Component {
                             </div>
                             <div class="">
                             <br/>
-                                {/* <div class="elements2">
-                                    <span class="label">Date of Birth</span>
-                                    <div class="label datepicker" name="startDate"><DatePicker selected={this.state.startDate} onChange={this.dobChangeHandler} /></div>
-                                </div> */}
                             </div>
                             <div class="">
                                 <br />
                                 <button class="button">Sign Up</button>
                                 <br /><br />
-                                {/* <button class="btn btn-primary col-md-12 button" onClick={this.submitSignup}>Create your account</button> */}
                             </div>
-
-
-                        
-                    </div>
+                            </div>
                 </form>
                 <br /><br />
             </div>
@@ -262,14 +250,13 @@ const mapDispatchStateToProps = dispatch => {
             }
             console.log(data)
             axios.defaults.withCredentials = true;
-            axios.post('http://localhost:3001/users/', data)
+            axios.post('/users/', data)
                 .then((response) => {
                     console.log("in axios call")
                     console.log(response)
                     dispatch({ type: 'SIGNUP', payload: response.data, statusCode: response.status })
                 })
                 .catch((error) => {
-                    //dispatch({ type: 'SIGNUP', payload: error.response.data, statusCode: error.response.data.status })
                 });
         }
     }

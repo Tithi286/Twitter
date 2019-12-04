@@ -36,7 +36,7 @@ const getARetweetCount = connection => (query = {}) => {
           return err ? reject(err) : resolve(docs);
         }
       )
-      .limit(10);
+      .limit(5);
   });
 };
 

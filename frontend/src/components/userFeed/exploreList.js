@@ -34,7 +34,7 @@ class exploreList extends Component {
         }
         console.log("Data from explore: ", data)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userfeed/search', data)
+        axios.get('/userfeed/search', data)
             .then((response) => {
                 this.setState({
                     profile: response.data

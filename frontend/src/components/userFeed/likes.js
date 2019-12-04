@@ -8,13 +8,8 @@ import '../../App.css';
 import './tweet.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Favicon from 'react-favicon';
+
 
 class Likes extends Component {
 
@@ -46,13 +41,12 @@ class Likes extends Component {
         
         console.log(data.userID)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/userprofile/likes',data)
+        axios.get('/userprofile/likes',data)
                 .then((response) => {
                 this.setState({
                     likes : response.data
                 });
                 console.log(response.data)
-                //console.log(this.state.likes)
             });
     }
 

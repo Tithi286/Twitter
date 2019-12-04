@@ -24,7 +24,7 @@ class describeTweet extends Component {
         this.state = {
             errormsg: "",
             authFlag: "",
-            tweetID:"" ,
+            tweetID: "",
             tweet: [],
             reply: [],
             replyData: []
@@ -37,24 +37,35 @@ class describeTweet extends Component {
 
     componentDidMount() {
         const data = {
-            params:{
-                tweetID : this.props.location.state
+            params: {
+                tweetID: this.props.location.state
             }
         }
-        console.log("Data from home",data.params.tweetID)
+        console.log("Data from home", data.params.tweetID)
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/tweets/details',data)
+        axios.get('/tweets/details', data)
             .then((response) => {
                 this.setState({
                     tweet: response.data,
-                    reply:response.data[0].replies
-                    // profileimage: !response.data.data.tweetImage || response.data.data.tweetImage === 'undefined' ? '/pic.png' : response.data.data.tweetImage
+                    reply: response.data[0].replies
                 });
-                console.log("tweet: ",this.state.tweet)
+                console.log("tweet: ", this.state.tweet)
                 console.log("Reply ", this.state.reply)
-                //console.log("Tweet: ",this.state.tweet)
-            }); 
-    }
+
+            });
+         const data1 = {
+      tweetID: this.props.location.state
+    };
+    axios.defaults.withCredentials = true;
+    console.log("inc");
+    console.log(this.props.location.state);
+
+    axios
+      .post("http://localhost:3001/analytics/inctweetviewcount", data1)
+      .then(response => {});
+  }
+
+    
 
 
     render() {
@@ -80,28 +91,27 @@ class describeTweet extends Component {
                             <div class="u-flex u-flex-align">
                                 <div class="u-mar2"><img src={profileimg} class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
                                 <div class="u-flex-justify">
-                                <div class="u-mar1">
-                                <div class="s-list-item-primary u-mar1 fullname">{tweet.tweetOwner.firstName} {tweet.tweetOwner.lastName}</div>
-                                <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweet.tweetDate.split("T")[0]}  {tweet.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
-                                <div class="s-list-item-secondary u-mar1 snippet">
-                                        <span class="span">{tweet.tweet.tweet}</span>
-                                </div>
-                                </div>
+                                    <div class="u-mar1">
+                                        <div class="s-list-item-primary u-mar1 fullname">{tweet.tweetOwner.firstName} {tweet.tweetOwner.lastName}</div>
+                                        <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweet.tweetDate.split("T")[0]}  {tweet.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
+                                        <div class="s-list-item-secondary u-mar1 snippet">
+                                            <span class="span">{tweet.tweet.tweet}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </Link>
                         <div class="img-tweets-div">
-                            {/* <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img> */}
                             <div style={{ paddingLeft: "12%" }}>
 
                                 <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button" onClick={() => this.handleNameClick(tweet.tweet.tweetID)} /> {tweet.replyCount}</div>
                                 <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button" onClick={() => this.createRetweet(tweet.tweet.tweetID)} /> {tweet.retweetCount}</div>
                                 <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button" onClick={() => this.createLike(tweet.tweet.tweetID)} /> {tweet.likeCount}</div>
                                 <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.createBookmark(tweet.tweet.tweetID)} /></div>
-                            </div><br/>
+                            </div><br />
                             <div class="contact-form" style={{ width: "80%", margin: "0 auto" }}>
-                                <div style={{ width: "100%" }} ><br/>
-                                <input type="text" placeholder="Type a reply" name="caption" onChange={this.fnameChangeHandler} style={{ size: "200", width: "400px", borderRadius: "10px"}}></input>
+                                <div style={{ width: "100%" }} ><br />
+                                    <input type="text" placeholder="Type a reply" name="caption" onChange={this.fnameChangeHandler} style={{ size: "200", width: "400px", borderRadius: "10px" }}></input>
                                     <button class="buttons3" onClick={() => this.sendReply(tweet.tweet.tweetID)} style={{ width: "70px", height: "35px" }}>Reply</button>
                                 </div>
                             </div>
@@ -121,7 +131,7 @@ class describeTweet extends Component {
                     profileimg = tweet.tweetOwner.profileImage;
                 }
                 return (
-                        <div class="tweets-div" role="button">
+                    <div class="tweets-div" role="button">
                         <Link class="a" to={{ pathname: "/descTweets", state: tweet.tweet.tweetID }}>
                             <div>
                                 <div class="u-flex u-flex-align">
@@ -137,53 +147,54 @@ class describeTweet extends Component {
                                 </div>
                             </div>
                         </Link>
-                            <div class="img-tweets-div">
-                                <img src={tweet.tweet.tweetImage} class="tweets-img" ></img>
-                                <div style={{ paddingLeft: "12%" }}>
+                        <div class="img-tweets-div">
+                            <img src={tweet.tweet.tweetImage} class="tweets-img" ></img>
+                            <div style={{ paddingLeft: "12%" }}>
                                 <div class="col-sm-3 buttons-div"><Icon icon={commentO} role="button" onClick={() => this.handleNameClick(tweet.tweet.tweetID)} /> {tweet.replyCount}</div>
                                 <div class="col-sm-3 buttons-div"><Icon icon={loop} role="button" onClick={() => this.createRetweet(tweet.tweet.tweetID)} /> {tweet.retweetCount}</div>
                                 <div class="col-sm-3 buttons-div"><Icon icon={heartO} role="button" onClick={() => this.createLike(tweet.tweet.tweetID)} /> {tweet.likeCount}</div>
                                 <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.createBookmark(tweet.tweet.tweetID)} /></div>
-                                </div>
                             </div>
-                            <div class="contact-form" style={{ width: "80%", margin: "0 auto" }}>
-                                <div style={{ width: "100%" }} >
-                                <input type="text" placeholder="Type a reply" name="caption" onChange={this.captionChangeHandler} style={{ size: "200", width: "400px", borderRadius: "10px" }}></input>
-                                    <button class="buttons3" onClick={() => this.sendReply(tweet.tweet.tweetID)} style={{ width: "70px", height: "35px" }}>Reply</button>
-                                </div>
-                            </div>
-                            <br /><br />
                         </div>
+                        <div class="contact-form" style={{ width: "80%", margin: "0 auto" }}>
+                            <div style={{ width: "100%" }} >
+                                <input type="text" placeholder="Type a reply" name="caption" onChange={this.captionChangeHandler} style={{ size: "200", width: "400px", borderRadius: "10px" }}></input>
+                                <button class="buttons3" onClick={() => this.sendReply(tweet.tweet.tweetID)} style={{ width: "70px", height: "35px" }}>Reply</button>
+                            </div>
+                        </div>
+                        <br /><br />
+                    </div>
                 )
             }
         })
-    
 
-        
-        let replies = this.state.reply.map(reply1 =>{
+
+
+        let replies = this.state.reply.map(reply1 => {
             console.log(reply1)
-            return(
-            <div class="u-flex u-flex-align u-list2">
-                <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
-                <div class="u-flex-justify">
-                    <div class="u-mar1">
-                        <div class="s-list-item-primary u-mar1 fullname">{reply1.user.firstName} {reply1.user.lastName}</div>
-                        <div class="s-list-item-secondary u-mar1 snippet">
-                            <span class="span">Replying to </span><br/>
-                            <span class="span">Reply: {reply1.reply.reply}</span>
+            return (
+                <div class="u-flex u-flex-align u-list2">
+                    <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
+                    <div class="u-flex-justify">
+                        <div class="u-mar1">
+                            <div class="s-list-item-primary u-mar1 fullname">{reply1.user.firstName} {reply1.user.lastName}</div>
+                            <div class="s-list-item-secondary u-mar1 snippet">
+                                <span class="span">Replying to </span><br />
+                                <span class="span">Reply: {reply1.reply.reply}</span>
+                            </div>
                         </div>
                     </div>
+
                 </div>
-                
-            </div>
-            )}
-            
+            )
+        }
+
         )
 
         return (
             <div class="container-flex">
-            {redirectVar}
-                <Navbar/>
+                {redirectVar}
+                <Navbar />
                 <div class="col-md-6 feed">
                     <div class="home-font">Thread</div><br />
 
@@ -191,7 +202,7 @@ class describeTweet extends Component {
                         {tweet1}
                     </div>
                     <div>
-                         
+
                         {replies}
                     </div>
 
@@ -205,9 +216,9 @@ class describeTweet extends Component {
                 </div>
 
             </div>
-          
-    );
-  }
+
+        );
+    }
 }
 
 export default describeTweet;

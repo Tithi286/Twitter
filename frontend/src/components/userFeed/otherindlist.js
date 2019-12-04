@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
-//import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-//import jwt_decode from 'jwt-decode';
-//import uuid from 'react-native-uuid';
 import { Link } from "react-router-dom";
-import ModernDatepicker from 'react-modern-datepicker';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Favicon from 'react-favicon';
 import './tweet.css'
@@ -51,7 +44,7 @@ class otherindlist extends Component {
         this.getSubscribers()
         console.log("list"+this.props.location.state[4])
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/lists/tweets',data)
+        axios.get('/lists/tweets')
                 .then((response) => {
                 this.setState({
                     retweet : response.data
@@ -100,7 +93,7 @@ class otherindlist extends Component {
             
         }
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/lists/subscribe',data)
+        axios.post('/lists/subscribe',data)
                 .then((response) => {
                
                     window.location.assign("/subscriptions");
@@ -117,7 +110,7 @@ class otherindlist extends Component {
             
         }
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/lists/delete',data)
+        axios.post('/lists/delete',data)
                 .then((response) => {
                
                     window.location.assign("/lists");
@@ -134,7 +127,7 @@ class otherindlist extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/retweet', data)
+        axios.post('/userfeed/retweet', data)
             .then((response) => {
                 console.log("in axios call for post retweet")
                 console.log(response)
@@ -152,7 +145,7 @@ class otherindlist extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:3001/userfeed/like', data)
+        axios.put('/userfeed/like', data)
             .then((response) => {
                 console.log("in axios call for like")
                 console.log(response)
@@ -170,7 +163,7 @@ class otherindlist extends Component {
         }
         console.log("v1 values", v1)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/bookmarks/create', data)
+        axios.post('/bookmarks/create', data)
             .then((response) => {
                 console.log("in axios call for creating bookmark")
                 console.log(response)
@@ -190,7 +183,7 @@ class otherindlist extends Component {
         }
         console.log("Data", data)
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3001/userfeed/reply', data)
+        axios.post('/userfeed/reply', data)
             .then((response) => {
                 console.log("in axios call for creating bookmark")
                 console.log(response)
@@ -297,9 +290,9 @@ class otherindlist extends Component {
                             <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{retweet1.user.userName}</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{retweet1.user.firstName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{retweet1.tweet.tweetDate}</span>
+                                    <span class="span">{retweet1.tweet.tweetDate.split("T")[0]}  {retweet1.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{retweet1.tweet.tweet}</span>
@@ -307,8 +300,6 @@ class otherindlist extends Component {
                             </div>
                             </div>
                             </div>
-                    {/* UserName<br />
-                    Tweet Message */}
                 </div>
                 <div class="img-tweets-div">
                     <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
