@@ -373,7 +373,7 @@ class userHome extends Component {
                                 <div class="u-mar1">
                                     <form onSubmit={this.submitChanges} >
                                         <div class="s-list-item-primary u-mar1 fullname">
-                                            <input type="text" placeholder="What's happening?" name="caption" onChange={this.captionChangeHandler} style={{ size: "200", width: "600px", border: "none" }}></input>
+                                            <input type="text" placeholder="What's happening?" name="caption" maxLength="280" onChange={this.captionChangeHandler} style={{ size: "200", width: "600px", border: "none" }}></input>
 
                                         </div><br />
                                         <span>
