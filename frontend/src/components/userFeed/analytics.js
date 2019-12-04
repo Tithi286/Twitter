@@ -14,6 +14,7 @@ class analytics extends Component {
             tweetview10Xaxis: [],
             tweetlike10: '',
             tweetretweet5: '',
+            retweet5legends: '',
             tweethourcount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             tweetmonthlycount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             tweetdailycount: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -96,11 +97,19 @@ class analytics extends Component {
             });
 
             res2.forEach(obj => {
-                tweetliketop10.push({ y: obj.count });
+                tweetliketop10.push({
+                    y: obj.count,
+                    selected: true,
+                    name: obj._id,
+                });
             });
 
             res3.forEach(obj => {
-                retweettop10.push(obj.count);
+                retweettop10.push({
+                    y: obj.count,
+                    selected: true,
+                    name: obj._id,
+                });
             });
 
             res4.forEach(cnt => {
@@ -133,7 +142,6 @@ class analytics extends Component {
     render() {
         let redirectVar = null;
         if (localStorage.getItem('email') == null) {
-            console.log("in cookie if")
             redirectVar = <Redirect to="/login" />
         }
         const tweetview10 = {
@@ -255,7 +263,7 @@ class analytics extends Component {
             },
             series: [{
                 type: 'column',
-                name: 'USD to EUR',
+                name: 'Viewed Tweet Count',
                 data: this.state.tweetview10
             }]
         };
@@ -267,6 +275,8 @@ class analytics extends Component {
                 text: 'Top 10 liked tweets',
             },
             series: [{
+                name: 'Liked Tweets Count',
+                colorByPoint: true,
                 data: this.state.tweetlike10
             }]
         };
@@ -278,6 +288,8 @@ class analytics extends Component {
                 text: 'Top 5 retweets',
             },
             series: [{
+                name: 'Retweets Count',
+                colorByPoint: true,
                 data: this.state.tweetretweet5
             }]
         };
