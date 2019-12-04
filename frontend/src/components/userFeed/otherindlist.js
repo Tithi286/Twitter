@@ -25,7 +25,7 @@ import {loop} from 'react-icons-kit/iconic/loop'
 import Navbar from '../navbar'
 
 var listsID
-class IndividualList extends Component {
+class otherindlist extends Component {
 
     constructor(props) {
         super(props);
@@ -40,7 +40,7 @@ class IndividualList extends Component {
     }
 
     componentDidMount(){
-        
+        console.log("list"+this.props.location.state[4])
         axios.defaults.withCredentials = true;
         axios.get('http://localhost:3001/lists/tweets')
                 .then((response) => {
@@ -294,7 +294,7 @@ class IndividualList extends Component {
                                     <span class="span">{this.props.location.state[3]} <Link to={{pathname:"/ownsubscribers", state:this.props.location.state[4] }} style={{color:"black"}}>Subscribers</Link> </span>
                             </div>
                             <div>
-                            <button class="logob" onClick={this.deleteList}>Delete List</button>
+                            <button class="logob" onClick={this.subscribe}>Subscribe</button>
                             {/*<button class="logod" onClick={this.subscribe}>Subscribe</button>*/}
                             </div>
                         </div>
@@ -322,4 +322,4 @@ class IndividualList extends Component {
 }
 
 
-export default IndividualList;
+export default otherindlist;

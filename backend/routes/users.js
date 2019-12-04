@@ -9,7 +9,6 @@ var passport = require('passport');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
 
 const { jwtsecret, encrAlgorithm, encrSecret } = require('../config');
-const { getUsers } = require('../DataAccessLayer');
 const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 
 // crypto (can be updated to use 'bcrypt' instead)
@@ -26,8 +25,8 @@ var requireAuth = passport.authenticate('jwt', { session: false });
 /* get all users test route */
 router.get('/', async function (req, res, next) {
   try {
-    const { results } = await getUsers();
-    //  const { results } = await simulateRequestOverKafka("getUsers", {});
+    const user = {};
+    const { results } = await simulateRequestOverKafka("getUsers", user);
     res.json(results);
   }
   catch (e) {
@@ -80,7 +79,6 @@ router.post('/login', async function (req, res, next) {
         userName: user.userName
       }, jwtsecret, { expiresIn: "7d" });
       res.cookie('authCookie', authCookie, { maxAge: 604800000, httpOnly: false, path: '/' });
-      console.log(user)
       return res.json(user);
     } else {
       console.error('login, no user found: bad credentials');

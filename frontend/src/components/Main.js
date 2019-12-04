@@ -30,9 +30,12 @@ import MemberList from './userFeed/memberList';
 import ExploreList from './userFeed/exploreList'
 import editlist from './userFeed/editlist';
 import otherlist from './userFeed/otherlist';
+import ownmembers from './userFeed/ownmembers';
+import ownsubscribers from './userFeed/ownsubscribers';
 import subscribers from './userFeed/subscribers';
 
 import othermembers from './userFeed/othermembers';
+import otherindlist from './userFeed/otherindlist';
 
 class Main extends Component {
     render() {
@@ -49,6 +52,7 @@ class Main extends Component {
                 <Route path="/bookmarks" component={Bookmarks} />
                 <Route path="/lists" component={Lists} />
                 <Route path="/indlist" component={IndividualList}/>
+                <Route path="/otherindlist" component={otherindlist}/>
                 <Route path="editlist" component={editlist}/>
                 <Route path="/sublist" component={SubscribedList}/>
                 <Route path="/memlist" component={MemberList}/>
@@ -70,7 +74,8 @@ class Main extends Component {
                 <Route path="/otherlist" component={otherlist} />
                 <Route path="/subscribers" component={subscribers} />
                 <Route path="/othermembers" component={othermembers} />
-
+                <Route path="/ownmembers" component={ownmembers} />
+                <Route path="/ownsubscribers" component={ownsubscribers} />
             </div>
         )
     }
