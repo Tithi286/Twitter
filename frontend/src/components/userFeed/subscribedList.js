@@ -41,11 +41,16 @@ class SubscribedList extends Component {
         this.handleLikesClick = this.handleLikesClick.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount(){
 
+           const data = {
+            params:{
+            listID  : this.props.location.state[4]
+            }
+        }
         axios.defaults.withCredentials = true;
-        axios.get('/lists/tweets')
-            .then((response) => {
+        axios.get('/lists/tweets',data)
+                .then((response) => {
                 this.setState({
                     retweet: response.data
                 });
@@ -230,9 +235,9 @@ class SubscribedList extends Component {
                             <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{ height: "40px", width: "40px" }}></img></div>
                             <div class="u-flex-justify">
                                 <div class="u-mar1">
-                                    <div class="s-list-item-primary u-mar1 fullname">{retweet1.user.userName}</div>
+                                    <div class="s-list-item-primary u-mar1 fullname">{retweet1.user.firstName}</div>
                                     <div class="s-list-item-secondary u-mar1 snippet">
-                                        <span class="span">{retweet1.tweet.tweetDate}</span>
+                                        <span class="span">{retweet1.tweet.tweetDate.split("T")[0]}  {retweet1.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                                     </div>
                                     <div class="s-list-item-secondary u-mar1 snippet">
                                         <span class="span">{retweet1.tweet.tweet}</span>
@@ -240,21 +245,19 @@ class SubscribedList extends Component {
                                 </div>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="img-tweets-div">
-                        <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
-                        <div style={{ paddingLeft: "12%" }}>
-                            <div class="col-sm-3 buttons-div">{retweet1.replyCount}<Icon icon={commentO} role="button" onClick={() => this.sendReply(retweet1.tweet.tweetID)} /></div>
-                            <div class="col-sm-3 buttons-div">{retweet1.retweetCount}<Icon icon={loop} role="button" onClick={() => this.createRetweet(retweet1.tweet.tweetID)} /></div>
-                            <div class="col-sm-3 buttons-div">{retweet1.likeCount}<Icon icon={heartO} role="button" onClick={() => this.createLike(retweet1.tweet.tweetID)} /></div>
-                            <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.createBookmark(retweet1.tweet.tweetID)} /></div>
-                        </div>
                     </div>
 
-                    <br /><br />
                 </div>
-            </Link>
+                <div class="img-tweets-div">
+                    <img src="https://www.sftravel.com/sites/sftraveldev.prod.acquia-sites.com/files/styles/sft_390x675_dark/public/alternative-portraits/Skyline-San-Francisco-at-Dusk_2.jpg?itok=FTSuT4Sf&timestamp=1515701696" class="tweets-img" ></img>
+                    <div style={{ paddingLeft: "12%" }}>
+                        <div class="col-sm-3 buttons-div">{retweet1.replyCount}<Icon icon={commentO} role="button" onClick={() => this.sendReply(retweet1.tweet.tweetID)} /></div>
+                        <div class="col-sm-3 buttons-div">{retweet1.retweetCount}<Icon icon={loop} role="button" onClick={() => this.createRetweet(retweet1.tweet.tweetID)} /></div>
+                        <div class="col-sm-3 buttons-div">{retweet1.likeCount}<Icon icon={heartO} role="button" onClick={() => this.createLike(retweet1.tweet.tweetID)} /></div>
+                        <div class="col-sm-3 buttons-div"><Icon icon={bookmarkO} role="button" onClick={() => this.createBookmark(retweet1.tweet.tweetID)} /></div>
+                    </div>
+                </div>
+            </Link >
         ))
 
         return (

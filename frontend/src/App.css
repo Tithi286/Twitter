@@ -703,6 +703,21 @@ opacity.first {
   color: #29a3ef
 }
 
+.logoe{
+  position:absolute;
+  left: 90%;
+ 
+  /* z-index: 20; */
+  height:35px;
+  width: 80px;
+  box-shadow: 0 0 1px #E6E5F4;
+  border-radius: 20px;
+  border-color: #29a3ef;
+  font-size: 15px;
+  font-weight: bold;
+  color: #29a3ef
+}
+
 .rest-name-div{
   left: 15%;
   margin-left: 5px;

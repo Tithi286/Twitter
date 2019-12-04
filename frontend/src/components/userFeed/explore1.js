@@ -228,7 +228,7 @@ class profile extends Component {
                 <Navbar/>
 
                 <div class="col-md-6 feed1 u-list1">
-                    <div class="home-font">User Name</div>
+                    <div class="home-font"></div>
 
                     <div class="home-font1">
                         <div class="">

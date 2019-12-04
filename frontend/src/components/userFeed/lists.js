@@ -51,14 +51,14 @@ class lists extends Component {
                         <Link class="a" to={{pathname:"/indlist", state:[list1.listName,list1.listDesc,list1.members.length,list1.subscribers.length,list1._id] }}>
                             <div class="u-flex-justify col-md-9" style={{float:"left"}}>
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{localStorage.getItem("username")}</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{sessionStorage.getItem("name")}</div>
                             <div class="s-list-item-primary u-mar1 listheading">{list1.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{list1.listDesc}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{list1.members.length} members .</span>
-                                    <span class="span">{list1.subscribers.length} subscribers</span>
+                                    <span class="span">{list1.members.length} Members </span>
+                                    <span class="span">{list1.subscribers.length} Subscribers</span>
                             </div>
                             </div>
                             </div>
@@ -66,7 +66,7 @@ class lists extends Component {
                             <div class="col-md-3" style={{float:"left"}}>
                             <Link to={{pathname:"/adduser", state:list1._id }}><button class="buttons3">Add Members</button></Link>
                             </div>
-                            </div>            
+                </div>            
             </div>
             ))
 
@@ -83,8 +83,8 @@ class lists extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a class="active" class="col-md-4">Owned</a>
-                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
-                            <a href="/members" >Members</a>
+                            <a href="/subscriptions" class="col-md-4">Subscribed</a>
+                            <a href="/members" class="col-md-4" >Members</a>
                         </div>
                     <div >
                         {listCreated}

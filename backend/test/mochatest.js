@@ -81,11 +81,11 @@ describe("Twitter", function() {
     );
   });
 
-  //test to view retweets
-  it("Get results for view retweets", function(done) {
+   //test to view memberships
+  it("Get results for view list memberships", function(done) {
     request(
       {
-        url: "http://localhost:3001/userprofile/retweets"
+        url: "http://localhost:3001/lists/memberships"
       },
       function(error, response, body) {
         expect(response.statusCode).to.equal(200);

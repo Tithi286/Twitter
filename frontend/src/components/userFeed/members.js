@@ -54,14 +54,14 @@ class Subscriptions extends Component {
                 <div class="u-flex u-flex-align">
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{subscribe1.user.results[0].userName}</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{subscribe1.user.results[0].firstName}</div>
                             <div class="s-list-item-primary u-mar1 listheading">{subscribe1.tweet.listName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{subscribe1.tweet.listDesc}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{subscribe1.tweet.members.length} members .</span>
-                                    <span class="span">{subscribe1.tweet.subscribers.length}subscribers</span>
+                                    <span class="span">{subscribe1.tweet.members.length} Members &nbsp;&nbsp;</span>
+                                    <span class="span">{subscribe1.tweet.subscribers.length}Subscribers</span>
                             </div>
                             </div>
                             </div>
@@ -77,13 +77,13 @@ class Subscriptions extends Component {
                 <div class="col-md-6 feed">
                     <div class="list-font">
                         <div class="word-block">Lists </div>
-                        <span class="uppernav"><Link to="/newmessages"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
+                        <span class="uppernav"><Link to="/create"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
                     </div>
                         
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
-                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
-                            <a class="active" >Members</a>
+                            <a href="/subscriptions" class="col-md-4">Subscribed</a>
+                            <a href="/members" class="col-md-4">Members</a>
                         </div>
                     <div>
                         {listsubscriber}

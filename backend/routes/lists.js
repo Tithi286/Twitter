@@ -161,7 +161,8 @@ router.get("/ownsubscribers", requireAuth, async function(req, res, next) {
     };
     const results = await simulateRequestOverKafka("getSubscribers", list);
 
-    results[0].members.forEach(mem => members.push(mem));
+        results[0].subscribers.forEach(mem => members.push(mem));
+
 
     quoted = "'" + members.join("','") + "'";
     const user = { usersID: [quoted] };

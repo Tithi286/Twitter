@@ -23,16 +23,25 @@ class otherindlist extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            retweet: []
+            retweet: [],
+            subscribers: []
             
         }
         this.handleTweetClick = this.handleTweetClick.bind(this);
         this.handleRetweetClick = this.handleRetweetClick.bind(this);
         this.handleRepliesClick = this.handleRepliesClick.bind(this);
         this.handleLikesClick = this.handleLikesClick.bind(this);
+        this.getSubscribers = this.getSubscribers.bind(this)
     }
 
     componentDidMount(){
+        const data={
+           
+            params:{
+                listID:this.props.location.state[4]
+        }
+        }
+        this.getSubscribers()
         console.log("list"+this.props.location.state[4])
         axios.defaults.withCredentials = true;
         axios.get('/lists/tweets')
@@ -186,6 +195,49 @@ class otherindlist extends Component {
 
     }
 
+    getSubscribers() {
+        const data = {
+            params : {
+                listID : sessionStorage.getItem("userID")
+            }
+        }
+        console.log(data.params.userID)
+        axios.defaults.withCredentials = true;
+        axios.get("http://localhost:3001/lists/ownsubscribers", data)
+            .then((response) => {
+                this.setState({
+                    subscribers: response.data
+                });
+                console.log("subscribers",response.data)
+                let foll1 = []
+                var foll = this.state.subscribers;
+                foll.map(f1 => {
+                    foll1.push(f1.userID)
+                });
+                console.log("UserIDs of following", foll1)
+                var flag = foll1.includes(sessionStorage.getItem("userID"))
+                if(flag == false){
+                    this.setState({
+                        follText : "Subscribe"
+                    })
+                }
+                else if(flag ==true){
+                    this.setState({
+                        follText : "Unsubscribe"
+                    })
+                }
+                this.setState({
+                    follArr: foll1
+                })
+
+            }) .catch(error => {
+                this.setState({
+                    message: "something went wrong"
+                })
+            });
+    }
+
+
     render() {
 
     console.log("list detailss")
@@ -238,9 +290,9 @@ class otherindlist extends Component {
                             <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5" style={{height:"40px", width:"40px"}}></img></div>
                             <div class="u-flex-justify">
                             <div class="u-mar1">
-                            <div class="s-list-item-primary u-mar1 fullname">{retweet1.user.userName}</div>
+                            <div class="s-list-item-primary u-mar1 fullname">{retweet1.user.firstName}</div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{retweet1.tweet.tweetDate}</span>
+                                    <span class="span">{retweet1.tweet.tweetDate.split("T")[0]}  {retweet1.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
                                     <span class="span">{retweet1.tweet.tweet}</span>

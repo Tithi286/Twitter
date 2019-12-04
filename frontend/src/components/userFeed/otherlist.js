@@ -59,8 +59,8 @@ class otherlists extends Component {
                                     <span class="span">{list1.listDesc}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{list1.members.length} members .</span>
-                                    <span class="span">{list1.subscribers.length} subscribers</span>
+                                    <span class="span">{list1.members.length} Members </span>
+                                    <span class="span">{list1.subscribers.length} Subscribers</span>
                             </div>
                             </div>
                             </div>
@@ -82,8 +82,8 @@ class otherlists extends Component {
                         
                         <div class="topnav" id="myTopnav">
                             <a class="active" class="col-md-4">Lists</a>
-                            <Link class="a" to={{pathname:"/subscribers", state:this.props.location.state }}>Subscribers</Link>
-                            <Link class="a" to={{pathname:"/othermembers", state:this.props.location.state }}>Members</Link>
+                            <Link to={{pathname:"/subscribers", state:this.props.location.state }}><div class="active" class="col-md-4">Subscribers</div></Link>
+                            <Link to={{pathname:"/othermembers", state:this.props.location.state }}><div class="active" class="col-md-4">Members</div></Link>
                         </div>
                     <div >
                         {listCreated}

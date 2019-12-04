@@ -198,11 +198,11 @@ class bookmarks extends Component {
                 <Navbar />
 
                 <div class="col-md-6 feed2" >
-                    <div style={{ borderBottom: "0.5px solid lightgrey", marginBottom: "5px" }}>
-                        <div class="home-font">Bookmarks</div>
-                        {renderNumber}
-                        <div class="s-list-item-secondary snippet" style={{ marginLeft: "7px", marginBottom: "15px" }}><span class="span">UserName</span></div>
-
+                    <div style={{borderBottom: "0.5px solid lightgrey", marginBottom: "5px"}}>
+                    <div class="home-font">Bookmarks</div>
+                    {renderNumber}
+                    <div class="s-list-item-secondary snippet" style={{marginLeft: "7px", marginBottom: "15px"}}><span class="span"></span></div>
+                    
                     </div>
                     {bookmarkTweet}
 

@@ -90,7 +90,8 @@ const getMongoConnection = () => {
         useUnifiedTopology: true,
         useCreateIndex: true,
         autoIndex: true,
-        poolSize: 1
+        poolSize: 1,
+        
       });
     } catch (e) {
       console.log(e);
