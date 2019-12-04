@@ -1,5 +1,4 @@
 const { tweets } = require('./Models/TweetSchema');
-const tableName = 'tweets';
 
 const getTweets = connection => (tweet = {}) => {
     return new Promise((resolve, reject) => {

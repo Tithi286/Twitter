@@ -87,8 +87,10 @@ class Newmessages extends Component {
     let content;
     console.log(this.state.authFlag)
     if(this.state.authFlag == "true"){
-        content =this.state.people.map(people => (
+        content =this.state.people.map(people => {
             // <Link class="a" to="/inbox">
+            sessionStorage.setItem('msg_user',people.firstName)
+            return(
             <div class="u-clickable u-list" role="button" onClick ={() => {this.goto(people.userID)}}>
                                 <div class="u-flex u-flex-align">
                                     <div class="u-mar2"><img src="https://library.kissclipart.com/20180904/ese/kissclipart-user-icon-png-clipart-computer-icons-user-66fe7db07b02eb73.jpg" class="logo5"></img></div>
@@ -104,7 +106,7 @@ class Newmessages extends Component {
                                 </div>
                             </div>
                     //  </Link>
-            )
+            )}
         )}
 
         else if(this.state.authFlag == "false"){

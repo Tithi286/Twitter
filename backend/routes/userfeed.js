@@ -7,7 +7,6 @@ const path = require('path');
 
 const { simulateRequestOverKafka } = require('../KafkaRequestSimulator');
 const upload = multer({ dest: path.join(__dirname, '..', 'uploads/') });
-const { getTweets } = require('../DataAccessLayer');
 // Set up middleware
 var requireAuth = passport.authenticate('jwt', { session: false });
 
@@ -19,7 +18,7 @@ router.get('/search', requireAuth, async function (req, res, next) {
             //Hashtag search
             if (topic.startsWith("#")) {
                 const tweet = { $text: { $search: topic } };
-                const tweets = await getTweets(tweet);
+                const tweets = await simulateRequestOverKafka("getTweets", tweet);
                 const allTweetIds = tweets.map(t => t.tweetID);
                 const allTweetOwner = tweets.map(t => t.tweetOwnerID);
 
@@ -212,6 +211,23 @@ router.put('/like', requireAuth, async function (req, res, next) {
         res.status(500).send(e.message || e);
     }
 
+});
+//unlike a tweet
+router.put('/unlike', requireAuth, async function (req, res, next) {
+    try {
+        const { tweetID } = req.body;
+        if (tweetID) {
+            const user = req.user;
+            const like = {
+                tweetID,
+                userID: user.userID
+            };
+            await simulateRequestOverKafka("delLike", like);
+            res.json({ message: "Tweet unliked" });
+        }
+    } catch (e) {
+        res.status(500).send(e.message || e);
+    }
 });
 //retweet a tweet
 router.post('/retweet', requireAuth, async function (req, res, next) {
