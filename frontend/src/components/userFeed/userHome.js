@@ -146,6 +146,50 @@ class userHome extends Component {
         })
     }
 
+
+    getFollowing() {
+        const data = {
+            params : {
+                userID : sessionStorage.getItem("userID")
+            }
+        }
+        console.log(data.params.userID)
+        axios.defaults.withCredentials = true;
+        axios.get("http://localhost:3001/userprofile/followed", data)
+            .then((response) => {
+                this.setState({
+                    following: response.data
+                });
+                console.log("following",response.data)
+                let foll1 = []
+                var foll = this.state.following;
+                foll.map(f1 => {
+                    foll1.push(f1.userID)
+                });
+                console.log("UserIDs of following", foll1)
+                var flag = foll1.includes(sessionStorage.getItem("userID"))
+                if(flag == false){
+                    this.setState({
+                        follText : "Follow"
+                    })
+                }
+                else if(flag ==true){
+                    this.setState({
+                        follText : "Unfollow"
+                    })
+                }
+                this.setState({
+                    follArr: foll1
+                })
+
+            }) .catch(error => {
+                this.setState({
+                    message: "something went wrong"
+                })
+            });
+    }
+    
+
     sendReply = (v1) => {
         console.log("inside send reply")
         const data = {
@@ -180,6 +224,42 @@ class userHome extends Component {
             });
     }
 
+    like = () => {
+
+        console.log("Follow user method called")
+        const data = {
+            followedID: this.state.userID
+        }
+        //console.log("v1 values", v1)
+        var a = this.state.follText;
+
+        if(a == "Follow"){
+
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/users/follow', data)
+            .then((response) => {
+                console.log("in axios call for follow")
+                console.log("follow resp: ",response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        }
+
+        else if(a == "Unfollow"){
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3001/users/unfollow', data)
+            .then((response) => {
+                console.log("in axios call for unfollow")
+                console.log(response)
+                this.componentDidMount()
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        }
+    }
 
 
     render() {
