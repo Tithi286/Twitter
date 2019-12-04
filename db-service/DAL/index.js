@@ -40,7 +40,7 @@ const {
   deleteFollower
 } = require("./follower");
 
-const { getLike, saveLike, getLikeCount } = require("./like");
+const { getLike, saveLike, getLikeCount, delLike } = require("./like");
 const { getRetweet, saveRetweet, getRetweetCount } = require('./retweet');
 const { getReply, saveReply, getReplyCount } = require('./reply');
 
@@ -90,7 +90,8 @@ const getMongoConnection = () => {
         useUnifiedTopology: true,
         useCreateIndex: true,
         autoIndex: true,
-        poolSize: 1
+        poolSize: 1,
+        
       });
     } catch (e) {
       console.log(e);
@@ -177,6 +178,10 @@ const _getLike = async whereClause => {
 const _saveLike = async whereClause => {
   await getMongoConnection();
   return saveLike()(whereClause);
+};
+const _delLike = async whereClause => {
+  await getMongoConnection();
+  return delLike()(whereClause);
 };
 const _getLikeCount = async tweetIds => {
   await getMongoConnection();
@@ -345,6 +350,7 @@ module.exports = {
   getRetweetCount: _getRetweetCount,
 
   getLike: _getLike,
+  delLike: _delLike,
   saveLike: _saveLike,
   getLikeCount: _getLikeCount,
 

@@ -85,13 +85,13 @@ class Subscriptions extends Component {
                 <div class="col-md-6 feed">
                     <div class="list-font">
                         <div class="word-block">Lists </div>
-                        <span class="uppernav"><Link to="/newmessages"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
+                        <span class="uppernav"><Link to="/create"><a> <FontAwesomeIcon icon={ faList } /> </a></Link></span>
                     </div>
                         
                         <div class="topnav" id="myTopnav">
                             <a href="/lists"  class="col-md-4">Owned</a>
-                            <a href="/subscriptions" class="col-md-5">Subscribed</a>
-                            <a href="/members" >Members</a>
+                            <a href="/subscriptions" class="col-md-4">Subscribed</a>
+                            <a href="/members" class="col-md-4">Members</a>
                         </div>
                     <div>
                         {listsubscriber}

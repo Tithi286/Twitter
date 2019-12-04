@@ -341,10 +341,6 @@
 }
 
 /* Change color on hover */
-.topnav a:hover {
-  background-color: black;
-  color: blue;
-}
 
 .loginform{
   background-color: #ffffff;
@@ -638,6 +634,16 @@ opacity.first {
   background-color: #CCD6DC;
 }
 
+.listback{
+  background-color: #b2b2b2;
+  background-size: cover;
+  padding-bottom: 500px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+
 .logoa{
   position:absolute;
   left: 20%;
@@ -687,6 +693,21 @@ opacity.first {
   left: 90%;
   margin-left: -100px;
   z-index: 20;
+  height:35px;
+  width: 80px;
+  box-shadow: 0 0 1px #E6E5F4;
+  border-radius: 20px;
+  border-color: #29a3ef;
+  font-size: 15px;
+  font-weight: bold;
+  color: #29a3ef
+}
+
+.logoe{
+  position:absolute;
+  left: 90%;
+ 
+  /* z-index: 20; */
   height:35px;
   width: 80px;
   box-shadow: 0 0 1px #E6E5F4;

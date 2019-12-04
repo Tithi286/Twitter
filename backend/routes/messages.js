@@ -26,7 +26,6 @@ router.get("/", requireAuth, async function (req, res, next) {
 
     quoted = "'" + receiverID.join("','") + "'";
     const user = { usersID: [quoted] };
-    console.log(results)
     let chatRes = await simulateRequestOverKafka("getUsers", user);
     res.json(chatRes.results)
   } catch (e) {
@@ -67,13 +66,19 @@ router.post("/send", requireAuth, async function (req, res, next) {
 router.get("/view", requireAuth, async function (req, res, next) {
   const { receiverID } = req.query;
   try {
-    const loggedInUser = req.user;
-    const messages = {
-      senderID: loggedInUser.userID,
-      receiverID: receiverID
-    };
-    const results = await simulateRequestOverKafka("getMessages", messages);
-    res.json(results);
+    if (receiverID) {
+      const loggedInUser = req.user;
+      const messages = {
+        senderID: loggedInUser.userID,
+        receiverID: receiverID
+      };
+      const results = await simulateRequestOverKafka("getMessages", messages);
+      res.json(results);
+    }
+    else {
+      return res.status(400).json({ message: "Bad Request" });
+    }
+
   } catch (e) {
     res.status(500).send(e.message || e);
   }
