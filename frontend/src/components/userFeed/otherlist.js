@@ -74,8 +74,8 @@ class otherlists extends Component {
                                     <span class="span">{list1.listDesc}</span>
                             </div>
                             <div class="s-list-item-secondary u-mar1 snippet">
-                                    <span class="span">{list1.members.length} members .</span>
-                                    <span class="span">{list1.subscribers.length} subscribers</span>
+                                    <span class="span">{list1.members.length} Members </span>
+                                    <span class="span">{list1.subscribers.length} Subscribers</span>
                             </div>
                             </div>
                             </div>
