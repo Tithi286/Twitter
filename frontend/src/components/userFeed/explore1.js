@@ -110,8 +110,7 @@ class profile extends Component {
 
             }
             axios.defaults.withCredentials = true;
-            console.log("inc")
-            console.log(response.data)
+           
             axios.post('http://localhost:3001/analytics/incprofileviewcount',data)
                     .then((response) => {
 
