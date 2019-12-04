@@ -17,7 +17,8 @@ class tweets extends Component {
         this.state = {
             tweet: [],
             fName: "",
-            profileImage: sessionStorage.getItem('profileImage')
+            profileImage: sessionStorage.getItem('profileImage'),
+            user: sessionStorage.getItem('exploreUser') 
         }
 
         this.deleteClick = this.deleteClick.bind(this)
@@ -36,12 +37,18 @@ class tweets extends Component {
                 params:{
                 userID : sessionStorage.getItem("userID")
             }}
+            this.setState({
+                name: this.state.user.firstName
+            })
         }
         else if(a == "explore"){
              data = {
                 params:{
                 userID : sessionStorage.getItem("ID")
             }}
+            this.setState({
+                name: sessionStorage.getItem("fName")
+            })
         }
         console.log("USERID: ",data)
         
@@ -49,10 +56,10 @@ class tweets extends Component {
         axios.defaults.withCredentials = true;
         axios.get('/userprofile/tweets', data)
                 .then((response) => {
-                    console.log("in axios", response)
+                    console.log("in axios", response.data)
                 this.setState({
-                    tweet : response.data,
-                    fname : sessionStorage.getItem("fName")
+                  //  tweet : response.data,
+                //    fName : sessionStorage.getItem("fName")
                 });
                 console.log(response)
                 console.log(this.state.tweet)
@@ -108,7 +115,7 @@ class tweets extends Component {
                                 <div class="u-flex-justify">
                                 <div class="u-mar1">
                                 <Link class="a" to="/descTweets">
-                                <div class="s-list-item-primary u-mar1 fullname">{sessionStorage.getItem("fName")}</div>
+                                <div class="s-list-item-primary u-mar1 fullname">{this.state}</div>
                                 <span class="span s-list-item-secondary u-mar1 snippet" >{tweet.tweet.tweetDate.split("T")[0]}  {tweet.tweet.tweetDate.split("T")[1].split(".")[0]}</span>
                                 <div class="s-list-item-secondary u-mar1 snippet">
                                         <span class="span">{tweet.tweet.tweet}</span>

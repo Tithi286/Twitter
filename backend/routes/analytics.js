@@ -28,7 +28,7 @@ router.post("/incprofileviewcount", requireAuth, async function (
   next
 ) {
   try {
-    const { userID } = req.body
+    const { userID } = req.body.userID
 
     const query = {
       userID: userID
@@ -42,7 +42,7 @@ router.post("/incprofileviewcount", requireAuth, async function (
 //Get the tweets with maximum views
 router.get("/viewcount", requireAuth, async function (req, res, next) {
   try {
-    const ownerID=[]
+    const ownerID = []
     const query = {};
     const results = await simulateRequestOverKafka("getTweetViewCount", query);
     results.forEach(retwt => {
@@ -51,7 +51,7 @@ router.get("/viewcount", requireAuth, async function (req, res, next) {
 
     quoted = "'" + ownerID.join("','") + "'";
     const user = { usersID: [quoted] };
- 
+
     let { results: allFollowedUsers } = await simulateRequestOverKafka("getUsers", user);
 
 
@@ -59,11 +59,11 @@ router.get("/viewcount", requireAuth, async function (req, res, next) {
       acc[f.userID] = f;
       return acc;
     }, {});
-    const   resultsf = results.map(res => ({
+    const resultsf = results.map(res => ({
       tweet: res,
       user: followedUsersMap[res.tweetOwnerID]
     }));
-    
+
     res.json(resultsf)
   } catch (e) {
     res.status(500).send(e.message || e);
