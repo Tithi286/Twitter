@@ -97,12 +97,11 @@ class ListsAdduser extends Component {
                         <div class="s-list-item-primary u-mar3 fullname"> </div>
                             <div class="s-list-item-secondary u-mar3 snippet">
                             <span class="span">{username.firstName}</span>
+                            <span class="col-sm-3" style={{float:"left"}}>
+                            <button class="logoc" style={{float:"left"}} onClick={() => this.submitChanges(username.userID)}>Add Member</button>
+                            </span>
                             </div>
                         </div>
-                    </div>
-                    <span></span>
-                    <div class="col-sm-3" style={{float:"left"}}> 
-                    <button class="logoc" style={{float:"left"}} onClick={() => this.submitChanges(username.userID)}>Add Member</button>
                     </div>
                 </div>
                 </div>
@@ -112,11 +111,8 @@ class ListsAdduser extends Component {
 
 
         return (
-            <div className="opacity">
-                <div className="first">
                 <div class="signup2">
-                <div class="col-md-3">
-                </div>
+                
                 <div class="outer-box1 signup1" >
                     <div class="col-md-6">
                         <div className="container">
@@ -139,11 +135,7 @@ class ListsAdduser extends Component {
                         </div>
                     </div>
                     </div>
-                    <div class="col-md-3">
                     </div>
-                    </div>
-                </div>
-            </div>
 
 
         )

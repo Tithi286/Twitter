@@ -28,10 +28,7 @@ class ListsCreate extends Component {
         
     }
 
-<<<<<<< HEAD
-=======
     
->>>>>>> 932e44f931501982784299d5d02e513b96f8b114
     listNameChangeHandler = (e) => {
         this.setState({
             listName: e.target.value
@@ -93,7 +90,7 @@ class ListsCreate extends Component {
 
     render() {
         return (
-            <div class="signup2">
+            <div class="listback">
                 <br />
                 <form class="outer-box1 signup1"  onSubmit={this.submitAdd}>
                     <br />
